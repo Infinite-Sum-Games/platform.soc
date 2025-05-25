@@ -1,5 +1,6 @@
 'use client';
 
+import { make_api_call } from '@/app/api/api';
 import Navbar from '@/app/components/Navbar';
 import Cloud from '@/app/components/dashboard-components/Cloud';
 import SunGlareEffect from '@/app/components/dashboard-components/SunGlareEffect';
@@ -96,15 +97,11 @@ export default function RegisterPage() {
   };
 
   const verifyGithubUsername = async (username: string) => {
-    try {
-      const response = await fetch(`https://api.github.com/users/${username}`);
-      if (!response.ok) {
-        throw new Error('Invalid GitHub username');
-      }
-      return true;
-    } catch (error) {
-      return false;
-    }
+    const result = await make_api_call({
+      url: `https://api.github.com/users/${username}`,
+      method: 'GET',
+    });
+    return result.success;
   };
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -129,24 +126,18 @@ export default function RegisterPage() {
         return;
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(validatedData),
-        },
-      );
+      // Register user
+      const result = await make_api_call({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
+        method: 'POST',
+        body: validatedData,
+      });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Registration failed');
+      if (!result.success) {
+        throw new Error(result.error || 'Registration failed');
       }
 
-      const data = await response.json();
-      setAccessToken(data.access_key);
+      setAccessToken(result.data.access_key);
       setShowOtpInput(true);
       setCanResendOtp(false);
       setTimeout(() => setCanResendOtp(true), 5 * 60 * 1000); // Enable resend after 5 minutes
@@ -186,21 +177,17 @@ export default function RegisterPage() {
       // Validate OTP
       const validatedOtp = otpSchema.parse({ otp });
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register/otp/verify`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify(validatedOtp),
+      const result = await make_api_call({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register/otp/verify`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-      );
+        body: validatedOtp,
+      });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'OTP verification failed');
+      if (!result.success) {
+        throw new Error(result.error || 'OTP verification failed');
       }
 
       toast({
@@ -232,29 +219,26 @@ export default function RegisterPage() {
 
   const handleResendOtp = async () => {
     if (!canResendOtp) return;
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register/otp/resend`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      if (!response.ok) {
-        throw new Error('Failed to resend OTP');
-      }
+
+    const result = await make_api_call({
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register/otp/resend`,
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (result.success) {
       setCanResendOtp(false);
       setResendTimer(300); // 5 minutes
       toast({
         title: 'Success',
         description: 'OTP resent to your email',
       });
-    } catch (error) {
+    } else {
       toast({
         title: 'Error',
-        description: 'Failed to resend OTP',
+        description: result.error || 'Failed to resend OTP',
         variant: 'destructive',
       });
     }
