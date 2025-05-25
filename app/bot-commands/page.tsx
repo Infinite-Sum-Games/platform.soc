@@ -1,7 +1,7 @@
-import DevPoolDocs from "./devpool-docs";
-import Navbar from "../components/Navbar";
-import Cloud from "../components/dashboard-components/Cloud";
-import SunGlareEffect from "../components/dashboard-components/SunGlareEffect";
+import Navbar from '../components/Navbar';
+import Cloud from '../components/dashboard-components/Cloud';
+import SunGlareEffect from '../components/dashboard-components/SunGlareEffect';
+import DevPoolDocs from './devpool-docs';
 
 const BotCommandsPage = () => {
   return (
