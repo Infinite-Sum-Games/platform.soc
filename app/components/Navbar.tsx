@@ -1,14 +1,40 @@
 'use client';
-import { Menu, X } from 'lucide-react';
+import { useAuthStore } from '@/app/store/useAuthStore';
+import { LogOut, Menu, X } from 'lucide-react';
+import { Github } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-// import { Github } from "lucide-react";
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { handleSignIn } from '../lib/utils';
+import { Button } from './ui/button';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const handleApplyButtonClick = () => {
-    window.open('https://forms.office.com/r/xH6GzZZhzC', '_blank');
+  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const clearUser = useAuthStore((state) => state.clearUser);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (
+        event.origin === window.location.origin &&
+        event.data.type === 'AUTH_SUCCESS'
+      ) {
+        // Refresh the page to update the UI
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
+  const handleLogout = () => {
+    if (confirm('Are you sure you want to logout?')) {
+      clearUser();
+      router.push('/');
+    }
   };
 
   return (
@@ -49,10 +75,34 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Register Button - Desktop */}
-            {/* <div className="hidden md:block">
-              <RegisterButton onClick={handleApplyButtonClick} />
-            </div> */}
+            {/* Auth Buttons - Desktop */}
+            <div className="hidden md:flex items-center">
+              {user && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => router.push('/profile')}
+                    className="flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+                  >
+                    <img
+                      src={`https://github.com/${user.github_username}.png`}
+                      alt={user.github_username}
+                      className="h-8 w-8 rounded-full border border-gray-200"
+                    />
+                    <span className="font-semibold lg:block hidden">
+                      {user.github_username}
+                    </span>
+                  </button>
+                  <div className="flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out cursor-pointer hover:shadow-md">
+                    <LogOut
+                      color="red"
+                      onClick={handleLogout}
+                      className="h-4 w-4 cursor-pointer"
+                    />
+                  </div>
+                </>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <div className="flex items-center md:hidden">
@@ -81,12 +131,33 @@ const Navbar = () => {
             <MobileNavLink href="/resources">Resources</MobileNavLink>
             <MobileNavLink href="/team">Team</MobileNavLink>
             <MobileNavLink href="/past-editions">Past Editions</MobileNavLink>
-            {/* <div className="mt-4 border-gray-200 border-t pt-4">
-              <RegisterButton
-                onClick={handleApplyButtonClick}
-                className="w-full justify-center"
-              />
-            </div> */}
+            <div className="flex md:hidden items-center">
+              {user && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => router.push('/profile')}
+                    className="flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200 w-full"
+                  >
+                    <img
+                      src={`https://github.com/${user.github_username}.png`}
+                      alt={user.github_username}
+                      className="h-8 w-8 rounded-full border border-gray-200"
+                    />
+                    <span className="font-semibold">
+                      {user.github_username}
+                    </span>
+                  </button>
+                  <div className="flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out cursor-pointer hover:shadow-md">
+                    <LogOut
+                      color="red"
+                      onClick={handleLogout}
+                      className="h-4 w-4 cursor-pointer"
+                    />
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </nav>
@@ -125,23 +196,5 @@ const MobileNavLink = ({
     {children}
   </Link>
 );
-
-// Reusable RegisterButton component
-/* const RegisterButton = ({
-  onClick,
-  className = '',
-}: {
-  onClick: () => void;
-  className?: string;
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`${className} whitespace-nowrap rounded-md border-gray-400 bg-gray-800 px-4 py-2 font-medium text-sm text-white shadow-sm transition-colors duration-200 hover:bg-blue-700 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
-    aria-label="Register for AmWOC"
-  >
-    Register
-  </button>
-); */
 
 export default Navbar;

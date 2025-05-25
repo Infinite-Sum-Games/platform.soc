@@ -9,7 +9,7 @@ export async function make_api_call<T = unknown>({
   method?: string;
   headers?: Record<string, string>;
   params?: Record<string, string | number | boolean>;
-  body?: T | null;
+  body?: T | Record<string, string> | null;
 }): Promise<{
   success: boolean;
   data: T | null;

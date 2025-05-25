@@ -7,22 +7,34 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/app/components/ui/tabs';
-import { Github } from 'lucide-react';
-import { signIn } from 'next-auth/react';
-import { useSession } from 'next-auth/react';
+import { ArrowRight, Github } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Cloud from './components/dashboard-components/Cloud';
 import Logtable from './components/dashboard-components/Logtable';
 import SunGlareEffect from './components/dashboard-components/SunGlareEffect';
-
-const handleSignIn = async () => {
-  await signIn('github');
-};
+import { handleSignIn } from './lib/utils';
+import { useAuthStore } from './store/useAuthStore';
 
 const Dashboard = () => {
-  const { data: session } = useSession();
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (
+        event.origin === window.location.origin &&
+        event.data.type === 'AUTH_SUCCESS'
+      ) {
+        // Refresh the page to update the UI
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   return (
     <div className="relative flex min-h-screen w-full flex-col text-white">
@@ -49,23 +61,41 @@ const Dashboard = () => {
             innovative projects and showcase your skills!
           </p>
           <div className="flex flex-row gap-4 sm:flex-row">
-            {!session?.user && (
+            {!user ? (
+              <>
+                <button
+                  type="button"
+                  onClick={handleSignIn}
+                  className="flex cursor-pointer transform items-center justify-center gap-2 rounded-lg bg-gray-800 px-6 py-2 text-sm font-medium sm:px-8 sm:py-3 sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
+                >
+                  <Github size={24} />
+                  Log in with GitHub
+                </button>
+                <button
+                  type="button"
+                  onClick={() => router.push('/register')}
+                  className="transform cursor-pointer rounded-lg bg-yellow-400 px-6 py-2 text-sm font-medium sm:px-8 sm:py-3 sm:font-semibold text-gray-900 shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-amber-700"
+                >
+                  Register Now
+                </button>
+              </>
+            ) : (
               <button
                 type="button"
-                onClick={handleSignIn}
-                className="flex cursor-pointer transform items-center justify-center gap-2 rounded-lg bg-gray-800 px-6 py-2 text-sm font-medium sm:px-8 sm:py-3 sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
+                onClick={() => router.push('/profile')}
+                className="flex cursor-pointer transform items-center justify-between gap-2 rounded-3xl bg-gray-800 px-2 py-2 text-sm font-medium w-fit sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
               >
-                <Github size={24} />
-                Log in with GitHub
+                <img
+                  src={`https://github.com/${user.github_username}.png`}
+                  alt={user.github_username}
+                  className="h-8 w-8 rounded-full border border-gray-300 shadow-sm"
+                />
+                <span className="font-semibold text-base">
+                  Track My Progress
+                </span>
+                <ArrowRight size={24} />
               </button>
             )}
-            <button
-              type="button"
-              onClick={() => router.push('/register')}
-              className="transform cursor-pointer rounded-lg bg-yellow-400 px-6 py-2 text-sm font-medium sm:px-8 sm:py-3 sm:font-semibold text-gray-900 shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-amber-700"
-            >
-              Register Now
-            </button>
           </div>
         </div>
 

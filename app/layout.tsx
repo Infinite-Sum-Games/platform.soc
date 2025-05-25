@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
-import ClientSessionWrapper from './components/ClientSessionWrapper';
 import { Toaster } from './components/ui/toaster';
 
 const gilroy = localFont({
@@ -131,10 +130,8 @@ export default function RootLayout({
       </head>
 
       <body className={`${gilroy.className} antialiased`}>
-        <ClientSessionWrapper>
-          {children}
-          <Toaster />
-        </ClientSessionWrapper>
+        {children}
+        <Toaster />
       </body>
     </html>
   );

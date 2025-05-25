@@ -1,7 +1,7 @@
 'use client';
 
+import { useAuthStore } from '@/app/store/useAuthStore';
 import { AlertCircle, Loader2 } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import {
@@ -184,28 +184,23 @@ const ProfileSkeleton = () => (
 );
 
 const ProfileCard = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const { data: session } = useSession();
+  const user = useAuthStore((state) => state.user);
+  const [loading, setLoading] = useState<boolean>(!user);
   const [userData, setUserData] = useState<Profile | null>(null);
 
   useEffect(() => {
-    const dummyData: Profile = {
-      name: 'Jayadev D',
-      username: 'FLASH2332',
-      rank: 7,
-      allTimeRank: 2,
-      bounty: 500,
-      pendingIssues: 2,
-    };
-
-    const timeout = setTimeout(() => {
-      setUserData(dummyData);
+    if (user) {
+      setUserData({
+        name: user.email.split('@')[0],
+        username: user.github_username,
+        rank: 1,
+        allTimeRank: 1,
+        bounty: user.bounty,
+        pendingIssues: 0,
+      });
       setLoading(false);
-      console.log('Loaded user data:', dummyData);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, []);
+    }
+  }, [user]);
 
   if (loading) return <ProfileSkeleton />;
   if (!userData) return <ErrorCard />;
@@ -213,17 +208,17 @@ const ProfileCard = () => {
   // Dummy analytics data (replace with real fetch if needed)
   const graphData = {
     prStats: {
-      opened: 15,
-      merged: 12,
-      issuesSolved: 8,
+      opened: 54,
+      merged: 22,
+      issuesSolved: 34,
     },
     contributionStats: {
-      codeContribution: 80,
-      testing: 65,
-      bugFixes: 75,
-      documentation: 50,
-      features: 60,
-      uiux: 70,
+      codeContribution: 0,
+      testing: 0,
+      bugFixes: 0,
+      documentation: 0,
+      features: 0,
+      uiux: 0,
     },
   };
   const pieData = [

@@ -1,6 +1,5 @@
 'use client';
 
-import { make_api_call } from '@/app/api/api';
 import Navbar from '@/app/components/Navbar';
 import Cloud from '@/app/components/dashboard-components/Cloud';
 import SunGlareEffect from '@/app/components/dashboard-components/SunGlareEffect';
@@ -8,6 +7,7 @@ import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
 import { toast } from '@/app/components/ui/use-toast';
+import { make_api_call } from '@/app/lib/api';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import * as z from 'zod';
@@ -45,7 +45,6 @@ const otpSchema = z.object({
 });
 
 type FormData = z.infer<typeof formSchema>;
-type OtpData = z.infer<typeof otpSchema>;
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -127,7 +126,7 @@ export default function RegisterPage() {
       }
 
       // Register user
-      const result = await make_api_call({
+      const result = await make_api_call<{ access_key: string }>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
         method: 'POST',
         body: validatedData,
@@ -137,7 +136,7 @@ export default function RegisterPage() {
         throw new Error(result.error || 'Registration failed');
       }
 
-      setAccessToken(result.data.access_key);
+      setAccessToken(result.data?.access_key ?? '');
       setShowOtpInput(true);
       setCanResendOtp(false);
       setTimeout(() => setCanResendOtp(true), 5 * 60 * 1000); // Enable resend after 5 minutes
