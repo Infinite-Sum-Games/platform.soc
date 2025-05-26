@@ -28,11 +28,9 @@ const formSchema = z.object({
     .min(2, 'First name must be at least 2 characters')
     .max(50, 'First name must be at most 50 characters')
     .regex(/^[A-Za-z]+$/, 'First name must contain only letters'),
-  middle_name: z
-    .string()
-    .min(2, 'Middle name must be at least 2 characters')
-    .max(50, 'Middle name must be at most 50 characters')
-    .regex(/^[A-Za-z]+$/, 'Middle name must contain only letters'),
+  middle_name: z.string().regex(/^[A-Za-z]*$/, {
+    message: 'Middle name must contain only letters',
+  }),
   last_name: z
     .string()
     .min(1, 'Last name must be at least 1 character')
@@ -393,6 +391,11 @@ export default function RegisterPage() {
                       onBlur={handleBlur}
                       className="h-12 sm:h-14 md:h-12 text-base sm:text-lg md:text-base bg-white/20 text-gray-800 border-white/30 placeholder:text-gray-500 rounded-2xl md:rounded-xl transition-all duration-200 hover:border-blue-500/50 focus:border-blue-500 focus:ring-blue-500"
                     />
+                    {touched.middle_name && errors.middle_name && (
+                      <p className="text-xs sm:text-sm md:text-xs text-red-500 mt-1">
+                        {errors.middle_name}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-2 sm:space-y-3 md:space-y-3">
