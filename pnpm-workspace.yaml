@@ -1,6 +1,0 @@
-ignoredBuiltDependencies:
-  - core-js
-  - sharp
-
-onlyBuiltDependencies:
-  - '@biomejs/biome'
