@@ -1,6 +1,6 @@
 'use client';
 import { ScrollArea } from '@/app/components/ui/scroll-area';
-import useLeaderboardStore from '@/app/useLeaderboardStore';
+import useLeaderboardStore from '@/app/store/useLeaderboardStore';
 import { useEffect, useState } from 'react';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa'; // Import sorting icons
 import { MdCode, MdMonetizationOn } from 'react-icons/md';
