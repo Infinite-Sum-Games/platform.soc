@@ -16,7 +16,7 @@ const RepoCard = (props: ReposData) => {
       <div className="flex h-full flex-row items-center justify-between p-4 sm:p-5">
         <div>
           <CardHeader className="p-0 pb-2 border-b border-white/30">
-            <div className="flex flex-row items-center">
+            <div className="flex flex-row items-center ">
               <CardTitle className="mb-0">
                 <a
                   href={props.url}
@@ -25,11 +25,11 @@ const RepoCard = (props: ReposData) => {
                   rel="noopener noreferrer"
                 >
                   <Github
-                    className="hidden md:block mr-2 h-5 w-5"
+                    className="hidden md:block mr-3 h-5 w-5 flex-shrink-0"
                     color="#4B5563"
                     aria-hidden="true"
                   />
-                  {props.name}
+                  <span className="line-clamp-2 text-left">{props.name}</span>
                 </a>
               </CardTitle>
             </div>

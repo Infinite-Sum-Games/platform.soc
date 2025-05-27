@@ -391,7 +391,7 @@ const ReposPage = () => {
             />
             Issues
             {selectedRepo && (
-              <span className="ml-2 text-lg text-gray-700">
+              <span className="ml-2 text-lg text-gray-700 line-clamp-1">
                 - {selectedRepo.name}
               </span>
             )}

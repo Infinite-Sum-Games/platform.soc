@@ -39,7 +39,7 @@ export interface ReposData {
 export const tempRepos: ReposData[] = [
   {
     id: 'repoA',
-    name: 'Fantastic Frontend Project',
+    name: 'A Very Very Very Very Very Very Very Very Very Very Long Name for a Repository',
     url: 'https://github.com/frontend-dev/fantastic-app',
     maintainerUsernames: ['ui_master', 'react_ninja'],
     description:
@@ -81,13 +81,21 @@ export const tempRepos: ReposData[] = [
       },
       {
         id: 'issueA-2',
-        title: 'Fix layout issue on mobile',
+        title:
+          'A very very very very very very long issue title that goes on and on and on and on and on and on and on and on',
         url: 'https://github.com/frontend-dev/fantastic-app/issues/2',
         language: ['CSS'],
         bounty: 50,
         difficulty: 'Easy',
         isClaimed: true,
-        claimedByList: ['css_expert'],
+        claimedByList: [
+          'css_expert',
+          'mobile_dev',
+          'ui_guru',
+          'react_enthusiast',
+          'frontend_lover',
+          'web_dev',
+        ],
         multiplierActive: false,
         multiplierValue: null,
         completionStatus: true,
