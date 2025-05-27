@@ -6,11 +6,11 @@ const DevPoolDocs = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-700 to-slate-900 bg-clip-text text-transparent mb-3">
-            DevPool Commands
+          <h1 className="font-extrabold text-4xl text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.35)] md:text-5xl">
+            DevPool Bot Commands
           </h1>
-          <p className="text-slate-600 text-lg">
-            Your guide to Summer of Code bot commands
+          <p className="mx-auto mt-2 max-w-xl text-lg text-white/70 drop-shadow-[0_1px_6px_rgba(255,255,255,0.2)]">
+            Your guide to Summer of Code's bot commands
           </p>
         </div>
 
