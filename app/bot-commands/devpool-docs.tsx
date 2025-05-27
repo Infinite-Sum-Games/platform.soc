@@ -19,7 +19,7 @@ const DevPoolDocs = () => {
           {/* Contributor Section - Large Left Panel */}
           <div className="col-span-4 bg-white/30 backdrop-blur-xl rounded-3xl p-6 border border-white/20 shadow-xl hover:shadow-2xl hover:bg-white/40 transition-all duration-300 hover:scale-[1.02]">
             <div className="flex flex-col">
-              <div className="mb-6">
+              <div className="mb-4">
                 <div className="w-12 h-12 bg-slate-500/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4 border border-white/30">
                   <span className="text-2xl">👨‍💻</span>
                 </div>
@@ -33,7 +33,7 @@ const DevPoolDocs = () => {
 
               <div className="space-y-4 flex-1">
                 <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-4 border border-white/30 hover:bg-white/50 transition-all duration-200">
-                  <code className="text-xl font-bold text-slate-800 mb-3 block">
+                  <code className="text-xl font-bold text-slate-800 mb-2 block">
                     /assign
                   </code>
                   <p className="text-slate-600 leading-relaxed">
@@ -43,7 +43,7 @@ const DevPoolDocs = () => {
                 </div>
 
                 <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-4 border border-white/30 hover:bg-white/50 transition-all duration-200">
-                  <code className="text-xl font-bold text-slate-800 mb-3 block">
+                  <code className="text-xl font-bold text-slate-800 mb-2 block">
                     /unassign
                   </code>
                   <p className="text-slate-600 leading-relaxed">

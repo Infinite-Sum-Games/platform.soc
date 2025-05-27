@@ -76,7 +76,7 @@ const TeamPage = () => {
           .map(({ resource }) => resource);
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Navbar />
       <SunGlareEffect />
       <Cloud />
