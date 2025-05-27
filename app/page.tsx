@@ -108,13 +108,14 @@ const Dashboard = () => {
             <TabsList className="grid w-full grid-cols-2 bg-white/20 p-1 rounded-3xl backdrop-blur-sm mb-2 shrink-0">
               <TabsTrigger
                 value="live-activity"
-                className="py-2.5 text-sm font-bold text-white data-[state=active]:bg-white data-[state=active]:text-gray-800 data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
+                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-800 data-[state=active]:bg-white data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
+                disabled={true}
               >
-                Live Activity
+                Live Activity (Coming Soon)
               </TabsTrigger>
               <TabsTrigger
                 value="leaderboard"
-                className="py-2.5 text-sm font-bold text-white data-[state=active]:bg-white data-[state=active]:text-gray-800 data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
+                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-800 data-[state=active]:bg-white data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
               >
                 Leaderboard
               </TabsTrigger>

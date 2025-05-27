@@ -111,7 +111,9 @@ const DevPoolDocs = () => {
                     <h2 className="text-xl font-bold text-slate-800">
                       Achievement Badges
                     </h2>
-                    <p className="text-slate-600">Mark special contributions</p>
+                    <p className="text-slate-600">
+                      Maintainers can mark special contributions
+                    </p>
                   </div>
                 </div>
 
@@ -119,7 +121,7 @@ const DevPoolDocs = () => {
                   <div className="bg-white/40 backdrop-blur-sm rounded-xl p-3 border border-white/30 hover:bg-white/50 transition-all duration-200">
                     <code className="font-bold text-indigo-700">/bug</code>
                     <p className="text-slate-600 text-sm mt-1">
-                      Mark bug reports for bug-hunting badges
+                      Mark bug-report issues for bug-hunting badges
                     </p>
                   </div>
                   <div className="bg-white/40 backdrop-blur-sm rounded-xl p-3 border border-white/30 hover:bg-white/50 transition-all duration-200">
@@ -131,21 +133,21 @@ const DevPoolDocs = () => {
                   <div className="bg-white/40 backdrop-blur-sm rounded-xl p-3 border border-white/30 hover:bg-white/50 transition-all duration-200">
                     <code className="font-bold text-indigo-700">/doc</code>
                     <p className="text-slate-600 text-sm mt-1">
-                      Mark documentation contributions
+                      Mark documentation pull requests
                     </p>
                   </div>
                   <div className="bg-white/40 backdrop-blur-sm rounded-xl p-3 border border-white/30 hover:bg-white/50 transition-all duration-200">
                     <code className="font-bold text-indigo-700">/test</code>
                     <p className="text-slate-600 text-sm mt-1">
-                      Tag testing contributions
+                      Mark testing-related pull requests
                     </p>
                   </div>
                 </div>
 
                 <div className="mt-4 p-3 bg-indigo-500/10 backdrop-blur-sm rounded-xl border border-indigo-200/50">
                   <p className="text-sm text-slate-700">
-                    🎯 Use these on issues or pull requests to unlock special
-                    achievement badges for contributors
+                    🎯 Use these on issues or pull requests to help unlock
+                    special achievement badges for contributors
                   </p>
                 </div>
               </div>
