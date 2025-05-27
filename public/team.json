@@ -1,0 +1,73 @@
+[
+  {
+    "Name": "Ashwin Narayanan S",
+    "GitHub": "Ashrockzzz2003",
+    "Tags": ["Maintainer", "Organizer"],
+    "Designation": "SWE-I Google India"
+  },
+  {
+    "Name": "E Aaditya",
+    "GitHub": "aadit-n3rdy",
+    "Tags": ["Maintainer", "Organizer"],
+    "Designation": "ACM Amrita Chair"
+  },
+  {
+    "Name": "Sanyam Bharadwaj",
+    "GitHub": "SanyamB0912",
+    "Tags": ["Organizer"],
+    "Designation": "ACM Amrita Treasurer"
+  },
+  {
+    "Name": "Vijay SB",
+    "GitHub": "vijay-sb",
+    "Tags": ["Organizer"],
+    "Designation": "Frontend Developer"
+  },
+  {
+    "Name": "Kiran Rajeev",
+    "GitHub": "KiranRajeev-KV",
+    "Tags": ["Organizer"],
+    "Designation": "Frontend Developer"
+  },
+  {
+    "Name": "Aditya Menon R",
+    "GitHub": "adithya-menon-r",
+    "Tags": ["Maintainer", "Organizer"],
+    "Designation": "Frontend Developer"
+  },
+  {
+    "Name": "Midhunann",
+    "GitHub": "midhunann",
+    "Tags": ["Organizer"],
+    "Designation": "Frontend Developer"
+  },
+  {
+    "Name": "Jayadev D",
+    "GitHub": "FLASH2332",
+    "Tags": ["Organizer"],
+    "Designation": "Frontend Developer"
+  },
+  {
+    "Name": "Leela M",
+    "GitHub": "Leela0o5",
+    "Tags": ["Maintainer", "Organizer"],
+    "Designation": "Frontend Developer"
+  },
+  {
+    "Name": "Harish GM",
+    "GitHub": "GMHarish285",
+    "Tags": ["Organizer"],
+    "Designation": "Frontend Developer"
+   {
+    "Name": "Karthik Saiharsh",
+    "GitHub": "karthik-saiharsh",
+    "Tags": ["Maintainer", "Organizer"],
+    "Designation": "Frontend Developer"
+  },
+  {
+    "Name": "Ritesh Koushik",
+    "GitHub": "IAmRiteshKoushik",
+    "Tags": ["Organizer"],
+    "Designation": "Backend Developer"
+  }
+]
