@@ -128,6 +128,7 @@ const Navbar = () => {
             <MobileNavLink href="/">Home</MobileNavLink>
             <MobileNavLink href="/rules">Rules</MobileNavLink>
             <MobileNavLink href="/repo">Repositories</MobileNavLink>
+            <MobileNavLink href="/bot-commands">Bot Commands</MobileNavLink>
             {/* <MobileNavLink href="/announcements">Announcements</MobileNavLink> */}
             <MobileNavLink href="/resources">Resources</MobileNavLink>
             <MobileNavLink href="/team">Team</MobileNavLink>
