@@ -1,13 +1,10 @@
 'use client';
 import { useAuthStore } from '@/app/store/useAuthStore';
 import { LogOut, Menu, X } from 'lucide-react';
-import { Github } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { handleSignIn } from '../lib/utils';
-import { Button } from './ui/button';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -67,11 +64,14 @@ const Navbar = () => {
             {/* Desktop Navigation */}
             <div className="hidden flex-1 items-center justify-center md:flex">
               <div className="flex space-x-6">
+                <NavLink href="/">Home</NavLink>
+                <NavLink href="/rules">Rules</NavLink>
                 <NavLink href="/repo">Repositories</NavLink>
-                <NavLink href="/announcements">Announcements</NavLink>
+                <NavLink href="/bot-commands">Bot Commands</NavLink>
+                {/* <NavLink href="/announcements">Announcements</NavLink> */}
                 <NavLink href="/resources">Resources</NavLink>
-                <NavLink href="/team">Team</NavLink>
-                <NavLink href="/past-editions">Past Editions</NavLink>
+                {/* <NavLink href="/team">Team</NavLink> */}
+                {/* <NavLink href="/past-editions">Past Editions</NavLink> */}
               </div>
             </div>
 
@@ -126,11 +126,12 @@ const Navbar = () => {
         >
           <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
             <MobileNavLink href="/">Home</MobileNavLink>
+            <MobileNavLink href="/rules">Rules</MobileNavLink>
             <MobileNavLink href="/repo">Repositories</MobileNavLink>
-            <MobileNavLink href="/announcements">Announcements</MobileNavLink>
+            {/* <MobileNavLink href="/announcements">Announcements</MobileNavLink> */}
             <MobileNavLink href="/resources">Resources</MobileNavLink>
-            <MobileNavLink href="/team">Team</MobileNavLink>
-            <MobileNavLink href="/past-editions">Past Editions</MobileNavLink>
+            {/* <MobileNavLink href="/team">Team</MobileNavLink> */}
+            {/* <MobileNavLink href="/past-editions">Past Editions</MobileNavLink> */}
             <div className="flex md:hidden items-center">
               {user && (
                 <>
