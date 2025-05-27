@@ -1,73 +1,95 @@
-[
-  {
-    "Name": "Ashwin Narayanan S",
-    "GitHub": "Ashrockzzz2003",
-    "Tags": ["Maintainer", "Organizer"],
-    "Designation": "SWE-I Google India"
-  },
-  {
-    "Name": "E Aaditya",
-    "GitHub": "aadit-n3rdy",
-    "Tags": ["Maintainer", "Organizer"],
-    "Designation": "ACM Amrita Chair"
-  },
-  {
-    "Name": "Sanyam Bharadwaj",
-    "GitHub": "SanyamB0912",
-    "Tags": ["Organizer"],
-    "Designation": "ACM Amrita Treasurer"
-  },
-  {
-    "Name": "Vijay SB",
-    "GitHub": "vijay-sb",
-    "Tags": ["Organizer"],
-    "Designation": "Frontend Developer"
-  },
-  {
-    "Name": "Kiran Rajeev",
-    "GitHub": "KiranRajeev-KV",
-    "Tags": ["Organizer"],
-    "Designation": "Frontend Developer"
-  },
-  {
-    "Name": "Aditya Menon R",
-    "GitHub": "adithya-menon-r",
-    "Tags": ["Maintainer", "Organizer"],
-    "Designation": "Frontend Developer"
-  },
-  {
-    "Name": "Midhunann",
-    "GitHub": "midhunann",
-    "Tags": ["Organizer"],
-    "Designation": "Frontend Developer"
-  },
-  {
-    "Name": "Jayadev D",
-    "GitHub": "FLASH2332",
-    "Tags": ["Organizer"],
-    "Designation": "Frontend Developer"
-  },
-  {
-    "Name": "Leela M",
-    "GitHub": "Leela0o5",
-    "Tags": ["Maintainer", "Organizer"],
-    "Designation": "Frontend Developer"
-  },
-  {
-    "Name": "Harish GM",
-    "GitHub": "GMHarish285",
-    "Tags": ["Organizer"],
-    "Designation": "Frontend Developer"
-   {
-    "Name": "Karthik Saiharsh",
-    "GitHub": "karthik-saiharsh",
-    "Tags": ["Maintainer", "Organizer"],
-    "Designation": "Frontend Developer"
-  },
-  {
-    "Name": "Ritesh Koushik",
-    "GitHub": "IAmRiteshKoushik",
-    "Tags": ["Organizer"],
-    "Designation": "Backend Developer"
-  }
-]
+{
+  "team": [
+    {
+      "name": "E Aadithyaa",
+      "avatar": "https://avatars.githubusercontent.com/u/29801440?v=4",
+      "username": "aadit-n3rdy",
+      "tags": ["Maintainer", "Organizer"],
+      "designation": "ACM Amrita Chair"
+    },
+    {
+      "name": "Sanyam Bharadwaj",
+      "username": "SanyamB0912",
+      "avatar": "https://avatars.githubusercontent.com/u/115093596?v=4",
+      "tags": ["Organizer"],
+      "designation": "ACM Amrita Treasurer"
+    },
+    {
+      "name": "Leela M",
+      "username": "Leela0o5",
+      "avatar": "https://avatars.githubusercontent.com/u/156287943?v=4",
+      "tags": ["Maintainer", "Organizer"],
+      "designation": "ACM Amrita Vice-Chair"
+    },
+    {
+      "name": "Sarath Chandra",
+      "username": "sharathcx",
+      "avatar": "https://avatars.githubusercontent.com/u/56444323?v=4",
+      "tags": ["Organizer"],
+      "designation": "ACM Amrita Secretary"
+    },
+    {
+      "name": "Ashwin Narayanan S",
+      "avatar": "https://avatars.githubusercontent.com/u/90165751?v=4",
+      "username": "Ashrockzzz2003",
+      "tags": ["Maintainer", "Organizer"],
+      "designation": "Student Advisor"
+    },
+    {
+      "name": "Vijay SB",
+      "username": "vijay-sb",
+      "avatar": "https://avatars.githubusercontent.com/u/153985965?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Kiran Rajeev",
+      "username": "KiranRajeev-KV",
+      "avatar": "https://avatars.githubusercontent.com/u/145009677?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Aditya Menon R",
+      "username": "adithya-menon-r",
+      "avatar": "https://avatars.githubusercontent.com/u/115925529?v=4",
+      "tags": ["Maintainer", "Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Midhunann",
+      "username": "midhunann",
+      "avatar": "https://avatars.githubusercontent.com/u/147637610?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Jayadev D",
+      "username": "FLASH2332",
+      "avatar": "https://avatars.githubusercontent.com/u/148314235?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Harish GM",
+      "username": "GMHarish285",
+      "avatar": "https://avatars.githubusercontent.com/u/89217499?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Karthik Saiharsh",
+      "username": "karthik-saiharsh",
+      "avatar": "https://avatars.githubusercontent.com/u/137990475?v=4",
+      "tags": ["Maintainer", "Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Ritesh Koushik",
+      "username": "IAmRiteshKoushik",
+      "avatar": "https://avatars.githubusercontent.com/u/72215925?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    }
+  ]
+}

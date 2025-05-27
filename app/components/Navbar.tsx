@@ -70,7 +70,7 @@ const Navbar = () => {
                 <NavLink href="/bot-commands">Bot Commands</NavLink>
                 {/* <NavLink href="/announcements">Announcements</NavLink> */}
                 <NavLink href="/resources">Resources</NavLink>
-                {/* <NavLink href="/team">Team</NavLink> */}
+                <NavLink href="/team">Team</NavLink>
                 {/* <NavLink href="/past-editions">Past Editions</NavLink> */}
               </div>
             </div>
@@ -130,7 +130,7 @@ const Navbar = () => {
             <MobileNavLink href="/repo">Repositories</MobileNavLink>
             {/* <MobileNavLink href="/announcements">Announcements</MobileNavLink> */}
             <MobileNavLink href="/resources">Resources</MobileNavLink>
-            {/* <MobileNavLink href="/team">Team</MobileNavLink> */}
+            <MobileNavLink href="/team">Team</MobileNavLink>
             {/* <MobileNavLink href="/past-editions">Past Editions</MobileNavLink> */}
             <div className="flex md:hidden items-center">
               {user && (
