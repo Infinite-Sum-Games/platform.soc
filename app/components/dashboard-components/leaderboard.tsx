@@ -1,6 +1,6 @@
 'use client';
 import { ScrollArea } from '@/app/components/ui/scroll-area';
-import useLeaderboardStore from '@/app/useLeaderboardStore';
+import useLeaderboardStore from '@/app/store/useLeaderboardStore';
 import { useEffect, useState } from 'react';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa'; // Import sorting icons
 import { MdCode, MdMonetizationOn } from 'react-icons/md';
@@ -175,7 +175,7 @@ const Leaderboard = () => {
   };
 
   return (
-    <Card className="z-10 flex h-full w-full flex-col rounded-2xl border border-white/20 bg-white/35 p-4 backdrop-blur-md">
+    <Card className="z-10 flex w-full max-h-full flex-col rounded-3xl border border-white/20 bg-white/35 p-4 backdrop-blur-md">
       <CardHeader className="pb-1 font-bold text-4xl text-gray-800">
         Leaderboard
       </CardHeader>
@@ -183,10 +183,9 @@ const Leaderboard = () => {
         Refresh the page to see real-time leaderboard updates.
       </CardDescription>
 
-      <div className="flex items-center rounded-lg bg-white/20 px-4 py-2 font-medium text-gray-900 shadow-sm">
-        <div className="w-[25%] font-medium md:w-[10%]">#</div>
-        <div className="w-[60%] font-medium md:w-[50%]">Name</div>
-        <div className="hidden w-[30%] text-center md:block">
+      <div className="flex items-center rounded-xl bg-white/20 px-3 py-2 font-medium text-gray-900 shadow-sm">
+        <div className="flex-grow font-medium md:w-[50%] pl-2">Name</div>
+        <div className="w-[25%] text-center hidden md:flex justify-center">
           <button
             type="button"
             onClick={() => sortLeaderboard('PRs')}
@@ -196,11 +195,11 @@ const Leaderboard = () => {
             {getSortIcon('PRs')}
           </button>
         </div>
-        <div className="text-right">
+        <div className="w-auto md:w-[25%] flex justify-end pr-1">
           <button
             type="button"
             onClick={() => sortLeaderboard('Bounty')}
-            className="flex items-center cursor-pointer justify-end gap-1 rounded-3xl bg-amber-500/50 px-3 py-1 font-medium text-gray-900 shadow-sm transition-all duration-200 hover:bg-amber-500/70 hover:text-gray-800 hover:shadow-md"
+            className="flex items-center cursor-pointer gap-1 rounded-3xl bg-amber-500/50 px-3 py-1 font-medium text-gray-900 shadow-sm transition-all duration-200 hover:bg-amber-500/70 hover:text-gray-800 hover:shadow-md"
           >
             <MdMonetizationOn className="mr-1 text-gray-900" /> Bounty
             {getSortIcon('Bounty')}
@@ -208,7 +207,7 @@ const Leaderboard = () => {
         </div>
       </div>
 
-      <ScrollArea className="mt-2 min-h-0 flex-grow overflow-y-auto">
+      <ScrollArea className="mt-2 min-h-0 grow overflow-y-auto">
         {leaderboardData.length === 0 ? (
           <div className="py-8 text-center text-white/60 text-xl">
             Loading Leaderboard...
@@ -217,24 +216,28 @@ const Leaderboard = () => {
           leaderboardData.map((data, index) => (
             <div
               key={data.username}
-              className="my-1 flex items-center rounded-lg bg-white/10 px-3 py-2 text-gray-800 backdrop-blur-md"
+              className="my-1 flex items-center rounded-xl bg-white/10 px-3 py-2 text-gray-800 backdrop-blur-md"
             >
-              <div className="w-[10%]">{index + 1}</div>
-              <div className="flex w-[60%] items-center gap-2 md:w-[40%]">
-                <img
-                  src={`https://github.com/${data.username}.png`}
-                  alt="avatar"
-                  className="h-6 w-6 rounded-full"
-                />
+              <div className="flex flex-grow items-center gap-3 md:w-[50%]">
+                <div className="relative">
+                  <img
+                    src={`https://github.com/${data.username}.png`}
+                    alt={`${data.username}'s avatar`}
+                    className="h-8 w-8 rounded-full"
+                  />
+                  <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white ring-1 ring-white/30">
+                    {index + 1}
+                  </span>
+                </div>
                 <div>
                   <div className="font-semibold">{data.fullName}</div>
                   <div className="text-gray-600 text-sm">@{data.username}</div>
                 </div>
               </div>
-              <div className="hidden w-[25%] text-center md:block">
+              <div className="w-[25%] text-center hidden md:block">
                 {+data._count.Solution}
               </div>
-              <div className="w-[30%] pr-1 text-right font-bold md:w-[25%]">
+              <div className="w-auto text-right md:w-[25%] pr-1 font-bold md:text-right">
                 {data.bounty}
               </div>
             </div>

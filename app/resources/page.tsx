@@ -81,7 +81,7 @@ const ResourcePage = () => {
           .map(({ resource }) => resource);
 
   return (
-    <div className="relative min-h-screen overflow-y-auto">
+    <div>
       <Navbar />
       <SunGlareEffect />
       <Cloud />
@@ -96,7 +96,7 @@ const ResourcePage = () => {
         </p>
 
         {/* Filter Chips */}
-        <div className="relative z-50 mx-auto mt-4 flex max-w-3xl flex-wrap justify-center gap-2">
+        <div className="relative mx-auto mt-4 flex max-w-3xl flex-wrap justify-center gap-2">
           {allTags.map((tag) => {
             const isSelected = selectedLabels.includes(tag);
             return (
@@ -129,7 +129,7 @@ const ResourcePage = () => {
       </section>
 
       {/* Cards Section */}
-      <section className="mx-auto max-w-screen-xl px-4 pb-8 sm:px-6 md:px-8">
+      <section className="mx-auto max-w-(--breakpoint-xl) px-4 pb-8 sm:px-6 md:px-8">
         {isLoading ? (
           <div className="flex min-h-[60vh] items-center justify-center">
             <p className="text-white">Loading resources...</p>

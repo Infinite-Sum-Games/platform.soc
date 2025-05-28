@@ -39,10 +39,11 @@ function GameAchievementSystem() {
     setSelectedBadge(badge);
   };
 
-  const unlockedCount = achievements.filter((b: Badge) => b.unlocked).length;
+  // TODO: To be fixed when rolling out the trophy room
+  // const unlockedCount = achievements.filter((b: Badge) => b.unlocked).length;
+  const unlockedCount = 0;
   const totalCount = achievements.length;
-  const progressPercentage =
-    Math.round((unlockedCount / totalCount) * 100) || 0;
+  const progressPercentage = Math.round((0 / totalCount) * 100) || 0;
 
   // Get latest unlocked achievements (last 3 unlocked, sorted by date)
   const latestAchievements = achievements
@@ -103,10 +104,10 @@ function GameAchievementSystem() {
   );
 
   return (
-    <div className="h-screen lg:h-[110vh] flex flex-col sm:px-6 lg:px-0 py-8">
-      <div className="relative w-full max-w-full flex-grow overflow-y-hidden overflow-x-visible">
-        <div className="bg-white/20 backdrop-blur-2xl text-gray-900 p-3 rounded-4xl border border-white/30 h-full flex flex-col">
-          <div className="max-w-full mx-auto w-full overflow-y-auto flex-grow rounded-md">
+    <div className="h-screen flex flex-col sm:px-6 lg:px-0 py-8">
+      <div className="relative w-full max-w-full grow overflow-y-hidden overflow-x-visible">
+        <div className="bg-white/20 backdrop-blur-2xl text-gray-900 p-3 rounded-2xl border border-white/30 flex flex-col">
+          <div className="max-w-full mx-auto w-full overflow-y-auto grow rounded-md">
             {loading ? (
               <SkeletonLoader />
             ) : (
@@ -115,7 +116,7 @@ function GameAchievementSystem() {
                 <div className="mb-4 bg-white/25 backdrop-blur-2xl rounded-xl p-4 border border-white/30 divide-y divide-white/10">
                   <div className="flex flex-col items-center">
                     <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                      Developer Achievement System
+                      Trophy Room - Coming Soon!
                     </h1>
                     <p className="text-gray-700 text-sm text-center mb-3">
                       Unlock skills and advance through the tech tree by
@@ -174,24 +175,24 @@ function GameAchievementSystem() {
                 </div>
 
                 {/* Achievement Trees */}
-                {categories.map((category: Category) => {
-                  const categoryBadges = filteredBadges.filter(
-                    (b: Badge) => b.category === category.id,
-                  );
-                  if (categoryBadges.length === 0) return null;
-                  return (
-                    <div
-                      className="mx-4"
-                      key={category.id}
-                    >
-                      <AchievementTree
-                        category={category}
-                        badges={filteredBadges}
-                        onClick={handleBadgeClick}
-                      />
-                    </div>
-                  );
-                })}
+                {/* {categories.map((category: Category) => { */}
+                {/*   const categoryBadges = filteredBadges.filter( */}
+                {/*     (b: Badge) => b.category === category.id, */}
+                {/*   ); */}
+                {/*   if (categoryBadges.length === 0) return null; */}
+                {/*   return ( */}
+                {/*     <div */}
+                {/*       className="mx-4" */}
+                {/*       key={category.id} */}
+                {/*     > */}
+                {/*       <AchievementTree */}
+                {/*         category={category} */}
+                {/*         badges={filteredBadges} */}
+                {/*         onClick={handleBadgeClick} */}
+                {/*       /> */}
+                {/*     </div> */}
+                {/*   ); */}
+                {/* })} */}
               </>
             )}
           </div>

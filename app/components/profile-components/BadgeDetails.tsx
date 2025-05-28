@@ -41,7 +41,7 @@ function BadgeDetails({ badge, onClose }: BadgeDetailsProps) {
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="relative w-full max-w-sm rounded-2xl bg-white shadow-2xl border overflow-hidden mx-4">
         {/* Header */}
-        <div className={`h-28 bg-gradient-to-br ${gradient} relative`}>
+        <div className={`h-28 bg-linear-to-br ${gradient} relative`}>
           {/* Wave pattern */}
           <svg
             className="absolute inset-0 w-full h-full"
