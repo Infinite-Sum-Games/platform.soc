@@ -2,7 +2,7 @@ interface EditionCardProps {
   title: string;
   description: string;
   dateRange: string;
-  stats: string;
+  stats: string[];
   img1: string;
   img2: string;
   conclusion: string;
@@ -24,26 +24,42 @@ export default function EditionCard({
   isExpanded,
 }: EditionCardProps) {
   return (
-    <div className="bg-white/10 backdrop-blur-md border border-white/10 p-8 rounded-2xl w-full shadow-xl text-white text-left transition duration-300">
-      <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-3">
-        <div className="flex-1">
+    <div className="bg-white/10 backdrop-blur-md border border-white/10 p-8 rounded-2xl w-full shadow-xl text-white text-left transition duration-300 mb-2">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-3">
+        <div className="flex-1 items-center justify-center lg:p-4">
           <img
             src={thumbnail}
             alt={`${title} thumbnail`}
-            className="w-10/12 h-auto rounded-md shadow-md"
+            className="w-fit h-auto rounded-xl shadow-lg"
           />
         </div>
         <div className="flex-1">
-          <h2 className="text-xl md:text-2xl font-bold">{title}</h2>
-          <p className="text-blue-50 mb-3">{dateRange}</p>
-          <p className="text-blue-40 whitespace-pre-line mb-1">{stats}</p>
-          <button
-            type="button"
-            onClick={onToggle}
-            className="mt-6 px-6 py-2 bg-white text-blue-900 font-semibold rounded-full shadow hover:scale-105 transition mb-2"
-          >
-            {isExpanded ? 'Show Less' : 'Read More'}
-          </button>
+          <h2 className="text-3xl text-center md:text-2xl font-bold">
+            {title}
+          </h2>
+          <p className="text-blue-50 mb-3 text-center italic">{dateRange}</p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {stats.map((stat, index) => (
+              <span
+                key={stat.title}
+                className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium
+                     bg-white/40 text-gray-800 font-semibold
+                     shadow-sm transition-all duration-200 ease-in-out
+                     hover:scale-105 hover:bg-white/50 hover:backdrop-blur-sm hover:shadow-md"
+              >
+                {stat}
+              </span>
+            ))}
+          </div>
+          <div className="w-full flex items-center justify-center">
+            <button
+              type="button"
+              onClick={onToggle}
+              className="mt-6 px-6 py-2 bg-white text-blue-900 font-semibold rounded-full shadow hover:scale-105 transition mb-2"
+            >
+              {isExpanded ? 'Show Less' : 'Read More'}
+            </button>
+          </div>
         </div>
       </div>
 
