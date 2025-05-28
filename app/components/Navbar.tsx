@@ -63,7 +63,7 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden flex-1 items-center justify-center md:flex">
-              <div className="flex space-x-6">
+              <div className="flex space-x-4">
                 <NavLink href="/">Home</NavLink>
                 <NavLink href="/rules">Rules</NavLink>
                 <NavLink href="/repo">Repositories</NavLink>
@@ -71,7 +71,7 @@ const Navbar = () => {
                 {/* <NavLink href="/announcements">Announcements</NavLink> */}
                 <NavLink href="/resources">Resources</NavLink>
                 <NavLink href="/team">Team</NavLink>
-                {/* <NavLink href="/past-editions">Past Editions</NavLink> */}
+                <NavLink href="/past-editions">Past Editions</NavLink>
               </div>
             </div>
 
@@ -132,7 +132,7 @@ const Navbar = () => {
             {/* <MobileNavLink href="/announcements">Announcements</MobileNavLink> */}
             <MobileNavLink href="/resources">Resources</MobileNavLink>
             <MobileNavLink href="/team">Team</MobileNavLink>
-            {/* <MobileNavLink href="/past-editions">Past Editions</MobileNavLink> */}
+            <MobileNavLink href="/past-editions">Past Editions</MobileNavLink>
             <div className="flex md:hidden items-center">
               {user && (
                 <>

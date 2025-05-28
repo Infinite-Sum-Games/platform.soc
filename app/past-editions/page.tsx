@@ -9,10 +9,10 @@ const editions = [
   {
     title: 'Amrita Winter of Code, 2024',
     description:
-      'Amrita Winter of Code (AWOC), the inaugral edition held from December, 2024 to March, 2025, ' +
+      'Amrita Winter of Code (AMWOC), the inaugral edition held from December, 2024 to March, 2025, ' +
       'sets a high benchmark. This event introduced a performance-based reward system ' +
       'where contributors earned monetary rewards based on bounty points, while maintainers ' +
-      'saw real progress on their repositories.Every contributor was rewarded, and project maintainers saw meaningful progress on their repositories.' +
+      'saw real progress on their repositories.Every contributor was rewarded, and project maintainers saw meaningful progress on their repositories. ' +
       'The event was fully open-source, publicly visible, and driven by students.',
     dateRange: 'Dec, 2024 - March, 2025',
     stats: [
@@ -24,11 +24,16 @@ const editions = [
       '10 Maintainers',
     ],
     link: 'https://woc-leaderboard.vercel.app',
-    img1: '/edition1/pic1.png',
-    img2: '/edition1/pic2.png',
+    images: [
+      '/edition1/1st_prize.JPG',
+      '/edition1/2nd_prize.JPG',
+      '/edition1/3rd_prize.JPG',
+      '/edition1/question-discussion.JPG',
+      '/edition1/group-photo.JPG',
+    ],
     thumbnail: '/edition1/thumbnail.png',
     conclusion:
-      'It brought together 283 participants and distributed over 7000 open-source bounties.' +
+      'It brought together 283 participants and distributed over 7000 open-source bounties. ' +
       'This event promoted collaboration, helped students explore new technologies, and created opportunities for networking and skill development in a practical, open-source environment.',
   },
 ];
@@ -53,15 +58,17 @@ const pastEvents = () => {
         </p>
       </section>
 
-      <section className="mt-10 mx-auto space-y-10 px-4 w-9/12">
-        {editions.map((edition) => (
-          <EditionCard
-            key={edition.title}
-            {...edition}
-            isExpanded={expandedIndex === edition.title}
-            onToggle={() => toggle(edition.title)}
-          />
-        ))}
+      <section className="mt-8 space-y-10 p-4 w-full flex flex-col items-center">
+        <div className="w-full max-w-3xl px-4">
+          {editions.map((edition) => (
+            <EditionCard
+              key={edition.title}
+              {...edition}
+              isExpanded={expandedIndex === edition.title}
+              onToggle={() => toggle(edition.title)}
+            />
+          ))}
+        </div>
       </section>
     </div>
   );
