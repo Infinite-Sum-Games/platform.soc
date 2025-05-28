@@ -15,7 +15,7 @@ export interface RowcardsProps {
 const Rowcards = (props: RowcardsProps) => {
   return (
     <Card
-      className="mx-2 my-3 flex h-[3.5rem] items-center border-none bg-cover p-4 sm:h-[5.5rem]"
+      className="mx-2 my-3 flex h-14 items-center border-none bg-cover p-4 sm:h-22"
       style={{ backgroundImage: "url('cardBackground.png')" }}
     >
       <div className="flex w-full items-center">
@@ -32,7 +32,7 @@ const Rowcards = (props: RowcardsProps) => {
             className="h-10 w-10 rounded-full sm:h-14 sm:w-14"
           />
           <div className="flex flex-col items-start pl-4">
-            <p className=" max-h-10 max-w-[5rem] overflow-hidden text-ellipsis whitespace-pre text-[#f2f2f3] text-sm sm:text-base md:text-lg lg:max-w-[8rem] lg:text-lg min-1280px:max-w-[250px] min-1680px:max-w-[400px] min-800px:max-w-[5rem] min-[400px]:max-w-[10rem] min-[480px]:max-w-[16rem] min-[900px]:max-w-[7rem]">
+            <p className=" max-h-10 max-w-20 overflow-hidden text-ellipsis whitespace-pre text-[#f2f2f3] text-sm sm:text-base md:text-lg lg:max-w-32 lg:text-lg min-1280px:max-w-[250px] min-1680px:max-w-[400px] min-800px:max-w-20 min-400px:max-w-40 min-[480px]:max-w-[16rem] min-900px:max-w-28">
               {props.fullName}
             </p>
             <p className="hidden text-gray-200 text-sm md:block min-800px:text-xs min-900px:text-sm">

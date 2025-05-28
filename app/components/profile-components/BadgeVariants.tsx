@@ -57,7 +57,7 @@ export function Expanded({
       </div>
 
       <div
-        className={`relative w-full h-[240px] rounded-2xl bg-white/15 backdrop-blur-md shadow-lg border border-white/20 transition-all duration-300 group-hover:scale-105 bg-gradient-to-br ${tierStyles[tier].gradient}`}
+        className={`relative w-full h-[240px] rounded-2xl bg-white/15 backdrop-blur-md shadow-lg border border-white/20 transition-all duration-300 group-hover:scale-105 bg-linear-to-br ${tierStyles[tier].gradient}`}
       >
         <BackgroundWaves
           width={200}
@@ -95,7 +95,7 @@ export function Collapsed({ title, icon, tier }: BadgeProps) {
       </div>
 
       <div
-        className={`relative w-full h-[80px] rounded-xl bg-white/10 backdrop-blur-md shadow-lg border border-white/20 transition-all duration-300 group-hover:scale-105 bg-gradient-to-br ${tierStyles[tier].gradient}`}
+        className={`relative w-full h-[80px] rounded-xl bg-white/10 backdrop-blur-md shadow-lg border border-white/20 transition-all duration-300 group-hover:scale-105 bg-linear-to-br ${tierStyles[tier].gradient}`}
       >
         <BackgroundWaves
           width={140}
@@ -127,7 +127,7 @@ export function Locked({ title, icon, tier, progress }: BadgeProps) {
       </div>
 
       <div
-        className={`relative w-full h-[100px] rounded-xl bg-white/10 backdrop-blur-md shadow-lg border border-white/20 transition-all duration-300 group-hover:scale-105 bg-gradient-to-br ${tierStyles[tier].locked}`}
+        className={`relative w-full h-[100px] rounded-xl bg-white/10 backdrop-blur-md shadow-lg border border-white/20 transition-all duration-300 group-hover:scale-105 bg-linear-to-br ${tierStyles[tier].locked}`}
       >
         <BackgroundWaves
           width={140}

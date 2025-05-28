@@ -57,6 +57,7 @@ const pastEvents = () => {
       </section>
     </div>
   );
+
 };
 
 export default pastEvents;

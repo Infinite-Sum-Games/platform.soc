@@ -1,7 +1,7 @@
 'use client';
 
+import { useAuthStore } from '@/app/store/useAuthStore';
 import { AlertCircle, Loader2 } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import {
@@ -98,7 +98,7 @@ const BountyBar = ({
         <div className="absolute left-0 top-0 w-full h-full rounded-full bg-white/20 border border-white/30" />
         {/* Filled portion */}
         <div
-          className="absolute left-0 top-0 h-full rounded-l-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-500"
+          className="absolute left-0 top-0 h-full rounded-l-full bg-linear-to-r from-blue-500 to-purple-600 transition-all duration-500"
           style={{ width: `${percentage}%`, zIndex: 1 }}
         />
         {/* Milestone markers */}
@@ -127,8 +127,8 @@ const BountyBar = ({
 };
 
 const ProfileSkeleton = () => (
-  <div className="relative md:w-full ml-auto mr-auto min-h-[60vh] bg-gradient-to-br">
-    <div className="absolute inset-0 bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+  <div className="relative md:w-full ml-auto mr-auto min-h-[60vh] bg-linear-to-br">
+    <div className="absolute inset-0 bg-center mask-[linear-gradient(180deg,white,rgba(255,255,255,0))]" />
     <div className="relative mx-auto max-w-7xl px-4 py-8">
       <div className="relative overflow-hidden rounded-2xl bg-white/10 backdrop-blur-xl shadow-2xl animate-pulse">
         <div className="p-4 md:p-8">
@@ -184,28 +184,23 @@ const ProfileSkeleton = () => (
 );
 
 const ProfileCard = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const { data: session } = useSession();
+  const user = useAuthStore((state) => state.user);
+  const [loading, setLoading] = useState<boolean>(!user);
   const [userData, setUserData] = useState<Profile | null>(null);
 
   useEffect(() => {
-    const dummyData: Profile = {
-      name: 'Jayadev D',
-      username: 'FLASH2332',
-      rank: 7,
-      allTimeRank: 2,
-      bounty: 500,
-      pendingIssues: 2,
-    };
-
-    const timeout = setTimeout(() => {
-      setUserData(dummyData);
+    if (user) {
+      setUserData({
+        name: user.email.split('@')[0],
+        username: user.github_username,
+        rank: 1,
+        allTimeRank: 1,
+        bounty: user.bounty,
+        pendingIssues: 0,
+      });
       setLoading(false);
-      console.log('Loaded user data:', dummyData);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
-  }, []);
+    }
+  }, [user]);
 
   if (loading) return <ProfileSkeleton />;
   if (!userData) return <ErrorCard />;
@@ -213,17 +208,17 @@ const ProfileCard = () => {
   // Dummy analytics data (replace with real fetch if needed)
   const graphData = {
     prStats: {
-      opened: 15,
-      merged: 12,
-      issuesSolved: 8,
+      opened: 54,
+      merged: 22,
+      issuesSolved: 34,
     },
     contributionStats: {
-      codeContribution: 80,
-      testing: 65,
-      bugFixes: 75,
-      documentation: 50,
-      features: 60,
-      uiux: 70,
+      codeContribution: 0,
+      testing: 0,
+      bugFixes: 0,
+      documentation: 0,
+      features: 0,
+      uiux: 0,
     },
   };
   const pieData = [
@@ -261,16 +256,16 @@ const ProfileCard = () => {
   };
 
   return (
-    <div className="relative w-full min-h-[60vh] bg-gradient-to-br">
+    <div className="relative w-full min-h-[60vh] bg-linear-to-br">
       {/* Background with subtle frosted glass effect */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
-      <div className="relative mx-auto w-full max-w-[100%] px-4 sm:px-6 lg:px-8 py-8">
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center mask-[linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      <div className="relative mx-auto w-full max-w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Main Profile Card */}
         <div className="relative overflow-hidden rounded-2xl bg-white/20 backdrop-blur-2xl shadow-2xl border border-white/30">
           {/* Rank Badge */}
           <div className="absolute top-3 right-3 flex justify-center items-center">
             <div className="relative">
-              <div className="badge-futuristic w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-slate-100 via-gray-300 to-slate-200 text-gray-900 shadow-xl ring-4 ring-white/10 flex items-center justify-center text-3xl sm:text-4xl font-bold">
+              <div className="badge-futuristic w-16 h-16 sm:w-20 sm:h-20 bg-linear-to-br from-slate-100 via-gray-300 to-slate-200 text-gray-900 shadow-xl ring-4 ring-white/10 flex items-center justify-center text-3xl sm:text-4xl font-bold">
                 {userData.rank}
               </div>
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
@@ -283,7 +278,7 @@ const ProfileCard = () => {
             <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
               {/* Profile Info */}
               <div className="relative group">
-                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full ring-4 ring-white/20 p-1 bg-gradient-to-br from-blue-500 to-purple-inker transition-all duration-300 group-hover:ring-blue-500/50">
+                <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full ring-4 ring-white/20 p-1 bg-linear-to-br from-blue-500 to-purple-inker transition-all duration-300 group-hover:ring-blue-500/50">
                   <Image
                     src={`https://github.com/${userData.username}.png`}
                     alt={`${userData.username} profile`}
@@ -292,12 +287,12 @@ const ProfileCard = () => {
                     className="rounded-full transition-transform duration-300 group-hover:brightness-110"
                   />
                 </div>
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-gray-800 text-xs font-bold px-4 py-1 rounded-full shadow-lg transition-all duration-300 group-hover:shadow-blue-500/25 group-hover:shadow-xl">
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-linear-to-r from-blue-500 to-purple-600 text-gray-800 text-xs font-bold px-4 py-1 rounded-full shadow-lg transition-all duration-300 group-hover:shadow-blue-500/25 group-hover:shadow-xl">
                   Contributor
                 </div>
               </div>
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <h2 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                <h2 className="text-2xl sm:text-4xl font-bold bg-linear-to-r from-white to-blue-200 bg-clip-text text-transparent">
                   {userData.name}
                 </h2>
                 <p className="text-lg sm:text-xl text-gray-600 font-light mt-1">
@@ -365,7 +360,7 @@ const ProfileCard = () => {
                       <BountyBar
                         value={userData.bounty}
                         max={1000}
-                        width="100%"
+                        width={220}
                       />
                     </div>
                   </div>
@@ -483,11 +478,11 @@ const ActivityItem = ({
   <div
     className={`flex justify-between items-center p-3 rounded-lg transition-all duration-300 relative overflow-hidden group ${
       highlight
-        ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30'
+        ? 'bg-linear-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30'
         : 'bg-white/5 hover:bg-white/10'
     }`}
   >
-    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    <div className="absolute inset-0 bg-linear-to-r from-blue-500/0 via-blue-500/5 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     <div className="flex items-center gap-3 relative">
       <div
         className={`w-2 h-2 rounded-full transition-transform duration-300 group-hover:scale-125 ${
