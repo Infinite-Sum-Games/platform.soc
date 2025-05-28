@@ -13,7 +13,7 @@ export interface ProjectCardProps {
 const ProjectCard = (props: ProjectCardProps) => {
   return (
     <Card
-      className="border-1 bg-cover pb-4"
+      className="border bg-cover pb-4"
       style={{ backgroundImage: "url('cardBackground2.png')" }}
     >
       <div className="flex flex-col space-y-2">

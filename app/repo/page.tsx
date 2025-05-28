@@ -207,7 +207,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueFilter('all')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueFilter === 'all' && 'bg-white/50 font-medium',
           )}
         >
@@ -219,7 +219,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueFilter('claimed')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueFilter === 'claimed' && 'bg-white/50 font-medium',
           )}
         >
@@ -231,7 +231,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueFilter('unclaimed')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueFilter === 'unclaimed' && 'bg-white/50 font-medium',
           )}
         >
@@ -243,7 +243,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueFilter('completed')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueFilter === 'completed' && 'bg-white/50 font-medium',
           )}
         >
@@ -255,7 +255,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueFilter('active')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueFilter === 'active' && 'bg-white/50 font-medium',
           )}
         >
@@ -294,7 +294,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueSort('newest')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueSort === 'newest' && 'bg-white/50 font-medium',
           )}
         >
@@ -306,7 +306,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueSort('oldest')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueSort === 'oldest' && 'bg-white/50 font-medium',
           )}
         >
@@ -318,7 +318,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueSort('bounty-high')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueSort === 'bounty-high' && 'bg-white/50 font-medium',
           )}
         >
@@ -330,7 +330,7 @@ const ReposPage = () => {
         <DropdownMenuItem
           onClick={() => setIssueSort('bounty-low')}
           className={cn(
-            'cursor-pointer hover:bg-white/40 data-[highlighted]:bg-white/40',
+            'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
             issueSort === 'bounty-low' && 'bg-white/50 font-medium',
           )}
         >
@@ -345,7 +345,7 @@ const ReposPage = () => {
 
   const desktopView = (
     <div className="flex flex-col gap-6 md:flex-row h-full">
-      <div className="w-full flex-shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
+      <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
         <h2 className="mb-3 flex items-center border-b border-white/50 pb-2 font-semibold text-2xl text-gray-800 shrink-0">
           <GitBranch
             className="mr-2 h-6 w-6"
@@ -411,7 +411,7 @@ const ReposPage = () => {
 
         {selectedRepo && (
           <div className="mb-2 flex flex-wrap items-center gap-2 rounded-lg p-3 shrink-0">
-            <div className="relative max-w-md flex-grow">
+            <div className="relative max-w-md grow">
               <Search className="absolute top-2.5 left-2 h-4 w-4 text-gray-600" />
               <Input
                 placeholder="Search issues..."
@@ -732,14 +732,14 @@ const ReposPage = () => {
   );
 
   return (
-    <div className="relative flex w-full flex-col min-h-screen md:h-screen md:overflow-hidden">
+    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
       <SunGlareEffect />
       <Cloud />
 
       <div className="z-20 h-[80px] shrink-0">
         <Navbar />
       </div>
-      <div className="w-full bg-cover bg-center rounded-lg flex flex-col flex-1 md:overflow-hidden px-6 py-4 md:px-18">
+      <div className="w-11/12 mx-auto flex flex-1 flex-col py-8">
         <div className="hidden md:block md:flex-1 md:min-h-0">
           {desktopView}
         </div>

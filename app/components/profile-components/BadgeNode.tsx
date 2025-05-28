@@ -113,10 +113,10 @@ function BadgeNode({
         type="button"
         className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border-2 cursor-pointer transition-all duration-300 ${
           badge.unlocked
-            ? `bg-gradient-to-br ${tierStyles[badge.tier]} shadow-lg ${
+            ? `bg-linear-to-br ${tierStyles[badge.tier]} shadow-lg ${
                 glowEffect[badge.tier]
               }`
-            : `bg-gradient-to-br ${tierStylesLocked[badge.tier]} ${
+            : `bg-linear-to-br ${tierStylesLocked[badge.tier]} ${
                 isLocked ? 'opacity-100' : ''
               }`
         } ${hovered ? 'scale-110 z-10' : ''}`}

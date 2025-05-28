@@ -68,7 +68,6 @@ const IssueCard = (props: IssuesData) => {
                 />
               </Link>
             </CardTitle>
-
             <div className="flex flex-shrink-0 gap-2 sm:ml-4">
               <Badge
                 className={`${

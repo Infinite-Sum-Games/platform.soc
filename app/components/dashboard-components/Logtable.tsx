@@ -170,7 +170,7 @@ export default function Logtable() {
 
   return (
     <TooltipProvider>
-      <div className="flex h-[500px] w-full px-2 sm:h-full sm:px-6 lg:px-4">
+      <div className="flex h-[500px] w-full sm:h-full">
         <Card className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-white/20 bg-white/30 shadow-lg backdrop-blur-md">
           <CardHeader className="shrink-0 bg-white/10 p-4 pb-2 backdrop-blur-md">
             <div className="flex items-center justify-between">
