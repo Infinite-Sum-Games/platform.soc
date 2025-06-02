@@ -193,7 +193,7 @@ export default function RegisterPage() {
       });
 
       // TODO: Initiate GitHub OAuth
-      router.push('/');
+      router.push('/welcome-page');
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
