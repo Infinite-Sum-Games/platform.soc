@@ -7,7 +7,7 @@ import SunGlareEffect from '../components/dashboard-components/SunGlareEffect';
 import { toast } from '../components/ui/use-toast';
 import { handleSignIn } from '../lib/utils';
 
-export const WelcomePage = () => {
+export default function Page() {
   const router = useRouter();
 
   const handleGithubAuth = async () => {
@@ -113,6 +113,4 @@ export const WelcomePage = () => {
       </div>
     </>
   );
-};
-
-export default WelcomePage;
+}
