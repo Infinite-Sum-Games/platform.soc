@@ -1,6 +1,6 @@
 # Summer of Code Leaderboard
 
-This repository contains the code-base to the LIVE leaderboard for `Amrita Summar of Code`@`ACM Amrita`.
+This repository contains the code-base to the LIVE leaderboard for `Amrita Summer of Code`@`ACM Amrita`.
 
 ### Technical Stack
 - The application is written in **Next.js** on top of **TypeScript**. The framework was chosen as it happened to be the most comfortable one at the disposal of the developers at the time of writing.
