@@ -4,13 +4,13 @@ import type { Badge, Category } from './types';
 export const categories: Category[] = [
   { id: 'code', name: 'Code Mastery', icon: '🧩' },
   { id: 'bugs', name: 'Bug Hunter', icon: '🐛' },
-  { id: 'languages', name: 'Polyglot', icon: '🌐' },
+  { id: 'languages', name: 'Stack Surfer', icon: '🌐' },
   { id: 'mentor', name: 'Mentorship', icon: '🧠' },
-  { id: 'qa', name: 'Quality Assurance', icon: '🔍' },
+  { id: 'ci', name: 'Code Inspector', icon: '🔍' },
   { id: 'creative', name: 'Documentation & Ideas', icon: '💡' },
   { id: 'points', name: 'Points Progression', icon: '⭐' },
   { id: 'lang_mastery', name: 'Language Competition', icon: '🏆' },
-  { id: 'mastery', name: 'Ultimate Mastery', icon: '👑' },
+  { id: 'mastery', name: 'Streak Achievements', icon: '🔥' },
 ];
 
 export const achievementData: Badge[] = [
@@ -171,7 +171,7 @@ export const achievementData: Badge[] = [
     unlocked: true,
     tier: 'bronze',
     date: '2025-05-07',
-    category: 'qa',
+    category: 'ci',
     position: 1,
   },
   {
@@ -182,7 +182,7 @@ export const achievementData: Badge[] = [
     unlocked: true,
     tier: 'silver',
     date: '2025-05-10',
-    category: 'qa',
+    category: 'ci',
     position: 2,
     requires: [13],
   },
@@ -194,7 +194,7 @@ export const achievementData: Badge[] = [
     unlocked: false,
     tier: 'gold',
     date: '2025-05-12',
-    category: 'qa',
+    category: 'ci',
     position: 3,
     requires: [14],
   },
