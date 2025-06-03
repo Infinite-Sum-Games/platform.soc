@@ -14,12 +14,12 @@ export const categories: Category[] = [
 ];
 
 export const achievementData: Badge[] = [
-  // CODING PATH (All unlocked, including diamond)
+  // Everyday Badges - Contribution Count
   {
     id: 1,
-    title: 'Pull Request Pro',
-    description: 'Merged 1+ Pull Request.',
-    icon: '/icon_badge.png',
+    title: 'Hello, Tinkerer',
+    description: '1 Pull Request merged.',
+    icon: '/Badges/Tinkerer 2.jpg',
     unlocked: true,
     tier: 'bronze',
     date: '2025-05-10',
@@ -28,9 +28,9 @@ export const achievementData: Badge[] = [
   },
   {
     id: 2,
-    title: 'Merge Master',
-    description: 'Merged 5+ Pull Requests.',
-    icon: '/icon_badge.png',
+    title: 'Ninja Contributor',
+    description: '5 Pull Requests merged.',
+    icon: '/Badges/Ninja 1.jpg',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-12',
@@ -40,9 +40,9 @@ export const achievementData: Badge[] = [
   },
   {
     id: 3,
-    title: 'Engineer Overachiever',
-    description: 'Merged 10+ Pull Requests.',
-    icon: '/icon_badge.png',
+    title: 'Engineer Overclocked',
+    description: '10 Pull Requests merged.',
+    icon: '/Badges/Engineer OverClocked.jpeg',
     unlocked: true,
     tier: 'gold',
     date: '2025-05-14',
@@ -52,9 +52,9 @@ export const achievementData: Badge[] = [
   },
   {
     id: 4,
-    title: 'Code Crusader',
-    description: 'Merged 20 Pull Requests.',
-    icon: '/icon_badge.png',
+    title: 'Doomguy',
+    description: '20 Pull Requests merged.',
+    icon: '/Badges/DoomeGuy 2.jpg',
     unlocked: true,
     tier: 'diamond',
     date: '2025-05-15',
@@ -63,12 +63,12 @@ export const achievementData: Badge[] = [
     requires: [3],
   },
 
-  // BUG HUNTING PATH (Unlocked up to gold)
+  // Everyday Badges - Reporting Bugs
   {
     id: 5,
-    title: 'Bug Spotter',
-    description: 'Got 1 bug accepted (issue).',
-    icon: '/icon_badge.png',
+    title: 'Sanitizer',
+    description: 'Get 1 bug accepted (issue).',
+    icon: '/Badges/Sanitizer.jpeg',
     unlocked: true,
     tier: 'bronze',
     date: '2025-05-08',
@@ -77,9 +77,9 @@ export const achievementData: Badge[] = [
   },
   {
     id: 6,
-    title: 'Bug Hunter',
-    description: 'Got 5 bugs accepted (issue).',
-    icon: '/icon_badge.png',
+    title: 'Pest Control',
+    description: 'Get 5 bugs accepted (issue).',
+    icon: '/Badges/Pest Control.jpeg',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-12',
@@ -89,9 +89,9 @@ export const achievementData: Badge[] = [
   },
   {
     id: 7,
-    title: 'Bug Exterminator',
-    description: 'Got 10 bugs accepted (issue).',
-    icon: '/icon_badge.png',
+    title: 'Planet Cleanser',
+    description: 'Get 10 bugs accepted (issue).',
+    icon: '/Badges/Planet Cleanser.jpeg',
     unlocked: true,
     tier: 'gold',
     date: '2025-05-14',
@@ -100,12 +100,12 @@ export const achievementData: Badge[] = [
     requires: [6],
   },
 
-  // POLYGLOT PATH (Only silver unlocked)
+  // Everyday Badges - Different Technologies
   {
     id: 8,
     title: 'Polyglot',
-    description: 'Contributed in 3 different languages.',
-    icon: '/icon_badge.png',
+    description: 'Contribute in 3 different languages.',
+    icon: '/Badges/Polyglot 1.jpg',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-11',
@@ -114,9 +114,9 @@ export const achievementData: Badge[] = [
   },
   {
     id: 9,
-    title: 'Jack of All Trades',
-    description: 'Contributed in 5 different languages.',
-    icon: '/icon_badge.png',
+    title: 'Jack of All Stacks',
+    description: 'Contribute in 5 different languages.',
+    icon: '/Badges/Jack of all Stacks.jpg',
     unlocked: false,
     tier: 'gold',
     progress: 40,
@@ -125,12 +125,12 @@ export const achievementData: Badge[] = [
     requires: [8],
   },
 
-  // MENTORSHIP PATH (Only bronze unlocked)
+  // Everyday Badges - Discussion Help
   {
     id: 10,
     title: 'The Scholar',
     description: 'Help out 1 person with their issue solving (in group).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/Scholar.jpeg',
     unlocked: true,
     tier: 'bronze',
     date: '2025-05-09',
@@ -139,9 +139,9 @@ export const achievementData: Badge[] = [
   },
   {
     id: 11,
-    title: 'The Facilitator',
+    title: 'The Gulliver',
     description: 'Help out 3 people with issue solving (in group).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/Gulliver.jpeg',
     unlocked: false,
     tier: 'silver',
     progress: 30,
@@ -153,7 +153,7 @@ export const achievementData: Badge[] = [
     id: 12,
     title: 'The Oracle',
     description: 'Help out 5 people with issue solving (in group).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/Oracle.jpeg',
     unlocked: false,
     tier: 'gold',
     progress: 10,
@@ -162,12 +162,12 @@ export const achievementData: Badge[] = [
     requires: [11],
   },
 
-  // QUALITY ASSURANCE PATH (Unlocked up to gold)
+  // Everyday Badges - Testing Contributions
   {
     id: 13,
-    title: 'Issue Assistant',
-    description: 'Got 1 testing related PR merged.',
-    icon: '/icon_badge.png',
+    title: 'Lab Assistant',
+    description: 'Get 1 testing related PR merged.',
+    icon: '/Badges/Lab Assistant 1.jpeg',
     unlocked: true,
     tier: 'bronze',
     date: '2025-05-07',
@@ -177,8 +177,8 @@ export const achievementData: Badge[] = [
   {
     id: 14,
     title: 'Quality Assurer',
-    description: 'Got 5 testing related PRs merged.',
-    icon: '/icon_badge.png',
+    description: 'Get 5 testing related PRs merged.',
+    icon: '/Badges/Quality Assurer 1.jpeg',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-10',
@@ -188,9 +188,9 @@ export const achievementData: Badge[] = [
   },
   {
     id: 15,
-    title: 'Full-fledged Alchemist',
+    title: 'Full-Coded Alchemist',
     description: 'Contribute 10 testing related PRs.',
-    icon: '/icon_badge.png',
+    icon: '/Badges/Full-Coded Alchemist 1.jpeg',
     unlocked: false,
     tier: 'gold',
     date: '2025-05-12',
@@ -199,36 +199,45 @@ export const achievementData: Badge[] = [
     requires: [14],
   },
 
-  // CREATIVITY PATH (Only bronze unlocked)
-  {
-    id: 17,
-    title: 'Doc Shaman',
-    description: 'Get 2 documentation PRs accepted.',
-    icon: '/icon_badge.png',
-    unlocked: true,
-    tier: 'bronze',
-    date: '2025-05-06',
-    category: 'creative',
-    position: 1,
-  },
+  // Everyday Badges - Others
   {
     id: 16,
-    title: 'Highly Creative',
+    title: 'High Charity',
     description: 'Get 2 feature suggestions accepted.',
-    icon: '/icon_badge.png',
+    icon: '/Badges/High Charity.jpeg',
     unlocked: false,
     tier: 'silver',
     progress: 10,
     category: 'creative',
+    position: 1,
+  },
+  {
+    id: 17,
+    title: 'Zeppelin of Mighty Gargantuaness',
+    description: 'Get a PR marked for High-Impact.',
+    icon: '/Badges/ZOMG.jpg',
+    unlocked: false,
+    tier: 'gold',
+    progress: 0,
+    category: 'creative',
     position: 2,
   },
-
-  // POINTS PATH (All unlocked, including diamond)
   {
     id: 18,
-    title: 'Shawn',
+    title: 'Doc Champ',
+    description: 'Get 2 documentation PRs accepted.',
+    icon: '/Badges/DocChamp 1.jpg',
+    unlocked: true,
+    tier: 'bronze',
+    date: '2025-05-06',
+    category: 'creative',
+    position: 3,
+  },
+  {
+    id: 19,
+    title: 'Shaman',
     description: 'Reach 250 bounty points.',
-    icon: '/icon_badge.png',
+    icon: '/Badges/shaman 1.jpg',
     unlocked: true,
     tier: 'bronze',
     date: '2025-05-06',
@@ -236,49 +245,48 @@ export const achievementData: Badge[] = [
     position: 1,
   },
   {
-    id: 19,
-    title: 'Ricochet',
+    id: 20,
+    title: 'Henchman',
     description: 'Reach 500 bounty points.',
-    icon: '/icon_badge.png',
+    icon: '/Badges/Henchman 1.jpg',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-08',
     category: 'points',
     position: 2,
-    requires: [18],
+    requires: [19],
   },
   {
-    id: 20,
-    title: 'Firefinch',
+    id: 21,
+    title: 'Kingpin',
     description: 'Reach 750 bounty points.',
-    icon: '/icon_badge.png',
+    icon: '/Badges/King pin.jpg',
     unlocked: true,
     tier: 'gold',
     date: '2025-05-10',
     category: 'points',
     position: 3,
-    requires: [19],
-  },
-  {
-    id: 21,
-    title: 'The Scythe of Vyse',
-    description: 'Reach 1000 bounty points.',
-    icon: '/icon_badge.png',
-    unlocked: false,
-    tier: 'diamond',
-    date: '2025-05-12',
-    category: 'points',
-    position: 4,
     requires: [20],
   },
+  {
+    id: 22,
+    title: 'The Godfather',
+    description: 'Reach 1000 bounty points.',
+    icon: '/Badges/God Father 1.jpg',
+    unlocked: false,
+    tier: 'diamond',
+    progress: 0,
+    category: 'points',
+    position: 4,
+    requires: [21],
+  },
 
-  // LANGUAGE MASTERY PATHS (Mixed progress across all 5 languages)
-  // Rust (Only silver unlocked)
+  // Seasonal Badges - Rust
   {
     id: 23,
-    title: 'Crabby Coders',
+    title: 'Crabby Coder',
     description: 'Most Rust issues solved (2nd place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-05',
@@ -286,10 +294,10 @@ export const achievementData: Badge[] = [
     position: 1,
   },
   {
-    id: 22,
-    title: 'Pioneers of Maximum Efforts',
+    id: 24,
+    title: "2 Pincers n' Maximum Effort",
     description: 'Most Rust issues solved (1st place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: false,
     tier: 'gold',
     progress: 40,
@@ -297,12 +305,13 @@ export const achievementData: Badge[] = [
     position: 2,
     requires: [23],
   },
-  // Zig (Up to gold)
+
+  // Seasonal Badges - Zig
   {
-    id: 24,
-    title: "Salamander's Toboggan",
+    id: 25,
+    title: "Salamander's Totem",
     description: 'Most Zig issues solved (2nd place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-04',
@@ -310,23 +319,24 @@ export const achievementData: Badge[] = [
     position: 3,
   },
   {
-    id: 25,
-    title: "Strimlander's Spirit",
+    id: 26,
+    title: "Salamander's Spirit",
     description: 'Most Zig issues solved (1st place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: true,
     tier: 'gold',
     date: '2025-05-05',
     category: 'lang_mastery',
     position: 4,
-    requires: [24],
+    requires: [25],
   },
-  // Python (Only silver unlocked)
+
+  // Seasonal Badges - Python
   {
     id: 27,
     title: 'Basilisk Defanged',
     description: 'Most Python issues solved (2nd place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-03',
@@ -334,10 +344,10 @@ export const achievementData: Badge[] = [
     position: 5,
   },
   {
-    id: 26,
-    title: 'Mambo Montalvo',
+    id: 28,
+    title: 'Mamba Mentality',
     description: 'Most Python issues solved (1st place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: false,
     tier: 'gold',
     progress: 50,
@@ -345,12 +355,13 @@ export const achievementData: Badge[] = [
     position: 6,
     requires: [27],
   },
-  // Go (Only silver unlocked)
+
+  // Seasonal Badges - Go
   {
     id: 29,
-    title: 'Primal Suricats',
+    title: 'Primal Gopher',
     description: 'Most Go issues solved (2nd place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-03',
@@ -358,10 +369,10 @@ export const achievementData: Badge[] = [
     position: 7,
   },
   {
-    id: 28,
-    title: 'Apex Gophers',
+    id: 30,
+    title: 'Apex Gopher',
     description: 'Most Go issues solved (1st place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: false,
     tier: 'gold',
     progress: 20,
@@ -369,12 +380,13 @@ export const achievementData: Badge[] = [
     position: 8,
     requires: [29],
   },
-  // JS/TS (Up to gold)
+
+  // Seasonal Badges - JS/TS
   {
     id: 31,
-    title: 'Trop Killers',
+    title: 'Prop Driller',
     description: 'Most JS/TS issues solved (2nd place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: true,
     tier: 'silver',
     date: '2025-05-03',
@@ -382,10 +394,10 @@ export const achievementData: Badge[] = [
     position: 9,
   },
   {
-    id: 30,
-    title: 'Forge Dwellers',
+    id: 32,
+    title: 'Forge Smelter',
     description: 'Most JS/TS issues solved (1st place).',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: true,
     tier: 'gold',
     date: '2025-05-04',
@@ -394,17 +406,38 @@ export const achievementData: Badge[] = [
     requires: [31],
   },
 
-  // MASTERY PATH (None unlocked, cross-category)
+  // Streak Badges
   {
-    id: 32,
-    title: 'Weekly Warrior',
+    id: 33,
+    title: 'Lore Master',
     description: 'Make a submission accepted for each weekly challenge.',
-    icon: '/icon_badge.png',
+    icon: '/Badges/',
     unlocked: false,
     tier: 'gold',
     progress: 90,
     category: 'mastery',
     position: 1,
-    requires: [2, 5, 8],
+  },
+  {
+    id: 34,
+    title: 'Pirate of Issue-bians',
+    description: 'Contribute to 10 issues in the same language.',
+    icon: '/Badges/',
+    unlocked: false,
+    tier: 'silver',
+    progress: 0,
+    category: 'mastery',
+    position: 2,
+  },
+  {
+    id: 35,
+    title: 'Enamoured',
+    description: 'Got a PR accepted every week for a month.',
+    icon: '/Badges/',
+    unlocked: false,
+    tier: 'bronze',
+    progress: 0,
+    category: 'mastery',
+    position: 3,
   },
 ];
