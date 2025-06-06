@@ -515,17 +515,17 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                       <h3 className="text-base font-semibold text-gray-800 mb-2 text-center">
                         Issue Distribution
                       </h3>
-                      <div className="h-[240px] sm:h-[280px] w-full max-w-full">
+                      <div className="h-[180px] sm:h-[200px] w-full max-w-full">
                         <ChartContainer
                           title="Contribution Activity"
                           config={radarChartConfig}
                         >
                           <ResponsiveContainer
                             width="100%"
-                            height={400} // Increased height for a larger chart
+                            height={260}
                           >
                             <RadarChart
-                              outerRadius="85%" // Slightly increased to use the larger space
+                              outerRadius="75%" // Reduce from 95% to 75% for better fit
                               data={radarData}
                             >
                               <PolarAngleAxis
@@ -537,7 +537,6 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                                   textAnchor,
                                   index,
                                 }) => {
-                                  // Only break into two lines for side labels (index 1 and 3)
                                   const shouldSplit =
                                     payload.value === 'Features Suggested' ||
                                     payload.value === 'Bugs Reported';
@@ -550,9 +549,9 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                                       y={y}
                                       textAnchor={textAnchor}
                                       fill="#10b981"
-                                      fontSize={15}
-                                      fontWeight={600}
-                                      dy={4}
+                                      fontSize={16} // Slightly smaller font
+                                      fontWeight={700}
+                                      dy={16} // Slightly less offset
                                     >
                                       {lines.map((line: string, i: number) => (
                                         <tspan
@@ -570,18 +569,18 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                               <PolarRadiusAxis
                                 tick={false}
                                 axisLine={false}
-                                domain={[0, 100]}
+                                domain={[0, 'dataMax']}
                                 scale="linear"
                               />
 
-                              {/* Custom axis lines */}
+                              {/* Custom axis lines, match new radius */}
                               <g>
                                 {/* Vertical axis */}
                                 <line
                                   x1="50%"
-                                  y1="20%"
+                                  y1="15%"
                                   x2="50%"
-                                  y2="80%"
+                                  y2="85%"
                                   stroke="#065f46"
                                   strokeWidth="2"
                                 />
