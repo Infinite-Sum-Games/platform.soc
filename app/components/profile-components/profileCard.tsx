@@ -1,9 +1,12 @@
 'use client';
-
-import { useAuthStore } from '@/app/store/useAuthStore';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import {
+  AlertCircle,
+  Clock,
+  GitPullRequest,
+  Loader2,
+  Trophy,
+} from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import {
   Pie,
   PieChart,
@@ -15,13 +18,17 @@ import {
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../ui/chart';
 
-export interface Profile {
-  name: string;
-  username: string;
-  rank: number;
-  allTimeRank: number;
+export interface ProfileResponse {
+  message: string;
+  github_username: string;
+  first_name: string;
+  middle_name: string | null;
+  last_name: string;
   bounty: number;
-  pendingIssues: number;
+  pull_request_count: number;
+  pending_issue_count: number;
+  rank: number;
+  badges: string[];
 }
 
 const Spinner = () => (
@@ -60,67 +67,177 @@ const ErrorCard = () => (
   </div>
 );
 
-const BountyBar = ({
-  value,
-  max,
-  width = 220,
-  height = 18,
-}: {
-  value: number;
-  max: number;
-  width?: number;
-  height?: number;
-}) => {
-  const percentage = (value / max) * 100;
-  const milestones = [25, 50, 75, 100];
+const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
+  if (!value) {
+    value = 0;
+  }
+  const percentage = Math.min((value / max) * 100, 100);
+
+  const badges = [
+    {
+      id: 19,
+      title: 'Shaman',
+      icon: '/Badges/shaman 1.jpg',
+      threshold: 250,
+      position: 1,
+      color: 'from-amber-500 to-orange-600',
+    },
+    {
+      id: 20,
+      title: 'Henchman',
+      icon: '/Badges/Henchman 1.jpg',
+      threshold: 500,
+      position: 2,
+      color: 'from-slate-400 to-slate-600',
+    },
+    {
+      id: 21,
+      title: 'Kingpin',
+      icon: '/Badges/King pin.jpg',
+      threshold: 750,
+      position: 3,
+      color: 'from-yellow-400 to-yellow-600',
+    },
+    {
+      id: 22,
+      title: 'The Godfather',
+      icon: '/Badges/God Father 1.jpg',
+      threshold: 1000,
+      position: 4,
+      color: 'from-blue-500 to-purple-600',
+    },
+  ];
 
   return (
-    <div className="w-full flex flex-col gap-1 items-center">
-      <div
-        className="flex justify-between mb-1 px-1 w-full"
-        style={{ maxWidth: width }}
-      >
-        {milestones.map((milestone) => (
-          <span
-            key={milestone}
-            className="text-[12px] text-gray-600 font-medium"
-            style={{ minWidth: 32, textAlign: 'center' }}
-          >
-            {milestone}%
-          </span>
-        ))}
-      </div>
-      <div
-        className="relative flex items-center"
-        style={{ width }}
-      >
-        {/* Bar background */}
-        <div className="absolute left-0 top-0 w-full h-full rounded-full bg-white/20 border border-white/30" />
-        {/* Filled portion */}
+    <div className="flex flex-col items-center justify-center w-full">
+      <div className="relative w-full">
+        <div className="absolute top-1/2 left-0 right-0 h-3 bg-gray-300/40 rounded-full transform -translate-y-1/2 mx-16" />
         <div
-          className="absolute left-0 top-0 h-full rounded-l-full bg-linear-to-r from-blue-500 to-purple-600 transition-all duration-500"
-          style={{ width: `${percentage}%`, zIndex: 1 }}
+          className="absolute top-1/2 left-0 h-3 bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 rounded-full transform -translate-y-1/2 transition-all duration-1000 ease-out shadow-lg"
+          style={{
+            width: `calc(${Math.min(percentage, 100)}% - 128px)`,
+            marginLeft: '4rem',
+          }}
         />
-        {/* Milestone markers */}
-        {milestones.map(
-          (milestone) =>
-            milestone !== 100 && (
+        <div className="relative flex justify-between items-center px-16">
+          {badges.map((badge) => {
+            const isUnlocked = value >= badge.threshold;
+
+            return (
               <div
-                key={milestone}
-                className="absolute top-0 h-full w-0.5 bg-white/50"
-                style={{ left: `calc(${milestone}% - 1px)`, zIndex: 2 }}
-              />
-            ),
-        )}
-        {/* Value inside filled part */}
-        <span
-          className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-800 z-10"
-          style={{ textShadow: '0 1px 4px rgba(0,0,0,0.25)' }}
-        >
-          {value}
-        </span>
-        {/* Spacer for bar height */}
-        <div style={{ height, width }} />
+                key={badge.id}
+                className="flex flex-col items-center group relative"
+                style={{ flex: 1 }}
+              >
+                <div
+                  className={`
+                    relative w-20 h-20 rounded-full border-4 transition-all duration-500 flex items-center justify-center overflow-hidden
+                    ${
+                      isUnlocked
+                        ? 'border-orange-500 bg-gradient-to-br shadow-xl shadow-orange-500/30'
+                        : 'border-gray-400/50 bg-gray-200/20 shadow-lg'
+                    }
+                    hover:scale-110 transform-gpu cursor-pointer hover:shadow-2xl
+                  `}
+                  title={`${badge.title} - ${badge.threshold} points`}
+                >
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden flex items-center justify-center">
+                    <img
+                      src={badge.icon}
+                      alt={badge.title}
+                      className={`w-full h-full object-cover rounded-full transition-all duration-300 ${
+                        isUnlocked
+                          ? 'brightness-100 contrast-110'
+                          : 'brightness-50 contrast-75 grayscale'
+                      }`}
+                      onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        img.style.display = 'none';
+                        const parent = img.parentElement;
+                        if (
+                          parent &&
+                          !parent.querySelector('.fallback-badge')
+                        ) {
+                          const fallback = document.createElement('div');
+                          fallback.className = `fallback-badge w-full h-full flex items-center justify-center text-white font-bold text-2xl rounded-full bg-gradient-to-br ${
+                            badge.color
+                          } ${!isUnlocked ? 'grayscale brightness-50' : ''}`;
+                          fallback.textContent = badge.position.toString();
+                          parent.appendChild(fallback);
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {!isUnlocked && (
+                    <div className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                      <svg
+                        className="w-6 h-6 text-white/80"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <title>Lock icon</title>
+                        <path
+                          fillRule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  )}
+
+                  {isUnlocked && (
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-3 border-white flex items-center justify-center shadow-lg">
+                      <svg
+                        className="w-3 h-3 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <title>Checkmark icon</title>
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-3 text-center">
+                  <div
+                    className={`text-sm font-bold transition-colors duration-300 ${
+                      isUnlocked ? 'text-gray-800' : 'text-gray-500'
+                    }`}
+                  >
+                    {badge.title}
+                  </div>
+                  <div
+                    className={`text-xs font-medium transition-colors duration-300 ${
+                      isUnlocked ? 'text-orange-600' : 'text-gray-400'
+                    }`}
+                  >
+                    {badge.threshold} pts
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-6 text-center">
+        <div className="text-lg font-bold">
+          <span className="text-orange-600">{value.toLocaleString()}</span>
+          <span className="text-gray-600 text-base">
+            {' '}
+            / {max.toLocaleString()}
+          </span>
+        </div>
+        <div className="text-sm text-gray-700 mt-1">
+          {percentage.toFixed(1)}% • Next:{' '}
+          {badges.find((b) => value < b.threshold)?.title || 'Complete!'}
+        </div>
       </div>
     </div>
   );
@@ -183,27 +300,14 @@ const ProfileSkeleton = () => (
   </div>
 );
 
-const ProfileCard = () => {
-  const user = useAuthStore((state) => state.user);
-  const [loading, setLoading] = useState<boolean>(!user);
-  const [userData, setUserData] = useState<Profile | null>(null);
+interface ProfileProps {
+  profile: ProfileResponse | null;
+  loading: boolean;
+}
 
-  useEffect(() => {
-    if (user) {
-      setUserData({
-        name: user.email.split('@')[0],
-        username: user.github_username,
-        rank: 1,
-        allTimeRank: 1,
-        bounty: user.bounty,
-        pendingIssues: 0,
-      });
-      setLoading(false);
-    }
-  }, [user]);
-
+const ProfileCard = ({ profile, loading }: ProfileProps) => {
   if (loading) return <ProfileSkeleton />;
-  if (!userData) return <ErrorCard />;
+  if (!profile) return <ErrorCard />;
 
   // Dummy analytics data (replace with real fetch if needed)
   const graphData = {
@@ -254,7 +358,7 @@ const ProfileCard = () => {
   const radarChartConfig = {
     code: { label: 'Code Contribution' },
   };
-
+  console.log('Profile data 1: ', profile);
   return (
     <div className="relative w-full min-h-[60vh] bg-linear-to-br">
       {/* Background with subtle frosted glass effect */}
@@ -266,7 +370,7 @@ const ProfileCard = () => {
           <div className="absolute top-3 right-3 flex justify-center items-center">
             <div className="relative">
               <div className="badge-futuristic w-16 h-16 sm:w-20 sm:h-20 bg-linear-to-br from-slate-100 via-gray-300 to-slate-200 text-gray-900 shadow-xl ring-4 ring-white/10 flex items-center justify-center text-3xl sm:text-4xl font-bold">
-                {userData.rank}
+                {profile.rank !== -1 ? profile.rank : '-'}
               </div>
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
                 RANK
@@ -280,8 +384,8 @@ const ProfileCard = () => {
               <div className="relative group">
                 <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full ring-4 ring-white/20 p-1 bg-linear-to-br from-blue-500 to-purple-inker transition-all duration-300 group-hover:ring-blue-500/50">
                   <Image
-                    src={`https://github.com/${userData.username}.png`}
-                    alt={`${userData.username} profile`}
+                    src={`https://github.com/${profile.github_username}.png`}
+                    alt={`${profile.github_username} profile`}
                     width={128}
                     height={128}
                     className="rounded-full transition-transform duration-300 group-hover:brightness-110"
@@ -291,13 +395,16 @@ const ProfileCard = () => {
                   Contributor
                 </div>
               </div>
-              <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <h2 className="text-2xl sm:text-4xl font-bold bg-linear-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                  {userData.name}
+              <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-1">
+                <h2 className="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent leading-tight">
+                  {[profile.first_name, profile.middle_name, profile.last_name]
+                    .filter(Boolean)
+                    .join(' ')}
                 </h2>
-                <p className="text-lg sm:text-xl text-gray-600 font-light mt-1">
-                  @{userData.username}
-                </p>
+
+                <div className="text-lg sm:text-xl text-gray-800 font-medium">
+                  @{profile.github_username}
+                </div>
               </div>
             </div>
 
@@ -306,61 +413,47 @@ const ProfileCard = () => {
               <div className="flex-1 flex flex-col gap-4 w-full">
                 <div className="bg-white/25 backdrop-blur-2xl rounded-xl overflow-hidden shadow-lg border border-white/30 divide-y divide-white/10">
                   {/* Stats Row */}
-                  <div className="flex flex-wrap justify-between px-4 py-3 sm:px-6 sm:py-4 gap-3">
+                  <div className="flex flex-wrap justify-between px-4 py-3 sm:px-6 sm:py-4 gap-6">
+                    {/* Bounty Points */}
                     <div className="flex flex-col items-center sm:items-start">
-                      <span className="text-lg sm:text-2xl font-bold text-gray-800 flex items-center gap-2">
-                        <span
-                          role="img"
-                          aria-label="bounty"
-                        >
-                          💰
-                        </span>
-                        {userData.bounty}
+                      <span className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-gray-900">
+                        <Trophy className="w-5 h-5 text-yellow-500" />
+                        {profile.bounty}
                       </span>
-                      <span className="text-xs text-gray-600 font-medium mt-1">
+                      <span className="text-sm text-gray-700 font-medium mt-1">
                         Bounty Points
                       </span>
                     </div>
+
+                    {/* PRs */}
                     <div className="flex flex-col items-center sm:items-start">
-                      <span className="text-lg sm:text-2xl font-bold text-gray-800 flex items-center gap-2">
-                        <span
-                          role="img"
-                          aria-label="trophy"
-                        >
-                          🏆
-                        </span>
-                        {userData.allTimeRank}
+                      <span className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-gray-900">
+                        <GitPullRequest className="w-5 h-5 text-blue-500" />
+                        {profile.pull_request_count}
                       </span>
-                      <span className="text-xs text-gray-600 font-medium mt-1">
-                        All Time Best Rank
+                      <span className="text-sm text-gray-700 font-medium mt-1">
+                        PRs
                       </span>
                     </div>
+
+                    {/* Pending Issues */}
                     <div className="flex flex-col items-center sm:items-start">
-                      <span className="text-lg sm:text-2xl font-bold text-gray-800 flex items-center gap-2">
-                        <span
-                          role="img"
-                          aria-label="pending"
-                        >
-                          ⏳
-                        </span>
-                        {userData.pendingIssues}
+                      <span className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-gray-900">
+                        <Clock className="w-5 h-5 text-red-500" />
+                        {profile.pending_issue_count}
                       </span>
-                      <span className="text-xs text-gray-600 font-medium mt-1">
+                      <span className="text-sm text-gray-700 font-medium mt-1">
                         Pending Issues
                       </span>
                     </div>
                   </div>
 
-                  {/* Bounty Progress */}
-                  <div className="flex flex-col items-center justify-center px-4 py-3 sm:px-6 sm:py-4 w-full">
-                    <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                      Bounty Progress
-                    </h3>
-                    <div className="w-full max-w-xs">
-                      <BountyBar
-                        value={userData.bounty}
+                  {/* Enhanced Bounty Progress - Much Bigger */}
+                  <div className="flex flex-col items-center justify-center px-6 py-6 sm:px-8 sm:py-8 w-full">
+                    <div className="w-full max-w-4xl">
+                      <BountyProgress
+                        value={profile.bounty}
                         max={1000}
-                        width={220}
                       />
                     </div>
                   </div>
@@ -499,7 +592,6 @@ const ActivityItem = ({
   </div>
 );
 
-// Recent Activity Section
 export const RecentActivitySection = () => (
   <div className="w-full max-w-5xl mx-auto mt-10 bg-white/10 backdrop-blur-xl shadow-xl rounded-2xl p-8 border border-white/20">
     <h3 className="text-xl font-semibold text-gray-800 mb-4">
