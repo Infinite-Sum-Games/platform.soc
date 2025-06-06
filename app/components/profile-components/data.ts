@@ -13,8 +13,7 @@ export const categories: Category[] = [
   { id: 'mastery', name: 'Streak Achievements', icon: '🔥' },
 ];
 
-export const achievementData: Badge[] = [
-  // Everyday Badges - Contribution Count
+export const allBadges: Badge[] = [
   {
     id: 1,
     title: 'Hello, Tinkerer',
@@ -62,8 +61,6 @@ export const achievementData: Badge[] = [
     position: 4,
     requires: [3],
   },
-
-  // Everyday Badges - Reporting Bugs
   {
     id: 5,
     title: 'Sanitizer',
@@ -99,8 +96,6 @@ export const achievementData: Badge[] = [
     position: 3,
     requires: [6],
   },
-
-  // Everyday Badges - Different Technologies
   {
     id: 8,
     title: 'Polyglot',
@@ -124,8 +119,6 @@ export const achievementData: Badge[] = [
     position: 2,
     requires: [8],
   },
-
-  // Everyday Badges - Discussion Help
   {
     id: 10,
     title: 'The Scholar',
@@ -161,8 +154,6 @@ export const achievementData: Badge[] = [
     position: 3,
     requires: [11],
   },
-
-  // Everyday Badges - Testing Contributions
   {
     id: 13,
     title: 'Lab Assistant',
@@ -198,8 +189,6 @@ export const achievementData: Badge[] = [
     position: 3,
     requires: [14],
   },
-
-  // Everyday Badges - Others
   {
     id: 16,
     title: 'High Charity',
@@ -213,7 +202,7 @@ export const achievementData: Badge[] = [
   },
   {
     id: 17,
-    title: 'Zeppelin of Mighty Gargantuaness',
+    title: 'Zeppelin of Mighty Gargantuaness (ZOMG)',
     description: 'Get a PR marked for High-Impact.',
     icon: '/Badges/ZOMG.jpg',
     unlocked: false,
@@ -235,191 +224,6 @@ export const achievementData: Badge[] = [
   },
   {
     id: 19,
-    title: 'Shaman',
-    description: 'Reach 250 bounty points.',
-    icon: '/Badges/shaman 1.jpg',
-    unlocked: true,
-    tier: 'bronze',
-    date: '2025-05-06',
-    category: 'points',
-    position: 1,
-  },
-  {
-    id: 20,
-    title: 'Henchman',
-    description: 'Reach 500 bounty points.',
-    icon: '/Badges/Henchman 1.jpg',
-    unlocked: true,
-    tier: 'silver',
-    date: '2025-05-08',
-    category: 'points',
-    position: 2,
-    requires: [19],
-  },
-  {
-    id: 21,
-    title: 'Kingpin',
-    description: 'Reach 750 bounty points.',
-    icon: '/Badges/King pin.jpg',
-    unlocked: true,
-    tier: 'gold',
-    date: '2025-05-10',
-    category: 'points',
-    position: 3,
-    requires: [20],
-  },
-  {
-    id: 22,
-    title: 'The Godfather',
-    description: 'Reach 1000 bounty points.',
-    icon: '/Badges/God Father 1.jpg',
-    unlocked: false,
-    tier: 'diamond',
-    progress: 0,
-    category: 'points',
-    position: 4,
-    requires: [21],
-  },
-
-  // Seasonal Badges - Rust
-  {
-    id: 23,
-    title: 'Crabby Coder',
-    description: 'Most Rust issues solved (2nd place).',
-    icon: '/Badges/',
-    unlocked: true,
-    tier: 'silver',
-    date: '2025-05-05',
-    category: 'lang_mastery',
-    position: 1,
-  },
-  {
-    id: 24,
-    title: "2 Pincers n' Maximum Effort",
-    description: 'Most Rust issues solved (1st place).',
-    icon: '/Badges/',
-    unlocked: false,
-    tier: 'gold',
-    progress: 40,
-    category: 'lang_mastery',
-    position: 2,
-    requires: [23],
-  },
-
-  // Seasonal Badges - Zig
-  {
-    id: 25,
-    title: "Salamander's Totem",
-    description: 'Most Zig issues solved (2nd place).',
-    icon: '/Badges/',
-    unlocked: true,
-    tier: 'silver',
-    date: '2025-05-04',
-    category: 'lang_mastery',
-    position: 3,
-  },
-  {
-    id: 26,
-    title: "Salamander's Spirit",
-    description: 'Most Zig issues solved (1st place).',
-    icon: '/Badges/',
-    unlocked: true,
-    tier: 'gold',
-    date: '2025-05-05',
-    category: 'lang_mastery',
-    position: 4,
-    requires: [25],
-  },
-
-  // Seasonal Badges - Python
-  {
-    id: 27,
-    title: 'Basilisk Defanged',
-    description: 'Most Python issues solved (2nd place).',
-    icon: '/Badges/',
-    unlocked: true,
-    tier: 'silver',
-    date: '2025-05-03',
-    category: 'lang_mastery',
-    position: 5,
-  },
-  {
-    id: 28,
-    title: 'Mamba Mentality',
-    description: 'Most Python issues solved (1st place).',
-    icon: '/Badges/',
-    unlocked: false,
-    tier: 'gold',
-    progress: 50,
-    category: 'lang_mastery',
-    position: 6,
-    requires: [27],
-  },
-
-  // Seasonal Badges - Go
-  {
-    id: 29,
-    title: 'Primal Gopher',
-    description: 'Most Go issues solved (2nd place).',
-    icon: '/Badges/',
-    unlocked: true,
-    tier: 'silver',
-    date: '2025-05-03',
-    category: 'lang_mastery',
-    position: 7,
-  },
-  {
-    id: 30,
-    title: 'Apex Gopher',
-    description: 'Most Go issues solved (1st place).',
-    icon: '/Badges/',
-    unlocked: false,
-    tier: 'gold',
-    progress: 20,
-    category: 'lang_mastery',
-    position: 8,
-    requires: [29],
-  },
-
-  // Seasonal Badges - JS/TS
-  {
-    id: 31,
-    title: 'Prop Driller',
-    description: 'Most JS/TS issues solved (2nd place).',
-    icon: '/Badges/',
-    unlocked: true,
-    tier: 'silver',
-    date: '2025-05-03',
-    category: 'lang_mastery',
-    position: 9,
-  },
-  {
-    id: 32,
-    title: 'Forge Smelter',
-    description: 'Most JS/TS issues solved (1st place).',
-    icon: '/Badges/',
-    unlocked: true,
-    tier: 'gold',
-    date: '2025-05-04',
-    category: 'lang_mastery',
-    position: 10,
-    requires: [31],
-  },
-
-  // Streak Badges
-  {
-    id: 33,
-    title: 'Lore Master',
-    description: 'Make a submission accepted for each weekly challenge.',
-    icon: '/Badges/',
-    unlocked: false,
-    tier: 'gold',
-    progress: 90,
-    category: 'mastery',
-    position: 1,
-  },
-  {
-    id: 34,
     title: 'Pirate of Issue-bians',
     description: 'Contribute to 10 issues in the same language.',
     icon: '/Badges/',
@@ -430,7 +234,7 @@ export const achievementData: Badge[] = [
     position: 2,
   },
   {
-    id: 35,
+    id: 20,
     title: 'Enamoured',
     description: 'Got a PR accepted every week for a month.',
     icon: '/Badges/',
@@ -441,3 +245,11 @@ export const achievementData: Badge[] = [
     position: 3,
   },
 ];
+
+export const badgeMap: Record<string, Badge> = allBadges.reduce(
+  (acc, badge) => {
+    acc[badge.title] = badge;
+    return acc;
+  },
+  {} as Record<string, Badge>,
+);
