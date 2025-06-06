@@ -15,11 +15,6 @@ const ProfilePage = () => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const [profile, setProfile] = useState<ProfileResponse | null>(null);
-  if (!user?.access_token) {
-    router.push('/');
-    return;
-  }
-
   const [loading, setLoading] = useState<boolean>(!user);
 
   useEffect(() => {
