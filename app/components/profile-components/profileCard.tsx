@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import {
+  Cell,
   Pie,
   PieChart,
   PolarAngleAxis,
@@ -315,46 +316,30 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
     prStats: {
       opened: 54,
       merged: 22,
-      issuesSolved: 34,
     },
-    contributionStats: {
-      codeContribution: 0,
-      testing: 0,
-      bugFixes: 0,
-      documentation: 0,
-      features: 0,
-      uiux: 0,
+    issueStats: {
+      docs: 75,
+      bugs: 50,
+      features: 30,
+      highImpact: 20,
     },
   };
-  const pieData = [
-    { name: 'PRs Opened', value: graphData.prStats.opened, fill: '#f0b073' },
-    { name: 'PRs Merged', value: graphData.prStats.merged, fill: '#eeea97' },
-    {
-      name: 'Issues Solved',
-      value: graphData.prStats.issuesSolved,
-      fill: '#9cd0e4',
-    },
-  ];
-  const radarData = [
-    {
-      attribute: 'Code Contribution',
-      value: graphData.contributionStats.codeContribution,
-    },
-    { attribute: 'Testing', value: graphData.contributionStats.testing },
-    { attribute: 'Bugs Fixes', value: graphData.contributionStats.bugFixes },
-    {
-      attribute: 'Documentation',
-      value: graphData.contributionStats.documentation,
-    },
-    { attribute: 'Features', value: graphData.contributionStats.features },
-    { attribute: 'UI/UX', value: graphData.contributionStats.uiux },
+  const radialData = [
+    { name: 'PRs Open', value: graphData.prStats.opened, fill: '#10b981' },
+    { name: 'PRs Merged', value: graphData.prStats.merged, fill: '#065f46' },
   ];
 
+  const radarData = [
+    { attribute: 'Tests Contributed', value: graphData.issueStats.highImpact },
+    { attribute: 'Bugs Reported', value: graphData.issueStats.bugs },
+    { attribute: 'Docs Contributed', value: graphData.issueStats.docs },
+    { attribute: 'Features Suggested', value: graphData.issueStats.features },
+  ];
   // Chart configurations for ChartContainer
-  const pieChartConfig = {
+
+  const radialChartConfig = {
     opened: { label: 'PRs Opened' },
-    merged: { label: 'PRs Merged' },
-    solved: { label: 'Issues Solved' },
+    closed: { label: 'PRs Closed' },
   };
   const radarChartConfig = {
     code: { label: 'Code Contribution' },
@@ -469,7 +454,7 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                       </h3>
                       <div className="h-[160px] sm:h-[180px] w-full max-w-full">
                         <ChartContainer
-                          config={pieChartConfig}
+                          config={radialChartConfig}
                           className="h-full w-full"
                         >
                           <ResponsiveContainer
@@ -479,30 +464,41 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                             <PieChart>
                               <ChartTooltip content={<ChartTooltipContent />} />
                               <Pie
-                                data={pieData}
+                                data={radialData}
                                 dataKey="value"
                                 nameKey="name"
                                 cx="50%"
-                                cy="50%"
-                                outerRadius={60}
+                                cy="65%" // Push the center down to create semi-circle
+                                startAngle={180} // Start at 180 degrees (left side)
+                                endAngle={0} // End at 0 degrees (right side)
+                                innerRadius={60}
+                                outerRadius={80}
+                                paddingAngle={2}
                                 label={false}
-                              />
+                              >
+                                {radialData.map((entry, index) => (
+                                  <Cell
+                                    key={entry.name || entry.fill}
+                                    fill={entry.fill}
+                                  />
+                                ))}
+                              </Pie>
                             </PieChart>
                           </ResponsiveContainer>
                         </ChartContainer>
                       </div>
-                      <div className="flex flex-wrap justify-center gap-2 mt-2">
-                        {pieData.map((entry) => (
+                      <div className="flex justify-center gap-4 mt-2">
+                        {radialData.map((entry) => (
                           <div
                             key={entry.name}
                             className="flex items-center gap-1"
                           >
                             <div
-                              className="w-2 h-2 rounded-full"
+                              className="w-3 h-3 rounded-full"
                               style={{ backgroundColor: entry.fill }}
                             />
-                            <span className="text-xs text-gray-800 font-bold">
-                              {entry.name}
+                            <span className="text-md text-gray-800 font-bold">
+                              {entry.name}: {entry.value}
                             </span>
                           </div>
                         ))}
@@ -529,11 +525,41 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                             >
                               <PolarAngleAxis
                                 dataKey="attribute"
-                                tick={{
-                                  fill: '#10b981',
-                                  fontSize: 15,
-                                  fontWeight: 600,
-                                  dy: 4,
+                                tick={({
+                                  payload,
+                                  x,
+                                  y,
+                                  textAnchor,
+                                  index,
+                                }) => {
+                                  // Only break into two lines for side labels (index 1 and 3)
+                                  const shouldSplit =
+                                    payload.value === 'Features Suggested' ||
+                                    payload.value === 'Bugs Reported';
+                                  const lines = shouldSplit
+                                    ? payload.value.split(' ')
+                                    : [payload.value];
+                                  return (
+                                    <text
+                                      x={x}
+                                      y={y}
+                                      textAnchor={textAnchor}
+                                      fill="#10b981"
+                                      fontSize={15}
+                                      fontWeight={600}
+                                      dy={4}
+                                    >
+                                      {lines.map((line: string, i: number) => (
+                                        <tspan
+                                          x={x}
+                                          dy={i === 0 ? 0 : 18}
+                                          key={line}
+                                        >
+                                          {line}
+                                        </tspan>
+                                      ))}
+                                    </text>
+                                  );
                                 }}
                               />
                               <PolarRadiusAxis
