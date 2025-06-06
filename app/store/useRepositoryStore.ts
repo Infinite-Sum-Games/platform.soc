@@ -1,3 +1,6 @@
+import { create } from 'zustand';
+import { make_api_call } from '../lib/api';
+
 export interface IssuesData {
   id: string;
   title: string;
@@ -34,6 +37,121 @@ export interface ReposData {
   IssueCompletionTimeSeriesData: TimeSeriesDataPoint[];
   Issues: IssuesData[];
 }
+
+export interface ReposDataAPI {
+  id: string;
+  name: string;
+  maintainers: string[];
+  tags: string[];
+  url: string;
+  description: string;
+}
+
+export interface IssueDataAPI {
+  issue_id: string;
+  title: string;
+  issue_url: string;
+  claimants?: Array<{ username: string }>;
+}
+
+interface RepositoryState {
+  repos: ReposData[];
+  setRepos: (repos: ReposData[]) => void;
+  fetchAllReposAndIssues: () => Promise<void>;
+}
+
+export const useRepositoryStore = create<RepositoryState>((set, get) => ({
+  repos: [],
+
+  setRepos: (newRepos: ReposData[]) => set({ repos: newRepos }),
+
+  fetchAllReposAndIssues: async () => {
+    const {
+      success: reposSuccess,
+      data: reposData,
+      error: reposError,
+    } = await make_api_call<{
+      message: string;
+      projects: ReposDataAPI[];
+    }>({
+      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/projects`,
+    });
+
+    if (!reposSuccess || !reposData) {
+      console.error('Failed to fetch repos:', reposError);
+      return;
+    }
+
+    const fetchedRepos: ReposData[] = reposData.projects.map(
+      (project: ReposDataAPI) => ({
+        ...project,
+        maintainerUsernames: project.maintainers,
+        tech: project.tags,
+        openIssues: 0,
+        completedIssues: 0,
+        openCount: 0,
+        completedCount: 0,
+        multiplierActive: false,
+        PROpenTimeSeriesData: [],
+        IssueCompletionTimeSeriesData: [],
+        Issues: [],
+      }),
+    );
+
+    const issueFetchPromises = fetchedRepos.map(async (repo) => {
+      const {
+        success: issuesSuccess,
+        data: issuesData,
+        error: issuesError,
+      } = await make_api_call<{
+        message: string;
+        issues: IssueDataAPI[];
+      }>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/issues/${repo.id}`,
+      });
+
+      if (!issuesSuccess || !issuesData) {
+        console.error(`Failed to fetch issues for ${repo.id}:`, issuesError);
+        return { repoId: repo.id, issues: [], openCount: 0, completedCount: 0 };
+      }
+
+      const issues: IssuesData[] = (issuesData.issues || []).map(
+        (issue: IssueDataAPI) => ({
+          id: issue.issue_id,
+          title: issue.title,
+          url: issue.issue_url,
+          language: [],
+          bounty: 0,
+          difficulty: '',
+          isClaimed: (issue.claimants && issue.claimants.length > 0) || false,
+          claimedByList:
+            issue.claimants?.map((c: { username: string }) => c.username) || [],
+          multiplierActive: false,
+          multiplierValue: null,
+          completionStatus: false,
+          PRsActive: 0,
+        }),
+      );
+
+      return { repoId: repo.id, issues };
+    });
+
+    const results = await Promise.all(issueFetchPromises);
+
+    const finalRepos = fetchedRepos.map((repo) => {
+      const result = results.find((r) => r.repoId === repo.id);
+      if (result) {
+        return {
+          ...repo,
+          Issues: result.issues,
+        };
+      }
+      return repo;
+    });
+
+    set({ repos: finalRepos });
+  },
+}));
 
 // temp repository data for testing
 export const tempRepos: ReposData[] = [
@@ -245,15 +363,3 @@ export const tempRepos: ReposData[] = [
     ],
   },
 ];
-
-import { create } from 'zustand';
-
-interface RepositoryState {
-  repos: ReposData[];
-  setRepos: (repos: ReposData[]) => void;
-}
-
-export const useRepositoryStore = create<RepositoryState>((set) => ({
-  repos: [],
-  setRepos: (newRepos) => set({ repos: newRepos }),
-}));

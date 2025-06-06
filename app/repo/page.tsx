@@ -1,7 +1,6 @@
 'use client';
 import {
   type IssuesData,
-  tempRepos,
   useRepositoryStore,
 } from '@/app/store/useRepositoryStore';
 import { cn } from '@/lib/utils';
@@ -15,7 +14,7 @@ import {
   X,
   XCircle,
 } from 'lucide-react';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Cloud from '../components/dashboard-components/Cloud';
 import SunGlareEffect from '../components/dashboard-components/SunGlareEffect';
@@ -43,8 +42,7 @@ type IssueFilterType = 'all' | 'claimed' | 'unclaimed' | 'completed' | 'active';
 type IssueSortType = 'newest' | 'oldest' | 'bounty-high' | 'bounty-low';
 
 const ReposPage = () => {
-  const setRepositories = useRepositoryStore((state) => state.setRepos);
-  const repositories = useRepositoryStore((state) => state.repos);
+  const { repos: repositories, fetchAllReposAndIssues } = useRepositoryStore();
   const [selectedRepoId, setSelectedRepoId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'repositories' | 'issues'>(
     'repositories',
@@ -54,8 +52,8 @@ const ReposPage = () => {
   const [issueSort, setIssueSort] = useState<IssueSortType>('newest');
 
   useEffect(() => {
-    setRepositories(tempRepos);
-  }, [setRepositories]);
+    fetchAllReposAndIssues();
+  }, [fetchAllReposAndIssues]);
 
   const selectedRepo = repositories.find((repo) => repo.id === selectedRepoId);
 
@@ -344,7 +342,7 @@ const ReposPage = () => {
   );
 
   const desktopView = (
-    <div className="flex flex-col gap-6 md:flex-row h-full">
+    <div className="flex flex-col gap-6 md:flex-row h-[calc(100vh-105px)]">
       <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
         <h2 className="mb-3 flex items-center border-b border-white/50 pb-2 font-semibold text-2xl text-gray-800 shrink-0">
           <GitBranch
@@ -739,7 +737,7 @@ const ReposPage = () => {
       <div className="z-20 h-[80px] shrink-0">
         <Navbar />
       </div>
-      <div className="w-11/12 mx-auto flex flex-1 flex-col py-8">
+      <div className="w-11/12 mx-auto flex flex-1 flex-col pt-4">
         <div className="hidden md:block md:flex-1 md:min-h-0">
           {desktopView}
         </div>
