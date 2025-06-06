@@ -2,32 +2,45 @@
 import { useEffect, useState } from 'react';
 import AchievementTree from './AchivementTree';
 import BadgeDetails from './BadgeDetails';
-import { categories } from './data';
-import { achievementData } from './data';
+import { badgeMap, categories } from './data';
 import type { Badge, Category } from './types';
 
-function GameAchievementSystem() {
+interface GameAchievementSystemProps {
+  badges: string[] | undefined;
+}
+
+function GameAchievementSystem({ badges }: GameAchievementSystemProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
   const [filter, setFilter] = useState<'all' | 'unlocked' | 'locked'>('all');
   const [achievements, setAchievements] = useState<Badge[]>([]);
 
-  // Simulate data loading
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Simulate a network request delay
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setAchievements(achievementData);
-      } catch (error) {
-        console.error('Error loading achievement data:', error);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        const unlockedBadgeObjects: Badge[] = (badges || [])
+          .map((title) => badgeMap[title])
+          .filter(Boolean)
+          .map((badge) => ({ ...badge, unlocked: true }));
+
+        const unlockedIds = new Set(unlockedBadgeObjects.map((b) => b.id));
+
+        const lockedBadgeObjects: Badge[] = Object.values(badgeMap)
+          .filter((badge) => !unlockedIds.has(badge.id))
+          .map((badge) => ({ ...badge, unlocked: false }));
+
+        setAchievements([...unlockedBadgeObjects, ...lockedBadgeObjects]);
+      } catch (err) {
+        console.error('Error processing badges:', err);
       } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, []);
+  }, [badges]);
 
   const filteredBadges = achievements.filter((badge: Badge) => {
     if (filter === 'unlocked') return badge.unlocked;
@@ -41,9 +54,10 @@ function GameAchievementSystem() {
 
   // TODO: To be fixed when rolling out the trophy room
   // const unlockedCount = achievements.filter((b: Badge) => b.unlocked).length;
-  const unlockedCount = 0;
+  const unlockedCount = achievements.filter((b) => b.unlocked).length;
   const totalCount = achievements.length;
-  const progressPercentage = Math.round((0 / totalCount) * 100) || 0;
+  const progressPercentage =
+    totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0;
 
   // Get latest unlocked achievements (last 3 unlocked, sorted by date)
   const latestAchievements = achievements
