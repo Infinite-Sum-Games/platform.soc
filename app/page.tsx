@@ -1,5 +1,6 @@
 'use client';
 import Leaderboard from './components/dashboard-components/leaderboard';
+
 import './globals.css';
 import {
   Tabs,
@@ -109,7 +110,6 @@ const Dashboard = () => {
               <TabsTrigger
                 value="live-activity"
                 className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-800 data-[state=active]:bg-white data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
-                disabled={true}
               >
                 Live Activity (Coming Soon)
               </TabsTrigger>

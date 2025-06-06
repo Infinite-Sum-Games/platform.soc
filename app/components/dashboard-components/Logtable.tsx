@@ -33,51 +33,6 @@ interface LogEntry {
   avatar?: string;
 }
 
-const logs: LogEntry[] = [
-  {
-    id: '1',
-    type: 'top3',
-    user: 'vijay-sb',
-    timestamp: '2025-04-05T14:32:00Z',
-    description: 'Alice just grabbed the #1 spot!',
-  },
-  {
-    id: '2',
-    type: 'bounty',
-    user: 'KiranRajeev-KV',
-    timestamp: '2025-03-05T13:00:00Z',
-    description: 'Bob received a 100 point bounty reward.',
-  },
-  {
-    id: '3',
-    type: 'issue',
-    user: 'vijay-sb',
-    timestamp: '2025-05-04T12:45:00Z',
-    description: 'New issue "Optimize sorting algorithm" was created.',
-  },
-  {
-    id: '4',
-    type: 'bounty',
-    user: 'KiranRajeev-KV',
-    timestamp: '2025-03-05T13:00:00Z',
-    description: 'Bob received a 100 point bounty reward.',
-  },
-  {
-    id: '5',
-    type: 'issue',
-    user: 'vijay-sb',
-    timestamp: '2025-05-04T12:45:00Z',
-    description: 'New issue "Optimize sorting algorithm" was created.',
-  },
-  {
-    id: '6',
-    type: 'issue',
-    user: 'adithya-menon-r',
-    timestamp: '2025-05-15T01:00:00Z',
-    description: 'New issue "Fix responsiveness" was created.',
-  },
-];
-
 const typeMeta: Record<
   LogType,
   {
@@ -137,9 +92,10 @@ const getTimeAgo = (isoDate: string) => {
 export default function Logtable() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeTab, setActiveTab] = useState('all');
-  const [filteredLogs, setFilteredLogs] = useState(logs);
+  const [filteredLogs, setFilteredLogs] = useState([]);
   const [newActivity, setNewActivity] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  const [fetchedlogs, setfetchedLogs] = useState([]);
 
   useEffect(() => {
     setHasMounted(true);
@@ -161,12 +117,42 @@ export default function Logtable() {
   }, []); //shows when a new activity is detected currently set for a few seconds interva;
 
   useEffect(() => {
+    const fetchLogs = async () => {
+      try {
+        const res = await fetch('http://localhost:9000/api/v1/updates/latest');
+        const data = await res.json();
+
+        if (res.ok) {
+          const transformed = data.updates.map((log) => ({
+            id: log.time,
+            user: log.github_username,
+            description: log.message,
+            // normalize: "Top-3" → "top3"
+            type: log.event_type.toLowerCase().replace(/-/g, ''),
+            timestamp: new Date(log.time).toISOString(),
+          }));
+
+          setfetchedLogs(transformed);
+          setFilteredLogs(transformed);
+          console.log('Transformed logs:', transformed);
+        } else {
+          console.error('Fetch error:', data.message);
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+      }
+    };
+
+    fetchLogs();
+  }, []);
+
+  useEffect(() => {
     if (activeTab === 'all') {
-      setFilteredLogs(logs);
+      setFilteredLogs(fetchedlogs);
     } else {
-      setFilteredLogs(logs.filter((log) => log.type === activeTab));
+      setFilteredLogs(fetchedlogs.filter((log) => log.type === activeTab));
     }
-  }, [activeTab]); // Filters
+  }, [activeTab, fetchedlogs]); // Filters
 
   return (
     <TooltipProvider>
@@ -357,7 +343,7 @@ export default function Logtable() {
 
           <CardFooter className="flex shrink-0 items-center justify-between border-white/20 border-t bg-white/10 p-3 backdrop-blur-md">
             <div className="max-w-[180px] truncate text-gray-700 text-xs sm:max-w-full">
-              Live updates • Last activity: {getTimeAgo(logs[0].timestamp)}
+              Live updates • Last activity: {getTimeAgo(fetchedlogs.timestamp)}
             </div>
           </CardFooter>
         </Card>
