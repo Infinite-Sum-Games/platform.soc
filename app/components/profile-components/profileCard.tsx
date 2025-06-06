@@ -28,8 +28,13 @@ export interface ProfileResponse {
   last_name: string;
   bounty: number;
   pull_request_count: number;
+  pull_request_merged: number;
   pending_issue_count: number;
   rank: number;
+  documentation_count: number;
+  bug_reported_count: number;
+  feature_count: number;
+  tests_count: number;
   badges: string[];
 }
 
@@ -310,18 +315,18 @@ interface ProfileProps {
 const ProfileCard = ({ profile, loading }: ProfileProps) => {
   if (loading) return <ProfileSkeleton />;
   if (!profile) return <ErrorCard />;
-
+  console.log('profile: ', profile);
   // Dummy analytics data (replace with real fetch if needed)
   const graphData = {
     prStats: {
-      opened: 54,
-      merged: 22,
+      opened: profile.pull_request_count,
+      merged: profile.pull_request_merged,
     },
     issueStats: {
-      docs: 75,
-      bugs: 50,
-      features: 30,
-      highImpact: 20,
+      docs: profile.documentation_count,
+      bugs: profile.bug_reported_count,
+      features: profile.feature_count,
+      highImpact: profile.tests_count,
     },
   };
   const radialData = [
@@ -510,17 +515,17 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                       <h3 className="text-base font-semibold text-gray-800 mb-2 text-center">
                         Issue Distribution
                       </h3>
-                      <div className="h-[180px] sm:h-[200px] w-full max-w-full">
+                      <div className="h-[240px] sm:h-[280px] w-full max-w-full">
                         <ChartContainer
                           title="Contribution Activity"
                           config={radarChartConfig}
                         >
                           <ResponsiveContainer
                             width="100%"
-                            height={300}
+                            height={400} // Increased height for a larger chart
                           >
                             <RadarChart
-                              outerRadius="80%"
+                              outerRadius="85%" // Slightly increased to use the larger space
                               data={radarData}
                             >
                               <PolarAngleAxis
