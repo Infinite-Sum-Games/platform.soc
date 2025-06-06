@@ -214,14 +214,14 @@ const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
                 <div className="mt-3 text-center">
                   <div
                     className={`text-sm font-bold transition-colors duration-300 ${
-                      isUnlocked ? 'text-gray-800' : 'text-gray-500'
+                      isUnlocked ? 'text-gray-800' : 'text-gray-600'
                     }`}
                   >
                     {badge.title}
                   </div>
                   <div
                     className={`text-xs font-medium transition-colors duration-300 ${
-                      isUnlocked ? 'text-orange-600' : 'text-gray-400'
+                      isUnlocked ? 'text-orange-600' : 'text-gray-600'
                     }`}
                   >
                     {badge.threshold} pts
@@ -315,7 +315,6 @@ interface ProfileProps {
 const ProfileCard = ({ profile, loading }: ProfileProps) => {
   if (loading) return <ProfileSkeleton />;
   if (!profile) return <ErrorCard />;
-  console.log('profile: ', profile);
   // Dummy analytics data (replace with real fetch if needed)
   const graphData = {
     prStats: {

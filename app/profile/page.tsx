@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Cloud from '../components/dashboard-components/Cloud';
@@ -11,8 +12,13 @@ import { make_api_call } from '../lib/api';
 import { useAuthStore } from '../store/useAuthStore';
 
 const ProfilePage = () => {
+  const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const [profile, setProfile] = useState<ProfileResponse | null>(null);
+  if (!user?.access_token) {
+    router.push('/');
+    return;
+  }
 
   const [loading, setLoading] = useState<boolean>(!user);
 
