@@ -12,6 +12,7 @@ import {
   PieChart,
   PolarAngleAxis,
   PolarGrid,
+  PolarRadiusAxis,
   Radar,
   RadarChart,
   ResponsiveContainer,
@@ -358,7 +359,6 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
   const radarChartConfig = {
     code: { label: 'Code Contribution' },
   };
-  console.log('Profile data 1: ', profile);
   return (
     <div className="relative w-full min-h-[60vh] bg-linear-to-br">
       {/* Background with subtle frosted glass effect */}
@@ -516,32 +516,73 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                       </h3>
                       <div className="h-[180px] sm:h-[200px] w-full max-w-full">
                         <ChartContainer
+                          title="Contribution Activity"
                           config={radarChartConfig}
-                          className="h-full w-full"
                         >
                           <ResponsiveContainer
                             width="100%"
-                            height="100%"
+                            height={300}
                           >
                             <RadarChart
-                              outerRadius={60}
-                              cy={90}
+                              outerRadius="80%"
                               data={radarData}
                             >
-                              <ChartTooltip content={<ChartTooltipContent />} />
-                              <PolarGrid stroke="#f28b30" />
                               <PolarAngleAxis
                                 dataKey="attribute"
-                                tick={{ fill: '#2e2e2e', fontSize: 10 }}
-                                tickLine={false}
+                                tick={{
+                                  fill: '#10b981',
+                                  fontSize: 15,
+                                  fontWeight: 600,
+                                  dy: 4,
+                                }}
                               />
+                              <PolarRadiusAxis
+                                tick={false}
+                                axisLine={false}
+                                domain={[0, 100]}
+                                scale="linear"
+                              />
+
+                              {/* Custom axis lines */}
+                              <g>
+                                {/* Vertical axis */}
+                                <line
+                                  x1="50%"
+                                  y1="20%"
+                                  x2="50%"
+                                  y2="80%"
+                                  stroke="#065f46"
+                                  strokeWidth="2"
+                                />
+                                {/* Horizontal axis */}
+                                <line
+                                  x1="30%"
+                                  y1="50%"
+                                  x2="70%"
+                                  y2="50%"
+                                  stroke="#065f46"
+                                  strokeWidth="2"
+                                />
+                              </g>
+
                               <Radar
-                                name="Skills"
+                                name="Activity"
                                 dataKey="value"
-                                stroke="#22c55e"
-                                fill="#4ade80"
-                                fillOpacity={0.6}
-                                dot={{ r: 2, fill: '#22c55e', fillOpacity: 1 }}
+                                stroke="#059669"
+                                fill="#6ee7b7"
+                                fillOpacity={0.55}
+                                dot={{
+                                  r: 4,
+                                  stroke: '#10b981',
+                                  fill: '#ecfdf5',
+                                  strokeWidth: 2,
+                                }}
+                              />
+                              <ChartTooltip
+                                content={
+                                  <ChartTooltipContent title="Contribution Activity" />
+                                }
+                                cursor={false}
                               />
                             </RadarChart>
                           </ResponsiveContainer>

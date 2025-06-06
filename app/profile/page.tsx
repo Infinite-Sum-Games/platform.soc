@@ -17,7 +17,6 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState<boolean>(!user);
 
   useEffect(() => {
-    console.log('user:', user);
     if (!user) return;
 
     const fetchProfile = async () => {
@@ -33,12 +32,7 @@ const ProfilePage = () => {
         console.log(`Result: ${JSON.stringify(result)}`);
         if (result.success && result.data) {
           setProfile(result.data);
-          console.log('Profile data : ', result.data);
-        } else {
-          console.warn('No profile data found.');
         }
-
-        console.log(`Profile data : ${JSON.stringify(result.data)}`);
       } catch (error) {
         console.error('Error fetching profile:', error);
       } finally {
