@@ -23,20 +23,20 @@ const IssueCard = (props: IssuesData) => {
     title,
     url,
     language,
-    bounty,
-    difficulty,
+    // bounty,
+    // difficulty,
     isClaimed,
     claimedByList,
-    multiplierActive,
-    multiplierValue,
+    // multiplierActive,
+    // multiplierValue,
     completionStatus,
     PRsActive,
   } = props;
 
-  const effectiveBounty =
-    multiplierActive && multiplierValue
-      ? Math.round(bounty * multiplierValue)
-      : bounty;
+  // const effectiveBounty =
+  //   multiplierActive && multiplierValue
+  //     ? Math.round(bounty * multiplierValue)
+  //     : bounty;
 
   return (
     <Card
@@ -69,7 +69,7 @@ const IssueCard = (props: IssuesData) => {
               </Link>
             </CardTitle>
             <div className="flex flex-shrink-0 gap-2 sm:ml-4">
-              <Badge
+              {/* <Badge
                 className={`${
                   difficultyColorMap[difficulty] ||
                   'border-gray-400/50 bg-gray-200/50 text-gray-900 backdrop-blur-sm'
@@ -77,15 +77,15 @@ const IssueCard = (props: IssuesData) => {
                 aria-label={`Difficulty: ${difficulty}`}
               >
                 {difficulty}
-              </Badge>
-              {multiplierActive && multiplierValue && (
+              </Badge> */}
+              {/* {multiplierActive && multiplierValue && (
                 <Badge
                   className="transition-all scale-[1.05] bg-yellow-100 border-yellow-300 text-yellow-800 text-xs sm:text-sm font-medium px-2 py-1.5 backdrop-blur-sm"
                   aria-label={`Multiplier: ${multiplierValue}x`}
                 >
                   ⚡{multiplierValue}x Multiplier
                 </Badge>
-              )}
+              )} */}
             </div>
           </div>
         </CardHeader>
@@ -132,7 +132,7 @@ const IssueCard = (props: IssuesData) => {
             </div>
 
             <div className="sm:ml-4 flex flex-wrap items-center gap-3">
-              <div
+              {/* <div
                 className="flex items-center group"
                 aria-label={`Bounty: ${effectiveBounty} points`}
               >
@@ -160,27 +160,27 @@ const IssueCard = (props: IssuesData) => {
                       {bounty}
                     </span>
                   )}
-              </div>
+              </div> */}
               {isClaimed ? (
                 <div className="flex items-center flex-wrap gap-2">
                   {claimedByList.slice(0, 2).map((user, idx) => (
                     <Badge
                       key={user}
-                      className="bg-white/40 border-white/40 text-gray-800 text-xs sm:text-sm px-3 py-1.5 backdrop-blur-sm"
+                      className="bg-sky-100 border-blue-800 text-blue-900 text-xs sm:text-sm px-3 py-1.5 font-medium"
                       aria-label={`Claimed by ${user}`}
                     >
                       @{user}
                     </Badge>
                   ))}
                   {claimedByList.length > 2 && (
-                    <Badge className="bg-gray-200 text-gray-700 text-xs px-2 py-1.5">
+                    <Badge className="bg-sky-100 border-blue-800 text-blue-900 text-xs px-2 py-1.5 font-medium">
                       +{claimedByList.length - 2} more
                     </Badge>
                   )}
                 </div>
               ) : (
                 <Badge
-                  className="bg-white/40 border-white/40 text-gray-800 text-xs sm:text-sm px-3 py-1.5 backdrop-blur-sm"
+                  className="bg-green-100 border-green-800 text-green-900 text-xs sm:text-sm px-3 py-1.5 font-medium"
                   aria-label="Issue is available"
                 >
                   Available

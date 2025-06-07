@@ -1,7 +1,6 @@
 'use client';
 import {
   type IssuesData,
-  tempRepos,
   useRepositoryStore,
 } from '@/app/store/useRepositoryStore';
 import { cn } from '@/lib/utils';
@@ -10,12 +9,13 @@ import {
   Code,
   Filter,
   GitBranch,
+  Loader2,
   Search,
   SortAsc,
   X,
   XCircle,
 } from 'lucide-react';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Cloud from '../components/dashboard-components/Cloud';
 import SunGlareEffect from '../components/dashboard-components/SunGlareEffect';
@@ -40,11 +40,15 @@ import {
 } from '../components/ui/tabs';
 
 type IssueFilterType = 'all' | 'claimed' | 'unclaimed' | 'completed' | 'active';
-type IssueSortType = 'newest' | 'oldest' | 'bounty-high' | 'bounty-low';
+// type IssueSortType = 'newest' | 'oldest' | 'bounty-high' | 'bounty-low';
+type IssueSortType = 'newest' | 'oldest';
 
 const ReposPage = () => {
-  const setRepositories = useRepositoryStore((state) => state.setRepos);
-  const repositories = useRepositoryStore((state) => state.repos);
+  const {
+    repos: repositories,
+    isLoading,
+    fetchAllReposAndIssues,
+  } = useRepositoryStore();
   const [selectedRepoId, setSelectedRepoId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'repositories' | 'issues'>(
     'repositories',
@@ -54,8 +58,8 @@ const ReposPage = () => {
   const [issueSort, setIssueSort] = useState<IssueSortType>('newest');
 
   useEffect(() => {
-    setRepositories(tempRepos);
-  }, [setRepositories]);
+    fetchAllReposAndIssues();
+  }, [fetchAllReposAndIssues]);
 
   const selectedRepo = repositories.find((repo) => repo.id === selectedRepoId);
 
@@ -105,32 +109,32 @@ const ReposPage = () => {
     }
 
     switch (issueSort) {
-      case 'bounty-high':
-        filtered.sort((a, b) => {
-          const bountyA =
-            a.multiplierActive && a.multiplierValue
-              ? a.bounty * a.multiplierValue
-              : a.bounty;
-          const bountyB =
-            b.multiplierActive && b.multiplierValue
-              ? b.bounty * b.multiplierValue
-              : b.bounty;
-          return bountyB - bountyA;
-        });
-        break;
-      case 'bounty-low':
-        filtered.sort((a, b) => {
-          const bountyA =
-            a.multiplierActive && a.multiplierValue
-              ? a.bounty * a.multiplierValue
-              : a.bounty;
-          const bountyB =
-            b.multiplierActive && b.multiplierValue
-              ? b.bounty * b.multiplierValue
-              : b.bounty;
-          return bountyA - bountyB;
-        });
-        break;
+      // case 'bounty-high':
+      //   filtered.sort((a, b) => {
+      //     const bountyA =
+      //       a.multiplierActive && a.multiplierValue
+      //         ? a.bounty * a.multiplierValue
+      //         : a.bounty;
+      //     const bountyB =
+      //       b.multiplierActive && b.multiplierValue
+      //         ? b.bounty * b.multiplierValue
+      //         : b.bounty;
+      //     return bountyB - bountyA;
+      //   });
+      //   break;
+      // case 'bounty-low':
+      //   filtered.sort((a, b) => {
+      //     const bountyA =
+      //       a.multiplierActive && a.multiplierValue
+      //         ? a.bounty * a.multiplierValue
+      //         : a.bounty;
+      //     const bountyB =
+      //       b.multiplierActive && b.multiplierValue
+      //         ? b.bounty * b.multiplierValue
+      //         : b.bounty;
+      //     return bountyA - bountyB;
+      //   });
+      //   break;
       case 'oldest':
         filtered.sort((a, b) => a.id.localeCompare(b.id));
         break;
@@ -159,10 +163,10 @@ const ReposPage = () => {
 
   const sortBadgeText = useMemo(() => {
     switch (issueSort) {
-      case 'bounty-high':
-        return 'Bounty: High to Low';
-      case 'bounty-low':
-        return 'Bounty: Low to High';
+      // case 'bounty-high':
+      //   return 'Bounty: High to Low';
+      // case 'bounty-low':
+      //   return 'Bounty: Low to High';
       case 'oldest':
         return 'Oldest First';
       case 'newest':
@@ -180,6 +184,13 @@ const ReposPage = () => {
     setSearchTerm('');
     setIssueSort('newest');
   };
+
+  const Loading = () => (
+    <div className="flex flex-col items-center justify-center py-10 text-center">
+      <Loader2 className="mb-2 h-8 w-8 text-gray-600 animate-spin" />
+      <p className="text-gray-600">Loading repositories...</p>
+    </div>
+  );
 
   const FilterMenu = () => (
     <DropdownMenu>
@@ -315,7 +326,7 @@ const ReposPage = () => {
             <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
           )}
         </DropdownMenuItem>
-        <DropdownMenuItem
+        {/* <DropdownMenuItem
           onClick={() => setIssueSort('bounty-high')}
           className={cn(
             'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
@@ -326,8 +337,8 @@ const ReposPage = () => {
           {issueSort === 'bounty-high' && (
             <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
           )}
-        </DropdownMenuItem>
-        <DropdownMenuItem
+        </DropdownMenuItem> */}
+        {/* <DropdownMenuItem
           onClick={() => setIssueSort('bounty-low')}
           className={cn(
             'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
@@ -338,13 +349,13 @@ const ReposPage = () => {
           {issueSort === 'bounty-low' && (
             <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
           )}
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );
 
   const desktopView = (
-    <div className="flex flex-col gap-6 md:flex-row h-full">
+    <div className="flex flex-col gap-6 md:flex-row h-[calc(100vh-105px)]">
       <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
         <h2 className="mb-3 flex items-center border-b border-white/50 pb-2 font-semibold text-2xl text-gray-800 shrink-0">
           <GitBranch
@@ -356,26 +367,29 @@ const ReposPage = () => {
         </h2>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-1">
           <div className="space-y-3">
-            {repositories.map((repo) => (
-              <button
-                type="button"
-                key={repo.id}
-                onClick={() => handleRepoSelect(repo.id)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    handleRepoSelect(repo.id);
-                  }
-                }}
-                aria-pressed={selectedRepoId === repo.id}
-                className="cursor-pointer rounded-lg w-full"
-              >
-                <RepoCard {...repo} />
-              </button>
-            ))}
-            {repositories.length === 0 && (
+            {isLoading ? (
+              <Loading />
+            ) : repositories.length > 0 ? (
+              repositories.map((repo) => (
+                <button
+                  type="button"
+                  key={repo.id}
+                  onClick={() => handleRepoSelect(repo.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      handleRepoSelect(repo.id);
+                    }
+                  }}
+                  aria-pressed={selectedRepoId === repo.id}
+                  className="cursor-pointer rounded-lg w-full"
+                >
+                  <RepoCard {...repo} />
+                </button>
+              ))
+            ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <GitBranch className="mb-2 h-10 w-10 text-gray-600" />
-                <p className="text-gray-600">No repositories loaded.</p>
+                <p className="text-gray-600">No repositories found.</p>
               </div>
             )}
           </div>
@@ -561,31 +575,34 @@ const ReposPage = () => {
         </h2>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-lg p-2">
           <div className="space-y-3">
-            {repositories.map((repo) => (
-              <button
-                type="button"
-                key={repo.id}
-                onClick={() => handleRepoSelect(repo.id)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    handleRepoSelect(repo.id);
-                  }
-                }}
-                aria-pressed={selectedRepoId === repo.id}
-                className={cn(
-                  'cursor-pointer rounded-lg transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md w-full',
-                  selectedRepoId === repo.id
-                    ? 'ring-2 ring-gray-500'
-                    : 'hover:ring-1 hover:ring-gray-400',
-                )}
-              >
-                <RepoCard {...repo} />
-              </button>
-            ))}
-            {repositories.length === 0 && (
+            {isLoading ? (
+              <Loading />
+            ) : repositories.length > 0 ? (
+              repositories.map((repo) => (
+                <button
+                  type="button"
+                  key={repo.id}
+                  onClick={() => handleRepoSelect(repo.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      handleRepoSelect(repo.id);
+                    }
+                  }}
+                  aria-pressed={selectedRepoId === repo.id}
+                  className={cn(
+                    'cursor-pointer rounded-lg transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md w-full',
+                    selectedRepoId === repo.id
+                      ? 'ring-2 ring-gray-500'
+                      : 'hover:ring-1 hover:ring-gray-400',
+                  )}
+                >
+                  <RepoCard {...repo} />
+                </button>
+              ))
+            ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <GitBranch className="mb-2 h-10 w-10 text-gray-600" />
-                <p className="text-gray-600">No repositories loaded.</p>
+                <p className="text-gray-600">No repositories found.</p>
               </div>
             )}
           </div>
@@ -739,7 +756,7 @@ const ReposPage = () => {
       <div className="z-20 h-[80px] shrink-0">
         <Navbar />
       </div>
-      <div className="w-11/12 mx-auto flex flex-1 flex-col py-8">
+      <div className="w-11/12 mx-auto flex flex-1 flex-col pt-4">
         <div className="hidden md:block md:flex-1 md:min-h-0">
           {desktopView}
         </div>
