@@ -166,21 +166,21 @@ const IssueCard = (props: IssuesData) => {
                   {claimedByList.slice(0, 2).map((user, idx) => (
                     <Badge
                       key={user}
-                      className="bg-white/40 border-white/40 text-gray-800 text-xs sm:text-sm px-3 py-1.5 backdrop-blur-sm"
+                      className="bg-sky-100 border-blue-800 text-blue-900 text-xs sm:text-sm px-3 py-1.5 font-medium"
                       aria-label={`Claimed by ${user}`}
                     >
                       @{user}
                     </Badge>
                   ))}
                   {claimedByList.length > 2 && (
-                    <Badge className="bg-gray-200 text-gray-700 text-xs px-2 py-1.5">
+                    <Badge className="bg-sky-100 border-blue-800 text-blue-900 text-xs px-2 py-1.5 font-medium">
                       +{claimedByList.length - 2} more
                     </Badge>
                   )}
                 </div>
               ) : (
                 <Badge
-                  className="bg-white/40 border-white/40 text-gray-800 text-xs sm:text-sm px-3 py-1.5 backdrop-blur-sm"
+                  className="bg-green-100 border-green-800 text-green-900 text-xs sm:text-sm px-3 py-1.5 font-medium"
                   aria-label="Issue is available"
                 >
                   Available
