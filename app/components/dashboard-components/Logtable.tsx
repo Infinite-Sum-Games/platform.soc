@@ -1,5 +1,3 @@
-'use client';
-
 import type React from 'react';
 
 import { Activity, Bug, Clock, Sparkles, Trophy } from 'lucide-react';
@@ -25,12 +23,23 @@ import {
 type LogType = 'top3' | 'bounty' | 'issue';
 
 interface LogEntry {
-  id: string;
+  id: string | number;
   type: LogType;
   user: string;
   timestamp: string;
   description: string;
   avatar?: string;
+}
+
+interface ApiLog {
+  time: string;
+  github_username: string;
+  message: string;
+  event_type: string;
+}
+
+interface ApiResponse {
+  updates: ApiLog[];
 }
 
 const typeMeta: Record<
@@ -89,70 +98,141 @@ const getTimeAgo = (isoDate: string) => {
   return `${diffSecs}s ago`;
 };
 
+const validLogType = (type: string): LogType =>
+  type in typeMeta ? (type as LogType) : 'issue';
+
 export default function Logtable() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeTab, setActiveTab] = useState('all');
-  const [filteredLogs, setFilteredLogs] = useState([]);
+  const [filteredLogs, setFilteredLogs] = useState<LogEntry[]>([]);
   const [newActivity, setNewActivity] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
-  const [fetchedlogs, setfetchedLogs] = useState([]);
+  const [fetchedLogs, setFetchedLogs] = useState<LogEntry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Setup clock
   useEffect(() => {
     setHasMounted(true);
     setCurrentTime(new Date());
-
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
-  }, []); // to check current time for the clock
+  }, []);
 
+  // Trigger new activity visual every 15s
   useEffect(() => {
     const activityTimer = setInterval(() => {
       setNewActivity(true);
       setTimeout(() => setNewActivity(false), 2000);
     }, 15000);
     return () => clearInterval(activityTimer);
-  }, []); //shows when a new activity is detected currently set for a few seconds interva;
+  }, []);
 
+  // Fetch initial latest logs once
   useEffect(() => {
     const fetchLogs = async () => {
+      setIsLoading(true);
       try {
         const res = await fetch('http://localhost:9000/api/v1/updates/latest');
-        const data = await res.json();
+        const data: ApiResponse = await res.json();
 
         if (res.ok) {
-          const transformed = data.updates.map((log) => ({
+          const transformed = data.updates.slice(0, 5).map((log) => ({
             id: log.time,
             user: log.github_username,
             description: log.message,
-            // normalize: "Top-3" → "top3"
-            type: log.event_type.toLowerCase().replace(/-/g, ''),
+            type: validLogType(log.event_type.toLowerCase().replace(/-/g, '')),
             timestamp: new Date(log.time).toISOString(),
           }));
 
-          setfetchedLogs(transformed);
+          setFetchedLogs(transformed);
           setFilteredLogs(transformed);
-          console.log('Transformed logs:', transformed);
+          console.log('Initial logs:', transformed);
         } else {
-          console.error('Fetch error:', data.message);
+          setError(data.message || 'Failed to fetch logs');
         }
       } catch (error) {
-        console.error('Network error:', error);
+        setError('Network error occurred');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchLogs();
   }, []);
 
+  // Set up SSE listener only once, but respond to latest activeTab
+  useEffect(() => {
+    const eventSource = new EventSource(
+      'http://localhost:9000/api/v1/updates/live',
+    );
+
+    eventSource.onmessage = (event) => {
+      try {
+        const raw = event.data.trim();
+
+        // Matches: "username", "message", "eventType", "timestamp"
+        const match = raw.match(
+          /^"([^"]+)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"$/,
+        );
+
+        if (!match || match.length !== 5) {
+          throw new Error('Malformed SSE data format');
+        }
+
+        const [, username, message, eventType, timeStr] = match;
+
+        const timestampNum = Number(timeStr);
+        if (Number.isNaN(timestampNum)) {
+          throw new Error(`Invalid timestamp: ${timeStr}`);
+        }
+
+        const newEntry: LogEntry = {
+          id: timestampNum,
+          user: username,
+          description: message,
+          type: validLogType(eventType.toLowerCase().replace(/-/g, '')),
+          timestamp: new Date(timestampNum).toISOString(),
+        };
+
+        setFetchedLogs((prev) => [newEntry, ...prev.slice(0, 19)]);
+
+        setFilteredLogs((prev) => {
+          if (activeTab === 'all' || newEntry.type === activeTab) {
+            return [newEntry, ...prev.slice(0, 19)];
+          }
+          return prev;
+        });
+      } catch (err) {
+        console.error('Failed to parse SSE data:', event.data, err);
+      }
+    };
+
+    eventSource.onerror = (err) => {
+      console.error('SSE connection error:', err);
+      setError('Disconnected from live updates.');
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [activeTab]);
+
   useEffect(() => {
     if (activeTab === 'all') {
-      setFilteredLogs(fetchedlogs);
+      setFilteredLogs(fetchedLogs);
     } else {
-      setFilteredLogs(fetchedlogs.filter((log) => log.type === activeTab));
+      setFilteredLogs(fetchedLogs.filter((log) => log.type === activeTab));
     }
-  }, [activeTab, fetchedlogs]); // Filters
+  }, [activeTab, fetchedLogs]);
+
+  if (isLoading) {
+    return <div className="p-4 text-gray-800">Loading logs...</div>;
+  }
+
+  if (error) {
+    return <div className="p-4 text-red-500">{error}</div>;
+  }
 
   return (
     <TooltipProvider>
@@ -177,7 +257,7 @@ export default function Logtable() {
                       variant="outline"
                       className="animate-pulse bg-red-500/20 text-red-600 text-xs mt-1 sm:mt-0 sm:text-sm"
                     >
-                      New activity
+                      LIVE
                     </Badge>
                   )}
                 </div>
@@ -208,24 +288,28 @@ export default function Logtable() {
                 <TabsTrigger
                   value="all"
                   className="rounded-3xl text-xs cursor-pointer"
+                  aria-label="Show all activity logs"
                 >
                   All
                 </TabsTrigger>
                 <TabsTrigger
                   value="top3"
                   className="rounded-3xl text-xs cursor-pointer"
+                  aria-label="Show top 3 activity logs"
                 >
                   Top 3
                 </TabsTrigger>
                 <TabsTrigger
                   value="bounty"
                   className="rounded-3xl text-xs cursor-pointer"
+                  aria-label="Show bounty activity logs"
                 >
                   Bounty
                 </TabsTrigger>
                 <TabsTrigger
                   value="issue"
                   className="rounded-3xl text-xs cursor-pointer"
+                  aria-label="Show issue activity logs"
                 >
                   Issue
                 </TabsTrigger>
@@ -274,7 +358,6 @@ export default function Logtable() {
                                 src={`https://github.com/${log.user}.png`}
                                 alt={log.user}
                               />
-
                               <AvatarFallback>
                                 {log.user.substring(0, 2).toUpperCase()}
                               </AvatarFallback>
@@ -343,7 +426,8 @@ export default function Logtable() {
 
           <CardFooter className="flex shrink-0 items-center justify-between border-white/20 border-t bg-white/10 p-3 backdrop-blur-md">
             <div className="max-w-[180px] truncate text-gray-700 text-xs sm:max-w-full">
-              Live updates • Last activity: {getTimeAgo(fetchedlogs.timestamp)}
+              Live updates • Last activity:{' '}
+              {fetchedLogs[0] ? getTimeAgo(fetchedLogs[0].timestamp) : 'N/A'}
             </div>
           </CardFooter>
         </Card>

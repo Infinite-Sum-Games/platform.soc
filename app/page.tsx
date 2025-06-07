@@ -111,7 +111,7 @@ const Dashboard = () => {
                 value="live-activity"
                 className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-800 data-[state=active]:bg-white data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
               >
-                Live Activity (Coming Soon)
+                Live Activity
               </TabsTrigger>
               <TabsTrigger
                 value="leaderboard"
