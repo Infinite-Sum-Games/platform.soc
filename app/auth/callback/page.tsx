@@ -33,7 +33,6 @@ function AuthCallbackContent() {
         email,
         bounty: Number(bounty),
       });
-
       // Close the popup and notify the parent window.
       window.opener.postMessage(
         { type: 'AUTH_SUCCESS' },

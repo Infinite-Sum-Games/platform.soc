@@ -1,27 +1,40 @@
 'use client';
-
-import { useAuthStore } from '@/app/store/useAuthStore';
-import { AlertCircle, Loader2 } from 'lucide-react';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import {
+  AlertCircle,
+  Clock,
+  GitPullRequest,
+  Loader2,
+  Trophy,
+} from 'lucide-react';
+import Image from 'next/image';
+import {
+  Cell,
   Pie,
   PieChart,
   PolarAngleAxis,
-  PolarGrid,
+  PolarRadiusAxis,
   Radar,
   RadarChart,
   ResponsiveContainer,
 } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../ui/chart';
 
-export interface Profile {
-  name: string;
-  username: string;
-  rank: number;
-  allTimeRank: number;
+export interface ProfileResponse {
+  message: string;
+  github_username: string;
+  first_name: string;
+  middle_name: string | null;
+  last_name: string;
   bounty: number;
-  pendingIssues: number;
+  pull_request_count: number;
+  pull_request_merged: number;
+  pending_issue_count: number;
+  rank: number;
+  documentation_count: number;
+  bug_report_count: number;
+  feature_count: number;
+  test_count: number;
+  badges: string[];
 }
 
 const Spinner = () => (
@@ -60,67 +73,178 @@ const ErrorCard = () => (
   </div>
 );
 
-const BountyBar = ({
-  value,
-  max,
-  width = 220,
-  height = 18,
-}: {
-  value: number;
-  max: number;
-  width?: number;
-  height?: number;
-}) => {
-  const percentage = (value / max) * 100;
-  const milestones = [25, 50, 75, 100];
+const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
+  if (!value) {
+    value = 0;
+  }
+  const percentage = Math.min((value / max) * 100, 100);
+
+  const badges = [
+    {
+      id: 19,
+      title: 'Shaman',
+      icon: '/Badges/shaman 1.jpg',
+      threshold: 250,
+      position: 1,
+      color: 'from-amber-500 to-orange-600',
+    },
+    {
+      id: 20,
+      title: 'Henchman',
+      icon: '/Badges/Henchman 1.jpg',
+      threshold: 500,
+      position: 2,
+      color: 'from-slate-400 to-slate-600',
+    },
+    {
+      id: 21,
+      title: 'Kingpin',
+      icon: '/Badges/King pin.jpg',
+      threshold: 750,
+      position: 3,
+      color: 'from-yellow-400 to-yellow-600',
+    },
+    {
+      id: 22,
+      title: 'The Godfather',
+      icon: '/Badges/God Father 1.jpg',
+      threshold: 1000,
+      position: 4,
+      color: 'from-blue-500 to-purple-600',
+    },
+  ];
 
   return (
-    <div className="w-full flex flex-col gap-1 items-center">
-      <div
-        className="flex justify-between mb-1 px-1 w-full"
-        style={{ maxWidth: width }}
-      >
-        {milestones.map((milestone) => (
-          <span
-            key={milestone}
-            className="text-[12px] text-gray-600 font-medium"
-            style={{ minWidth: 32, textAlign: 'center' }}
-          >
-            {milestone}%
-          </span>
-        ))}
-      </div>
-      <div
-        className="relative flex items-center"
-        style={{ width }}
-      >
-        {/* Bar background */}
-        <div className="absolute left-0 top-0 w-full h-full rounded-full bg-white/20 border border-white/30" />
-        {/* Filled portion */}
+    <div className="flex flex-col items-center justify-center w-full">
+      <div className="relative w-full">
+        <div className="absolute top-1/2 left-0 right-0 h-3 bg-gray-300/40 rounded-full transform -translate-y-1/2 mx-16" />
         <div
-          className="absolute left-0 top-0 h-full rounded-l-full bg-linear-to-r from-blue-500 to-purple-600 transition-all duration-500"
-          style={{ width: `${percentage}%`, zIndex: 1 }}
+          className="absolute top-1/2 left-0 h-3 bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 rounded-full transform -translate-y-1/2 transition-all duration-1000 ease-out shadow-lg"
+          style={{
+            width: `calc(${Math.min(percentage, 100)}% - 128px)`,
+            marginLeft: '4rem',
+          }}
         />
-        {/* Milestone markers */}
-        {milestones.map(
-          (milestone) =>
-            milestone !== 100 && (
+        <div className="relative flex justify-between items-center px-4 sm:px-8 lg:px-16">
+          {badges.map((badge) => {
+            const isUnlocked = value >= badge.threshold;
+
+            return (
               <div
-                key={milestone}
-                className="absolute top-0 h-full w-0.5 bg-white/50"
-                style={{ left: `calc(${milestone}% - 1px)`, zIndex: 2 }}
-              />
-            ),
-        )}
-        {/* Value inside filled part */}
-        <span
-          className="absolute left-2 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-800 z-10"
-          style={{ textShadow: '0 1px 4px rgba(0,0,0,0.25)' }}
-        >
-          {value}
-        </span>
-        {/* Spacer for bar height */}
-        <div style={{ height, width }} />
+                key={badge.id}
+                className="flex flex-col items-center group relative"
+                style={{ flex: 1 }}
+              >
+                <div
+                  className={`
+                    relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-2 sm:border-3 lg:border-4 transition-all duration-500 flex items-center justify-center overflow-hidden
+                    ${
+                      isUnlocked
+                        ? 'border-orange-500 bg-gradient-to-br shadow-lg sm:shadow-xl shadow-orange-500/30'
+                        : 'border-gray-400/50 bg-gray-200/20 shadow-md sm:shadow-lg'
+                    }
+                    hover:scale-110 transform-gpu cursor-pointer hover:shadow-xl sm:hover:shadow-2xl
+                  `}
+                  title={`${badge.title} - ${badge.threshold} points`}
+                >
+                  <div className="relative w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden flex items-center justify-center">
+                    <img
+                      src={badge.icon}
+                      alt={badge.title}
+                      className={`w-full h-full object-cover rounded-full transition-all duration-300 ${
+                        isUnlocked
+                          ? 'brightness-100 contrast-110'
+                          : 'brightness-50 contrast-75 grayscale'
+                      }`}
+                      onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        img.style.display = 'none';
+                        const parent = img.parentElement;
+                        if (
+                          parent &&
+                          !parent.querySelector('.fallback-badge')
+                        ) {
+                          const fallback = document.createElement('div');
+                          fallback.className = `fallback-badge w-full h-full flex items-center justify-center text-white font-bold text-sm sm:text-xl lg:text-2xl rounded-full bg-gradient-to-br ${
+                            badge.color
+                          } ${!isUnlocked ? 'grayscale brightness-50' : ''}`;
+                          fallback.textContent = badge.position.toString();
+                          parent.appendChild(fallback);
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {!isUnlocked && (
+                    <div className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                      <svg
+                        className="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-white/80"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <title>Lock icon</title>
+                        <path
+                          fillRule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  )}
+
+                  {isUnlocked && (
+                    <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 bg-green-500 rounded-full border-2 sm:border-3 border-white flex items-center justify-center shadow-md sm:shadow-lg">
+                      <svg
+                        className="w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <title>Checkmark icon</title>
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-1.5 sm:mt-2 lg:mt-3 text-center h-8 sm:h-10 lg:h-12 flex flex-col justify-start">
+                  {' '}
+                  <div
+                    className={`text-xs sm:text-sm font-bold transition-colors duration-300 ${
+                      isUnlocked ? 'text-gray-800' : 'text-gray-600'
+                    }`}
+                  >
+                    {badge.title}
+                  </div>
+                  <div
+                    className={`text-xs font-medium transition-colors duration-300 ${
+                      isUnlocked ? 'text-orange-600' : 'text-gray-600'
+                    } hidden sm:block`}
+                  >
+                    {badge.threshold} pts
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-6 text-center">
+        <div className="text-lg font-bold">
+          <span className="text-orange-600">{value.toLocaleString()}</span>
+          <span className="text-gray-600 text-base">
+            {' '}
+            / {max.toLocaleString()}
+          </span>
+        </div>
+        <div className="text-sm text-gray-700 mt-1">
+          {percentage.toFixed(1)}% • Next:{' '}
+          {badges.find((b) => value < b.threshold)?.title || 'Complete!'}
+        </div>
       </div>
     </div>
   );
@@ -183,78 +307,51 @@ const ProfileSkeleton = () => (
   </div>
 );
 
-const ProfileCard = () => {
-  const user = useAuthStore((state) => state.user);
-  const [loading, setLoading] = useState<boolean>(!user);
-  const [userData, setUserData] = useState<Profile | null>(null);
+const hasValidData = (data: { value: number }[]): boolean => {
+  return data.some((item) => item.value > 0);
+};
 
-  useEffect(() => {
-    if (user) {
-      setUserData({
-        name: user.email.split('@')[0],
-        username: user.github_username,
-        rank: 1,
-        allTimeRank: 1,
-        bounty: user.bounty,
-        pendingIssues: 0,
-      });
-      setLoading(false);
-    }
-  }, [user]);
+interface ProfileProps {
+  profile: ProfileResponse | null;
+  loading: boolean;
+}
 
+const ProfileCard = ({ profile, loading }: ProfileProps) => {
   if (loading) return <ProfileSkeleton />;
-  if (!userData) return <ErrorCard />;
-
+  if (!profile) return <ErrorCard />;
   // Dummy analytics data (replace with real fetch if needed)
   const graphData = {
     prStats: {
-      opened: 54,
-      merged: 22,
-      issuesSolved: 34,
+      opened: profile.pull_request_count,
+      merged: profile.pull_request_merged,
     },
-    contributionStats: {
-      codeContribution: 0,
-      testing: 0,
-      bugFixes: 0,
-      documentation: 0,
-      features: 0,
-      uiux: 0,
+    issueStats: {
+      docs: profile.documentation_count,
+      bugs: profile.bug_report_count,
+      features: profile.feature_count,
+      highImpact: profile.test_count,
     },
   };
-  const pieData = [
-    { name: 'PRs Opened', value: graphData.prStats.opened, fill: '#f0b073' },
-    { name: 'PRs Merged', value: graphData.prStats.merged, fill: '#eeea97' },
-    {
-      name: 'Issues Solved',
-      value: graphData.prStats.issuesSolved,
-      fill: '#9cd0e4',
-    },
-  ];
-  const radarData = [
-    {
-      attribute: 'Code Contribution',
-      value: graphData.contributionStats.codeContribution,
-    },
-    { attribute: 'Testing', value: graphData.contributionStats.testing },
-    { attribute: 'Bugs Fixes', value: graphData.contributionStats.bugFixes },
-    {
-      attribute: 'Documentation',
-      value: graphData.contributionStats.documentation,
-    },
-    { attribute: 'Features', value: graphData.contributionStats.features },
-    { attribute: 'UI/UX', value: graphData.contributionStats.uiux },
+  const radialData = [
+    { name: 'PRs Open', value: graphData.prStats.opened, fill: '#10b981' },
+    { name: 'PRs Merged', value: graphData.prStats.merged, fill: '#065f46' },
   ];
 
+  const radarData = [
+    { attribute: 'Tests Contributed', value: graphData.issueStats.highImpact },
+    { attribute: 'Bugs Reported', value: graphData.issueStats.bugs },
+    { attribute: 'Docs Contributed', value: graphData.issueStats.docs },
+    { attribute: 'Features Suggested', value: graphData.issueStats.features },
+  ];
   // Chart configurations for ChartContainer
-  const pieChartConfig = {
+
+  const radialChartConfig = {
     opened: { label: 'PRs Opened' },
-    merged: { label: 'PRs Merged' },
-    solved: { label: 'Issues Solved' },
+    closed: { label: 'PRs Closed' },
   };
   const radarChartConfig = {
     code: { label: 'Code Contribution' },
   };
-
   return (
     <div className="relative w-full min-h-[60vh] bg-linear-to-br">
       {/* Background with subtle frosted glass effect */}
@@ -266,7 +363,7 @@ const ProfileCard = () => {
           <div className="absolute top-3 right-3 flex justify-center items-center">
             <div className="relative">
               <div className="badge-futuristic w-16 h-16 sm:w-20 sm:h-20 bg-linear-to-br from-slate-100 via-gray-300 to-slate-200 text-gray-900 shadow-xl ring-4 ring-white/10 flex items-center justify-center text-3xl sm:text-4xl font-bold">
-                {userData.rank}
+                {profile.rank !== -1 ? profile.rank : '-'}
               </div>
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-blue-600 text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
                 RANK
@@ -280,8 +377,8 @@ const ProfileCard = () => {
               <div className="relative group">
                 <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full ring-4 ring-white/20 p-1 bg-linear-to-br from-blue-500 to-purple-inker transition-all duration-300 group-hover:ring-blue-500/50">
                   <Image
-                    src={`https://github.com/${userData.username}.png`}
-                    alt={`${userData.username} profile`}
+                    src={`https://github.com/${profile.github_username}.png`}
+                    alt={`${profile.github_username} profile`}
                     width={128}
                     height={128}
                     className="rounded-full transition-transform duration-300 group-hover:brightness-110"
@@ -291,13 +388,16 @@ const ProfileCard = () => {
                   Contributor
                 </div>
               </div>
-              <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <h2 className="text-2xl sm:text-4xl font-bold bg-linear-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                  {userData.name}
+              <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-1">
+                <h2 className="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent leading-tight">
+                  {[profile.first_name, profile.middle_name, profile.last_name]
+                    .filter(Boolean)
+                    .join(' ')}
                 </h2>
-                <p className="text-lg sm:text-xl text-gray-600 font-light mt-1">
-                  @{userData.username}
-                </p>
+
+                <div className="text-lg sm:text-xl text-gray-800 font-medium">
+                  @{profile.github_username}
+                </div>
               </div>
             </div>
 
@@ -306,61 +406,53 @@ const ProfileCard = () => {
               <div className="flex-1 flex flex-col gap-4 w-full">
                 <div className="bg-white/25 backdrop-blur-2xl rounded-xl overflow-hidden shadow-lg border border-white/30 divide-y divide-white/10">
                   {/* Stats Row */}
-                  <div className="flex flex-wrap justify-between px-4 py-3 sm:px-6 sm:py-4 gap-3">
-                    <div className="flex flex-col items-center sm:items-start">
-                      <span className="text-lg sm:text-2xl font-bold text-gray-800 flex items-center gap-2">
-                        <span
-                          role="img"
-                          aria-label="bounty"
-                        >
-                          💰
+                  <div className="grid grid-cols-3 gap-2 px-3 py-3 sm:flex sm:flex-wrap sm:justify-between sm:px-6 sm:py-4 sm:gap-6">
+                    {/* Bounty Points */}
+                    <div className="flex flex-col items-center">
+                      <span className="flex items-center gap-1 sm:gap-2 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900">
+                        <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
+                        <span className="text-base sm:text-xl lg:text-2xl">
+                          {profile.bounty}
                         </span>
-                        {userData.bounty}
                       </span>
-                      <span className="text-xs text-gray-600 font-medium mt-1">
+                      <span className="text-xs sm:text-sm text-gray-700 font-medium mt-0.5 sm:mt-1 text-center leading-tight">
                         Bounty Points
                       </span>
                     </div>
-                    <div className="flex flex-col items-center sm:items-start">
-                      <span className="text-lg sm:text-2xl font-bold text-gray-800 flex items-center gap-2">
-                        <span
-                          role="img"
-                          aria-label="trophy"
-                        >
-                          🏆
+
+                    {/* PRs */}
+                    <div className="flex flex-col items-center">
+                      <span className="flex items-center gap-1 sm:gap-2 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900">
+                        <GitPullRequest className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+                        <span className="text-base sm:text-xl lg:text-2xl">
+                          {profile.pull_request_count}
                         </span>
-                        {userData.allTimeRank}
                       </span>
-                      <span className="text-xs text-gray-600 font-medium mt-1">
-                        All Time Best Rank
+                      <span className="text-xs sm:text-sm text-gray-700 font-medium mt-0.5 sm:mt-1 text-center leading-tight">
+                        PRs
                       </span>
                     </div>
-                    <div className="flex flex-col items-center sm:items-start">
-                      <span className="text-lg sm:text-2xl font-bold text-gray-800 flex items-center gap-2">
-                        <span
-                          role="img"
-                          aria-label="pending"
-                        >
-                          ⏳
+
+                    {/* Pending Issues */}
+                    <div className="flex flex-col items-center">
+                      <span className="flex items-center gap-1 sm:gap-2 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900">
+                        <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+                        <span className="text-base sm:text-xl lg:text-2xl">
+                          {profile.pending_issue_count}
                         </span>
-                        {userData.pendingIssues}
                       </span>
-                      <span className="text-xs text-gray-600 font-medium mt-1">
+                      <span className="text-xs sm:text-sm text-gray-700 font-medium mt-0.5 sm:mt-1 text-center leading-tight">
                         Pending Issues
                       </span>
                     </div>
                   </div>
 
-                  {/* Bounty Progress */}
-                  <div className="flex flex-col items-center justify-center px-4 py-3 sm:px-6 sm:py-4 w-full">
-                    <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                      Bounty Progress
-                    </h3>
-                    <div className="w-full max-w-xs">
-                      <BountyBar
-                        value={userData.bounty}
+                  {/*Bounty Progress*/}
+                  <div className="flex flex-col items-center justify-center px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8 w-full">
+                    <div className="w-full max-w-xs sm:max-w-2xl lg:max-w-4xl">
+                      <BountyProgress
+                        value={profile.bounty}
                         max={1000}
-                        width={220}
                       />
                     </div>
                   </div>
@@ -374,46 +466,76 @@ const ProfileCard = () => {
                       <h3 className="text-base font-semibold mb-2 text-center text-gray-800">
                         Contribution Chart
                       </h3>
-                      <div className="h-[160px] sm:h-[180px] w-full max-w-full">
-                        <ChartContainer
-                          config={pieChartConfig}
-                          className="h-full w-full"
-                        >
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                          >
-                            <PieChart>
-                              <ChartTooltip content={<ChartTooltipContent />} />
-                              <Pie
-                                data={pieData}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%"
-                                cy="50%"
-                                outerRadius={60}
-                                label={false}
-                              />
-                            </PieChart>
-                          </ResponsiveContainer>
-                        </ChartContainer>
-                      </div>
-                      <div className="flex flex-wrap justify-center gap-2 mt-2">
-                        {pieData.map((entry) => (
-                          <div
-                            key={entry.name}
-                            className="flex items-center gap-1"
-                          >
-                            <div
-                              className="w-2 h-2 rounded-full"
-                              style={{ backgroundColor: entry.fill }}
-                            />
-                            <span className="text-xs text-gray-800 font-bold">
-                              {entry.name}
-                            </span>
+                      {hasValidData(radialData) ? (
+                        <>
+                          <div className="h-[160px] sm:h-[180px] w-full max-w-full">
+                            <ChartContainer
+                              config={radialChartConfig}
+                              className="h-full w-full"
+                            >
+                              <ResponsiveContainer
+                                width="100%"
+                                height="100%"
+                              >
+                                <PieChart>
+                                  <ChartTooltip
+                                    content={<ChartTooltipContent />}
+                                  />
+                                  <Pie
+                                    data={radialData}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    cx="50%"
+                                    cy="65%"
+                                    startAngle={180}
+                                    endAngle={0}
+                                    innerRadius={60}
+                                    outerRadius={80}
+                                    paddingAngle={2}
+                                    label={false}
+                                  >
+                                    {radialData.map((entry, index) => (
+                                      <Cell
+                                        key={entry.name || entry.fill}
+                                        fill={entry.fill}
+                                      />
+                                    ))}
+                                  </Pie>
+                                </PieChart>
+                              </ResponsiveContainer>
+                            </ChartContainer>
                           </div>
-                        ))}
-                      </div>
+                          <div className="flex justify-center gap-4 mt-2">
+                            {radialData.map((entry) => (
+                              <div
+                                key={entry.name}
+                                className="flex items-center gap-1"
+                              >
+                                <div
+                                  className="w-3 h-3 rounded-full"
+                                  style={{ backgroundColor: entry.fill }}
+                                />
+                                <span className="text-md text-gray-800 font-bold">
+                                  {entry.name}: {entry.value}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        // Empty state for pie chart
+                        <div className="h-[160px] sm:h-[180px] w-full flex flex-col items-center justify-center">
+                          <div className="w-16 h-16 rounded-full border-4 border-dashed border-gray-400 flex items-center justify-center mb-3">
+                            <GitPullRequest className="w-6 h-6 text-gray-500" />
+                          </div>
+                          <p className="text-gray-600 text-sm font-medium">
+                            No contributions yet
+                          </p>
+                          <p className="text-gray-500 text-xs mt-1">
+                            Start contributing to see your chart!
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     {/* Radar Chart */}
@@ -421,39 +543,135 @@ const ProfileCard = () => {
                       <h3 className="text-base font-semibold text-gray-800 mb-2 text-center">
                         Issue Distribution
                       </h3>
-                      <div className="h-[180px] sm:h-[200px] w-full max-w-full">
-                        <ChartContainer
-                          config={radarChartConfig}
-                          className="h-full w-full"
-                        >
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
+                      {hasValidData(radarData) ? (
+                        <div className="h-[225px] sm:h-[250px] w-full max-w-full">
+                          <ChartContainer
+                            title="Contribution Activity"
+                            config={radarChartConfig}
                           >
-                            <RadarChart
-                              outerRadius={60}
-                              cy={90}
-                              data={radarData}
+                            <ResponsiveContainer
+                              width="100%"
+                              height={240}
                             >
-                              <ChartTooltip content={<ChartTooltipContent />} />
-                              <PolarGrid stroke="#f28b30" />
-                              <PolarAngleAxis
-                                dataKey="attribute"
-                                tick={{ fill: '#2e2e2e', fontSize: 10 }}
-                                tickLine={false}
-                              />
-                              <Radar
-                                name="Skills"
-                                dataKey="value"
-                                stroke="#22c55e"
-                                fill="#4ade80"
-                                fillOpacity={0.6}
-                                dot={{ r: 2, fill: '#22c55e', fillOpacity: 1 }}
-                              />
-                            </RadarChart>
-                          </ResponsiveContainer>
-                        </ChartContainer>
-                      </div>
+                              <RadarChart
+                                outerRadius="75%"
+                                data={radarData}
+                              >
+                                <PolarAngleAxis
+                                  dataKey="attribute"
+                                  tick={({
+                                    payload,
+                                    x,
+                                    y,
+                                    textAnchor,
+                                    index,
+                                  }) => {
+                                    const shouldSplit =
+                                      payload.value === 'Features Suggested' ||
+                                      payload.value === 'Bugs Reported';
+                                    const lines = shouldSplit
+                                      ? payload.value.split(' ')
+                                      : [payload.value];
+                                    let adjustedY = y;
+                                    if (payload.value === 'Tests Contributed')
+                                      adjustedY = y - 10; // push upward
+                                    if (payload.value === 'Docs Contributed')
+                                      adjustedY = y + 10; // push downward
+                                    return (
+                                      <text
+                                        x={x}
+                                        y={adjustedY}
+                                        textAnchor={textAnchor}
+                                        fill="#fff"
+                                        fontSize={16}
+                                        fontWeight={700}
+                                      >
+                                        {lines.map(
+                                          (line: string, i: number) => (
+                                            <tspan
+                                              x={x}
+                                              dy={i === 0 ? 0 : 18}
+                                              key={line}
+                                            >
+                                              {line}
+                                            </tspan>
+                                          ),
+                                        )}
+                                      </text>
+                                    );
+                                  }}
+                                />
+                                <PolarRadiusAxis
+                                  tick={false}
+                                  axisLine={false}
+                                  domain={[0, 'dataMax']}
+                                  scale="linear"
+                                />
+                                <g>
+                                  <line
+                                    x1="50%"
+                                    y1="15%"
+                                    x2="50%"
+                                    y2="85%"
+                                    stroke="#065f46"
+                                    strokeWidth="2"
+                                  />
+                                  <line
+                                    x1="30%"
+                                    y1="50%"
+                                    x2="70%"
+                                    y2="50%"
+                                    stroke="#065f46"
+                                    strokeWidth="2"
+                                  />
+                                </g>
+                                <Radar
+                                  name="Activity"
+                                  dataKey="value"
+                                  stroke="#059669"
+                                  fill="#6ee7b7"
+                                  fillOpacity={0.55}
+                                  dot={{
+                                    r: 4,
+                                    stroke: '#10b981',
+                                    fill: '#ecfdf5',
+                                    strokeWidth: 2,
+                                  }}
+                                />
+                                <ChartTooltip
+                                  content={
+                                    <ChartTooltipContent title="Contribution Activity" />
+                                  }
+                                  cursor={false}
+                                />
+                              </RadarChart>
+                            </ResponsiveContainer>
+                          </ChartContainer>
+                        </div>
+                      ) : (
+                        // Empty state for radar chart
+                        <div className="h-[180px] sm:h-[200px] w-full flex flex-col items-center justify-center">
+                          <div className="relative">
+                            {/* Radar-like empty state icon */}
+                            <div className="w-20 h-20 rounded-full border-4 border-dashed border-gray-400 relative">
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                              </div>
+                              {/* Radar lines */}
+                              <div className="absolute inset-0">
+                                <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gray-300 transform -translate-x-1/2" />
+                                <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-300 transform -translate-y-1/2" />
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-gray-600 text-sm font-medium mt-3">
+                            No activity data
+                          </p>
+                          <p className="text-gray-500 text-xs mt-1">
+                            Complete tasks to see your profile scan!
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -499,7 +717,6 @@ const ActivityItem = ({
   </div>
 );
 
-// Recent Activity Section
 export const RecentActivitySection = () => (
   <div className="w-full max-w-5xl mx-auto mt-10 bg-white/10 backdrop-blur-xl shadow-xl rounded-2xl p-8 border border-white/20">
     <h3 className="text-xl font-semibold text-gray-800 mb-4">

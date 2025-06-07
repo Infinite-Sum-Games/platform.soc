@@ -1,5 +1,7 @@
 'use client';
 import { ScrollArea } from '@/app/components/ui/scroll-area';
+import { make_api_call } from '@/app/lib/api';
+import { AuthState, type AuthUser } from '@/app/store/useAuthStore';
 import useLeaderboardStore from '@/app/store/useLeaderboardStore';
 import { useEffect, useState } from 'react';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa'; // Import sorting icons
@@ -14,7 +16,7 @@ export type TUserData = {
   _count: { Solution: string };
 };
 
-const Leaderboard = () => {
+const Leaderboard = ({ user }: { user: AuthUser | null }) => {
   const { setUser } = useLeaderboardStore();
   const [leaderboardData, setLeaderboardData] = useState<TUserData[]>([]);
   const [sortCriteria, setSortCriteria] = useState<'PRs' | 'Bounty' | null>(
@@ -22,24 +24,36 @@ const Leaderboard = () => {
   );
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
+  /* For Leader Board
   // useEffect(() => {
-  //   const getLeaderboardData = async () => {
+  //   const fetchLeaderboard = async () => {
   //     try {
-  //       const request = await fetch('/api/leaderboard', {
-  //         method: 'GET',
+  //       const result = await make_api_call<{
+  //         message: string;
+  //         leaderboard: {
+  //           github_username: string;
+  //           bounty: string;
+  //           pull_requests_merged: string;
+  //         }[];
+  //       }>({
+  //         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`,
+  //         method: "GET",
   //         headers: {
-  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${user?.access_token}`, 
   //         },
   //       });
 
-  //       if (request.status !== 200) {
-  //         console.log('Error fetching leaderboard data', request.status);
-  //       }
+  //       const formattedData: TUserData[] = (result.data?.leaderboard ?? []).map((item) => ({
+  //         fullName: "", 
+  //         username: item.github_username,
+  //         bounty: parseInt(item.bounty),
+  //         accountActive: true, 
+  //         _count: { Solution: item.pull_requests_merged },
+  //       }));
 
-  //       const data = await request.json();
-  //       setLeaderboardData(data.leaderboard);
+  //       setLeaderboardData(formattedData);
 
-  //       data.leaderboard.forEach((userData: TUserData, index: number) => {
+  //       formattedData.forEach((userData, index) => {
   //         const rank = index + 1;
   //         setUser(
   //           userData.fullName,
@@ -47,90 +61,70 @@ const Leaderboard = () => {
   //           rank,
   //           userData.bounty,
   //           userData.accountActive,
-  //           userData._count,
+  //           userData._count
   //         );
   //       });
   //     } catch (error) {
-  //       console.log('Error fetching leaderboard data', error);
+  //       console.error("Failed to fetch leaderboard:", error);
   //     }
   //   };
-  //   getLeaderboardData();
-  // }, [setUser]);
+
+  //   fetchLeaderboard();
+  // }, [setUser, user?.access_token]);
+
+  */
+
+  // For Registered Participants
 
   useEffect(() => {
-    const mockData: TUserData[] = [
-      {
-        fullName: 'Alice Johnson',
-        username: 'alicejohnson',
-        bounty: 120,
-        accountActive: true,
-        _count: { Solution: '15' },
-      },
-      {
-        fullName: 'Bob Smith',
-        username: 'bobsmith',
-        bounty: 85,
-        accountActive: true,
-        _count: { Solution: '20' },
-      },
-      {
-        fullName: 'Charlie Brown',
-        username: 'charliebrown',
-        bounty: 60,
-        accountActive: false,
-        _count: { Solution: '10' },
-      },
-      {
-        fullName: 'Daisy Ridley',
-        username: 'daisyridley',
-        bounty: 100,
-        accountActive: true,
-        _count: { Solution: '25' },
-      },
-      {
-        fullName: 'Ethan Hunt',
-        username: 'ethanhunt',
-        bounty: 150,
-        accountActive: true,
-        _count: { Solution: '30' },
-      },
-      {
-        fullName: 'Ethan Hunt',
-        username: 'ethanhunt1',
-        bounty: 150,
-        accountActive: true,
-        _count: { Solution: '30' },
-      },
-      {
-        fullName: 'Ethan Hunt',
-        username: 'ethanhunt2',
-        bounty: 150,
-        accountActive: true,
-        _count: { Solution: '30' },
-      },
-      {
-        fullName: 'Ethan Hunt',
-        username: 'ethanhunt3',
-        bounty: 150,
-        accountActive: true,
-        _count: { Solution: '30' },
-      },
-    ];
+    const fetchRegistrations = async () => {
+      try {
+        const result = await make_api_call<{
+          message: string;
+          profiles: {
+            full_name: string | null;
+            github_username: string;
+            bounty: number;
+            solutions: number;
+          }[];
+        }>({
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/registrations`,
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${user?.access_token}`,
+          },
+        });
 
-    setLeaderboardData(mockData);
+        const formattedData: TUserData[] = (result.data?.profiles ?? []).map(
+          (profile) => ({
+            fullName: profile.full_name || '',
+            username: profile.github_username,
+            bounty: profile.bounty,
+            accountActive: true,
+            _count: { Solution: profile.solutions.toString() },
+          }),
+        );
 
-    mockData.forEach((userData, index) => {
-      const rank = index + 1;
-      setUser(
-        userData.fullName,
-        userData.username,
-        rank,
-        userData.bounty,
-        userData.accountActive,
-        userData._count,
-      );
-    });
-  }, [setUser]);
+        setLeaderboardData(formattedData);
+
+        formattedData.forEach((userData, index) => {
+          const rank = index + 1;
+          setUser(
+            userData.fullName,
+            userData.username,
+            rank,
+            userData.bounty,
+            userData.accountActive,
+            userData._count,
+          );
+        });
+      } catch (error) {
+        console.error('Failed to fetch registration leaderboard:', error);
+      }
+    };
+
+    fetchRegistrations();
+  }, [setUser, user?.access_token]);
 
   const sortLeaderboard = (criteria: 'PRs' | 'Bounty') => {
     let order = sortOrder;

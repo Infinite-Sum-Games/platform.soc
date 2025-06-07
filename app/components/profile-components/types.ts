@@ -1,14 +1,19 @@
-// Badge Interface
 export interface Badge {
   id: number;
   title: string;
   description: string;
   icon: string;
   unlocked: boolean;
-  date?: string;
   tier: 'bronze' | 'silver' | 'gold' | 'diamond';
-  progress?: number;
-  category: string;
+  date?: string;
+  category:
+    | 'code'
+    | 'bugs'
+    | 'languages'
+    | 'mentor'
+    | 'ci'
+    | 'creative'
+    | 'mastery';
   position: number;
   requires?: number[];
 }

@@ -130,7 +130,7 @@ const Dashboard = () => {
               value="leaderboard"
               className="flex-grow overflow-y-auto"
             >
-              <Leaderboard />
+              <Leaderboard user={user ? user : null} />
             </TabsContent>
           </Tabs>
         </div>

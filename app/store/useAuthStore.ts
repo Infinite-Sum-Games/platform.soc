@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface AuthUser {
+export interface AuthUser {
   access_token: string;
   refresh_token: string;
   github_username: string;
@@ -9,7 +9,7 @@ interface AuthUser {
   bounty: number;
 }
 
-interface AuthState {
+export interface AuthState {
   user: AuthUser | null;
   setUser: (user: AuthUser) => void;
   clearUser: () => void;
