@@ -6,7 +6,6 @@ export interface Badge {
   unlocked: boolean;
   tier: 'bronze' | 'silver' | 'gold' | 'diamond';
   date?: string;
-  progress?: number;
   category:
     | 'code'
     | 'bugs'
