@@ -32,9 +32,9 @@ export interface ProfileResponse {
   pending_issue_count: number;
   rank: number;
   documentation_count: number;
-  bug_reported_count: number;
+  bug_report_count: number;
   feature_count: number;
-  tests_count: number;
+  test_count: number;
   badges: string[];
 }
 
@@ -323,9 +323,9 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
     },
     issueStats: {
       docs: profile.documentation_count,
-      bugs: profile.bug_reported_count,
+      bugs: profile.bug_report_count,
       features: profile.feature_count,
-      highImpact: profile.tests_count,
+      highImpact: profile.test_count,
     },
   };
   const radialData = [
@@ -512,7 +512,7 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                     {/* Radar Chart */}
                     <div className="w-full sm:flex-1 bg-white/25 backdrop-blur-2xl rounded-xl border border-white/30 shadow-lg p-3 sm:p-4 overflow-hidden">
                       <h3 className="text-base font-semibold text-gray-800 mb-2 text-center">
-                        Issue Distribution
+                        Profile Scan
                       </h3>
                       <div className="h-[180px] sm:h-[200px] w-full max-w-full">
                         <ChartContainer
