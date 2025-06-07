@@ -12,7 +12,6 @@ import {
   Pie,
   PieChart,
   PolarAngleAxis,
-  PolarGrid,
   PolarRadiusAxis,
   Radar,
   RadarChart,
@@ -307,6 +306,10 @@ const ProfileSkeleton = () => (
   </div>
 );
 
+const hasValidData = (data: { value: number }[]): boolean => {
+  return data.some((item) => item.value > 0);
+};
+
 interface ProfileProps {
   profile: ProfileResponse | null;
   loading: boolean;
@@ -456,167 +459,212 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                       <h3 className="text-base font-semibold mb-2 text-center text-gray-800">
                         Contribution Chart
                       </h3>
-                      <div className="h-[160px] sm:h-[180px] w-full max-w-full">
-                        <ChartContainer
-                          config={radialChartConfig}
-                          className="h-full w-full"
-                        >
-                          <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                          >
-                            <PieChart>
-                              <ChartTooltip content={<ChartTooltipContent />} />
-                              <Pie
-                                data={radialData}
-                                dataKey="value"
-                                nameKey="name"
-                                cx="50%"
-                                cy="65%" // Push the center down to create semi-circle
-                                startAngle={180} // Start at 180 degrees (left side)
-                                endAngle={0} // End at 0 degrees (right side)
-                                innerRadius={60}
-                                outerRadius={80}
-                                paddingAngle={2}
-                                label={false}
+                      {hasValidData(radialData) ? (
+                        <>
+                          <div className="h-[160px] sm:h-[180px] w-full max-w-full">
+                            <ChartContainer
+                              config={radialChartConfig}
+                              className="h-full w-full"
+                            >
+                              <ResponsiveContainer
+                                width="100%"
+                                height="100%"
                               >
-                                {radialData.map((entry, index) => (
-                                  <Cell
-                                    key={entry.name || entry.fill}
-                                    fill={entry.fill}
+                                <PieChart>
+                                  <ChartTooltip
+                                    content={<ChartTooltipContent />}
                                   />
-                                ))}
-                              </Pie>
-                            </PieChart>
-                          </ResponsiveContainer>
-                        </ChartContainer>
-                      </div>
-                      <div className="flex justify-center gap-4 mt-2">
-                        {radialData.map((entry) => (
-                          <div
-                            key={entry.name}
-                            className="flex items-center gap-1"
-                          >
-                            <div
-                              className="w-3 h-3 rounded-full"
-                              style={{ backgroundColor: entry.fill }}
-                            />
-                            <span className="text-md text-gray-800 font-bold">
-                              {entry.name}: {entry.value}
-                            </span>
+                                  <Pie
+                                    data={radialData}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    cx="50%"
+                                    cy="65%"
+                                    startAngle={180}
+                                    endAngle={0}
+                                    innerRadius={60}
+                                    outerRadius={80}
+                                    paddingAngle={2}
+                                    label={false}
+                                  >
+                                    {radialData.map((entry, index) => (
+                                      <Cell
+                                        key={entry.name || entry.fill}
+                                        fill={entry.fill}
+                                      />
+                                    ))}
+                                  </Pie>
+                                </PieChart>
+                              </ResponsiveContainer>
+                            </ChartContainer>
                           </div>
-                        ))}
-                      </div>
+                          <div className="flex justify-center gap-4 mt-2">
+                            {radialData.map((entry) => (
+                              <div
+                                key={entry.name}
+                                className="flex items-center gap-1"
+                              >
+                                <div
+                                  className="w-3 h-3 rounded-full"
+                                  style={{ backgroundColor: entry.fill }}
+                                />
+                                <span className="text-md text-gray-800 font-bold">
+                                  {entry.name}: {entry.value}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        // Empty state for pie chart
+                        <div className="h-[160px] sm:h-[180px] w-full flex flex-col items-center justify-center">
+                          <div className="w-16 h-16 rounded-full border-4 border-dashed border-gray-400 flex items-center justify-center mb-3">
+                            <GitPullRequest className="w-6 h-6 text-gray-500" />
+                          </div>
+                          <p className="text-gray-600 text-sm font-medium">
+                            No contributions yet
+                          </p>
+                          <p className="text-gray-500 text-xs mt-1">
+                            Start contributing to see your chart!
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     {/* Radar Chart */}
                     <div className="w-full sm:flex-1 bg-white/25 backdrop-blur-2xl rounded-xl border border-white/30 shadow-lg p-3 sm:p-4 overflow-hidden">
                       <h3 className="text-base font-semibold text-gray-800 mb-2 text-center">
-                        Profile Scan
+                        Issue Distribution
                       </h3>
-                      <div className="h-[180px] sm:h-[200px] w-full max-w-full">
-                        <ChartContainer
-                          title="Contribution Activity"
-                          config={radarChartConfig}
-                        >
-                          <ResponsiveContainer
-                            width="100%"
-                            height={260}
+                      {hasValidData(radarData) ? (
+                        <div className="h-[225px] sm:h-[250px] w-full max-w-full">
+                          <ChartContainer
+                            title="Contribution Activity"
+                            config={radarChartConfig}
                           >
-                            <RadarChart
-                              outerRadius="75%" // Reduce from 95% to 75% for better fit
-                              data={radarData}
+                            <ResponsiveContainer
+                              width="100%"
+                              height={240}
                             >
-                              <PolarAngleAxis
-                                dataKey="attribute"
-                                tick={({
-                                  payload,
-                                  x,
-                                  y,
-                                  textAnchor,
-                                  index,
-                                }) => {
-                                  const shouldSplit =
-                                    payload.value === 'Features Suggested' ||
-                                    payload.value === 'Bugs Reported';
-                                  const lines = shouldSplit
-                                    ? payload.value.split(' ')
-                                    : [payload.value];
-                                  return (
-                                    <text
-                                      x={x}
-                                      y={y}
-                                      textAnchor={textAnchor}
-                                      fill="#10b981"
-                                      fontSize={16} // Slightly smaller font
-                                      fontWeight={700}
-                                      dy={16} // Slightly less offset
-                                    >
-                                      {lines.map((line: string, i: number) => (
-                                        <tspan
-                                          x={x}
-                                          dy={i === 0 ? 0 : 18}
-                                          key={line}
-                                        >
-                                          {line}
-                                        </tspan>
-                                      ))}
-                                    </text>
-                                  );
-                                }}
-                              />
-                              <PolarRadiusAxis
-                                tick={false}
-                                axisLine={false}
-                                domain={[0, 'dataMax']}
-                                scale="linear"
-                              />
-
-                              {/* Custom axis lines, match new radius */}
-                              <g>
-                                {/* Vertical axis */}
-                                <line
-                                  x1="50%"
-                                  y1="15%"
-                                  x2="50%"
-                                  y2="85%"
-                                  stroke="#065f46"
-                                  strokeWidth="2"
+                              <RadarChart
+                                outerRadius="75%"
+                                data={radarData}
+                              >
+                                <PolarAngleAxis
+                                  dataKey="attribute"
+                                  tick={({
+                                    payload,
+                                    x,
+                                    y,
+                                    textAnchor,
+                                    index,
+                                  }) => {
+                                    const shouldSplit =
+                                      payload.value === 'Features Suggested' ||
+                                      payload.value === 'Bugs Reported';
+                                    const lines = shouldSplit
+                                      ? payload.value.split(' ')
+                                      : [payload.value];
+                                    let adjustedY = y;
+                                    if (payload.value === 'Tests Contributed')
+                                      adjustedY = y - 10; // push upward
+                                    if (payload.value === 'Docs Contributed')
+                                      adjustedY = y + 10; // push downward
+                                    return (
+                                      <text
+                                        x={x}
+                                        y={adjustedY}
+                                        textAnchor={textAnchor}
+                                        fill="#fff"
+                                        fontSize={16}
+                                        fontWeight={700}
+                                      >
+                                        {lines.map(
+                                          (line: string, i: number) => (
+                                            <tspan
+                                              x={x}
+                                              dy={i === 0 ? 0 : 18}
+                                              key={line}
+                                            >
+                                              {line}
+                                            </tspan>
+                                          ),
+                                        )}
+                                      </text>
+                                    );
+                                  }}
                                 />
-                                {/* Horizontal axis */}
-                                <line
-                                  x1="30%"
-                                  y1="50%"
-                                  x2="70%"
-                                  y2="50%"
-                                  stroke="#065f46"
-                                  strokeWidth="2"
+                                <PolarRadiusAxis
+                                  tick={false}
+                                  axisLine={false}
+                                  domain={[0, 'dataMax']}
+                                  scale="linear"
                                 />
-                              </g>
-
-                              <Radar
-                                name="Activity"
-                                dataKey="value"
-                                stroke="#059669"
-                                fill="#6ee7b7"
-                                fillOpacity={0.55}
-                                dot={{
-                                  r: 4,
-                                  stroke: '#10b981',
-                                  fill: '#ecfdf5',
-                                  strokeWidth: 2,
-                                }}
-                              />
-                              <ChartTooltip
-                                content={
-                                  <ChartTooltipContent title="Contribution Activity" />
-                                }
-                                cursor={false}
-                              />
-                            </RadarChart>
-                          </ResponsiveContainer>
-                        </ChartContainer>
-                      </div>
+                                <g>
+                                  <line
+                                    x1="50%"
+                                    y1="15%"
+                                    x2="50%"
+                                    y2="85%"
+                                    stroke="#065f46"
+                                    strokeWidth="2"
+                                  />
+                                  <line
+                                    x1="30%"
+                                    y1="50%"
+                                    x2="70%"
+                                    y2="50%"
+                                    stroke="#065f46"
+                                    strokeWidth="2"
+                                  />
+                                </g>
+                                <Radar
+                                  name="Activity"
+                                  dataKey="value"
+                                  stroke="#059669"
+                                  fill="#6ee7b7"
+                                  fillOpacity={0.55}
+                                  dot={{
+                                    r: 4,
+                                    stroke: '#10b981',
+                                    fill: '#ecfdf5',
+                                    strokeWidth: 2,
+                                  }}
+                                />
+                                <ChartTooltip
+                                  content={
+                                    <ChartTooltipContent title="Contribution Activity" />
+                                  }
+                                  cursor={false}
+                                />
+                              </RadarChart>
+                            </ResponsiveContainer>
+                          </ChartContainer>
+                        </div>
+                      ) : (
+                        // Empty state for radar chart
+                        <div className="h-[180px] sm:h-[200px] w-full flex flex-col items-center justify-center">
+                          <div className="relative">
+                            {/* Radar-like empty state icon */}
+                            <div className="w-20 h-20 rounded-full border-4 border-dashed border-gray-400 relative">
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                              </div>
+                              {/* Radar lines */}
+                              <div className="absolute inset-0">
+                                <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gray-300 transform -translate-x-1/2" />
+                                <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-300 transform -translate-y-1/2" />
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-gray-600 text-sm font-medium mt-3">
+                            No activity data
+                          </p>
+                          <p className="text-gray-500 text-xs mt-1">
+                            Complete tasks to see your profile scan!
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
