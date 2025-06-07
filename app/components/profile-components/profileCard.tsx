@@ -125,7 +125,7 @@ const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
             marginLeft: '4rem',
           }}
         />
-        <div className="relative flex justify-between items-center px-16">
+        <div className="relative flex justify-between items-center px-4 sm:px-8 lg:px-16">
           {badges.map((badge) => {
             const isUnlocked = value >= badge.threshold;
 
@@ -137,17 +137,17 @@ const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
               >
                 <div
                   className={`
-                    relative w-20 h-20 rounded-full border-4 transition-all duration-500 flex items-center justify-center overflow-hidden
+                    relative w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-full border-2 sm:border-3 lg:border-4 transition-all duration-500 flex items-center justify-center overflow-hidden
                     ${
                       isUnlocked
-                        ? 'border-orange-500 bg-gradient-to-br shadow-xl shadow-orange-500/30'
-                        : 'border-gray-400/50 bg-gray-200/20 shadow-lg'
+                        ? 'border-orange-500 bg-gradient-to-br shadow-lg sm:shadow-xl shadow-orange-500/30'
+                        : 'border-gray-400/50 bg-gray-200/20 shadow-md sm:shadow-lg'
                     }
-                    hover:scale-110 transform-gpu cursor-pointer hover:shadow-2xl
+                    hover:scale-110 transform-gpu cursor-pointer hover:shadow-xl sm:hover:shadow-2xl
                   `}
                   title={`${badge.title} - ${badge.threshold} points`}
                 >
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden flex items-center justify-center">
+                  <div className="relative w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden flex items-center justify-center">
                     <img
                       src={badge.icon}
                       alt={badge.title}
@@ -165,7 +165,7 @@ const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
                           !parent.querySelector('.fallback-badge')
                         ) {
                           const fallback = document.createElement('div');
-                          fallback.className = `fallback-badge w-full h-full flex items-center justify-center text-white font-bold text-2xl rounded-full bg-gradient-to-br ${
+                          fallback.className = `fallback-badge w-full h-full flex items-center justify-center text-white font-bold text-sm sm:text-xl lg:text-2xl rounded-full bg-gradient-to-br ${
                             badge.color
                           } ${!isUnlocked ? 'grayscale brightness-50' : ''}`;
                           fallback.textContent = badge.position.toString();
@@ -178,7 +178,7 @@ const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
                   {!isUnlocked && (
                     <div className="absolute inset-0 rounded-full bg-black/60 flex items-center justify-center backdrop-blur-sm">
                       <svg
-                        className="w-6 h-6 text-white/80"
+                        className="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-white/80"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -193,9 +193,9 @@ const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
                   )}
 
                   {isUnlocked && (
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-3 border-white flex items-center justify-center shadow-lg">
+                    <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 bg-green-500 rounded-full border-2 sm:border-3 border-white flex items-center justify-center shadow-md sm:shadow-lg">
                       <svg
-                        className="w-3 h-3 text-white"
+                        className="w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3 text-white"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -210,9 +210,10 @@ const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
                   )}
                 </div>
 
-                <div className="mt-3 text-center">
+                <div className="mt-1.5 sm:mt-2 lg:mt-3 text-center h-8 sm:h-10 lg:h-12 flex flex-col justify-start">
+                  {' '}
                   <div
-                    className={`text-sm font-bold transition-colors duration-300 ${
+                    className={`text-xs sm:text-sm font-bold transition-colors duration-300 ${
                       isUnlocked ? 'text-gray-800' : 'text-gray-600'
                     }`}
                   >
@@ -221,7 +222,7 @@ const BountyProgress = ({ value, max }: { value?: number; max: number }) => {
                   <div
                     className={`text-xs font-medium transition-colors duration-300 ${
                       isUnlocked ? 'text-orange-600' : 'text-gray-600'
-                    }`}
+                    } hidden sm:block`}
                   >
                     {badge.threshold} pts
                   </div>
@@ -405,44 +406,50 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
               <div className="flex-1 flex flex-col gap-4 w-full">
                 <div className="bg-white/25 backdrop-blur-2xl rounded-xl overflow-hidden shadow-lg border border-white/30 divide-y divide-white/10">
                   {/* Stats Row */}
-                  <div className="flex flex-wrap justify-between px-4 py-3 sm:px-6 sm:py-4 gap-6">
+                  <div className="grid grid-cols-3 gap-2 px-3 py-3 sm:flex sm:flex-wrap sm:justify-between sm:px-6 sm:py-4 sm:gap-6">
                     {/* Bounty Points */}
-                    <div className="flex flex-col items-center sm:items-start">
-                      <span className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-gray-900">
-                        <Trophy className="w-5 h-5 text-yellow-500" />
-                        {profile.bounty}
+                    <div className="flex flex-col items-center">
+                      <span className="flex items-center gap-1 sm:gap-2 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900">
+                        <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500" />
+                        <span className="text-base sm:text-xl lg:text-2xl">
+                          {profile.bounty}
+                        </span>
                       </span>
-                      <span className="text-sm text-gray-700 font-medium mt-1">
+                      <span className="text-xs sm:text-sm text-gray-700 font-medium mt-0.5 sm:mt-1 text-center leading-tight">
                         Bounty Points
                       </span>
                     </div>
 
                     {/* PRs */}
-                    <div className="flex flex-col items-center sm:items-start">
-                      <span className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-gray-900">
-                        <GitPullRequest className="w-5 h-5 text-blue-500" />
-                        {profile.pull_request_count}
+                    <div className="flex flex-col items-center">
+                      <span className="flex items-center gap-1 sm:gap-2 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900">
+                        <GitPullRequest className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+                        <span className="text-base sm:text-xl lg:text-2xl">
+                          {profile.pull_request_count}
+                        </span>
                       </span>
-                      <span className="text-sm text-gray-700 font-medium mt-1">
+                      <span className="text-xs sm:text-sm text-gray-700 font-medium mt-0.5 sm:mt-1 text-center leading-tight">
                         PRs
                       </span>
                     </div>
 
                     {/* Pending Issues */}
-                    <div className="flex flex-col items-center sm:items-start">
-                      <span className="flex items-center gap-2 text-xl sm:text-2xl font-semibold text-gray-900">
-                        <Clock className="w-5 h-5 text-red-500" />
-                        {profile.pending_issue_count}
+                    <div className="flex flex-col items-center">
+                      <span className="flex items-center gap-1 sm:gap-2 text-lg sm:text-xl lg:text-2xl font-semibold text-gray-900">
+                        <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+                        <span className="text-base sm:text-xl lg:text-2xl">
+                          {profile.pending_issue_count}
+                        </span>
                       </span>
-                      <span className="text-sm text-gray-700 font-medium mt-1">
+                      <span className="text-xs sm:text-sm text-gray-700 font-medium mt-0.5 sm:mt-1 text-center leading-tight">
                         Pending Issues
                       </span>
                     </div>
                   </div>
 
-                  {/* Enhanced Bounty Progress - Much Bigger */}
-                  <div className="flex flex-col items-center justify-center px-6 py-6 sm:px-8 sm:py-8 w-full">
-                    <div className="w-full max-w-4xl">
+                  {/*Bounty Progress*/}
+                  <div className="flex flex-col items-center justify-center px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8 w-full">
+                    <div className="w-full max-w-xs sm:max-w-2xl lg:max-w-4xl">
                       <BountyProgress
                         value={profile.bounty}
                         max={1000}
