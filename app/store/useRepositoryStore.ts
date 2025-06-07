@@ -56,16 +56,22 @@ export interface IssueDataAPI {
 
 interface RepositoryState {
   repos: ReposData[];
+  isLoading: boolean;
   setRepos: (repos: ReposData[]) => void;
+  setIsLoading: (loading: boolean) => void;
   fetchAllReposAndIssues: () => Promise<void>;
 }
 
-export const useRepositoryStore = create<RepositoryState>((set, get) => ({
+export const useRepositoryStore = create<RepositoryState>((set) => ({
   repos: [],
+  isLoading: true,
 
   setRepos: (newRepos: ReposData[]) => set({ repos: newRepos }),
+  setIsLoading: (loading: boolean) => set({ isLoading: loading }),
 
   fetchAllReposAndIssues: async () => {
+    set({ isLoading: true });
+
     const {
       success: reposSuccess,
       data: reposData,
@@ -79,6 +85,7 @@ export const useRepositoryStore = create<RepositoryState>((set, get) => ({
 
     if (!reposSuccess || !reposData) {
       console.error('Failed to fetch repos:', reposError);
+      set({ isLoading: false });
       return;
     }
 
@@ -149,7 +156,7 @@ export const useRepositoryStore = create<RepositoryState>((set, get) => ({
       return repo;
     });
 
-    set({ repos: finalRepos });
+    set({ repos: finalRepos, isLoading: false });
   },
 }));
 

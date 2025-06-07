@@ -9,6 +9,7 @@ import {
   Code,
   Filter,
   GitBranch,
+  Loader2,
   Search,
   SortAsc,
   X,
@@ -43,7 +44,11 @@ type IssueFilterType = 'all' | 'claimed' | 'unclaimed' | 'completed' | 'active';
 type IssueSortType = 'newest' | 'oldest';
 
 const ReposPage = () => {
-  const { repos: repositories, fetchAllReposAndIssues } = useRepositoryStore();
+  const {
+    repos: repositories,
+    isLoading,
+    fetchAllReposAndIssues,
+  } = useRepositoryStore();
   const [selectedRepoId, setSelectedRepoId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'repositories' | 'issues'>(
     'repositories',
@@ -179,6 +184,13 @@ const ReposPage = () => {
     setSearchTerm('');
     setIssueSort('newest');
   };
+
+  const Loading = () => (
+    <div className="flex flex-col items-center justify-center py-10 text-center">
+      <Loader2 className="mb-2 h-8 w-8 text-gray-600 animate-spin" />
+      <p className="text-gray-600">Loading repositories...</p>
+    </div>
+  );
 
   const FilterMenu = () => (
     <DropdownMenu>
@@ -355,26 +367,29 @@ const ReposPage = () => {
         </h2>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-1">
           <div className="space-y-3">
-            {repositories.map((repo) => (
-              <button
-                type="button"
-                key={repo.id}
-                onClick={() => handleRepoSelect(repo.id)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    handleRepoSelect(repo.id);
-                  }
-                }}
-                aria-pressed={selectedRepoId === repo.id}
-                className="cursor-pointer rounded-lg w-full"
-              >
-                <RepoCard {...repo} />
-              </button>
-            ))}
-            {repositories.length === 0 && (
+            {isLoading ? (
+              <Loading />
+            ) : repositories.length > 0 ? (
+              repositories.map((repo) => (
+                <button
+                  type="button"
+                  key={repo.id}
+                  onClick={() => handleRepoSelect(repo.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      handleRepoSelect(repo.id);
+                    }
+                  }}
+                  aria-pressed={selectedRepoId === repo.id}
+                  className="cursor-pointer rounded-lg w-full"
+                >
+                  <RepoCard {...repo} />
+                </button>
+              ))
+            ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <GitBranch className="mb-2 h-10 w-10 text-gray-600" />
-                <p className="text-gray-600">No repositories loaded.</p>
+                <p className="text-gray-600">No repositories found.</p>
               </div>
             )}
           </div>
@@ -560,31 +575,34 @@ const ReposPage = () => {
         </h2>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-lg p-2">
           <div className="space-y-3">
-            {repositories.map((repo) => (
-              <button
-                type="button"
-                key={repo.id}
-                onClick={() => handleRepoSelect(repo.id)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    handleRepoSelect(repo.id);
-                  }
-                }}
-                aria-pressed={selectedRepoId === repo.id}
-                className={cn(
-                  'cursor-pointer rounded-lg transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md w-full',
-                  selectedRepoId === repo.id
-                    ? 'ring-2 ring-gray-500'
-                    : 'hover:ring-1 hover:ring-gray-400',
-                )}
-              >
-                <RepoCard {...repo} />
-              </button>
-            ))}
-            {repositories.length === 0 && (
+            {isLoading ? (
+              <Loading />
+            ) : repositories.length > 0 ? (
+              repositories.map((repo) => (
+                <button
+                  type="button"
+                  key={repo.id}
+                  onClick={() => handleRepoSelect(repo.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      handleRepoSelect(repo.id);
+                    }
+                  }}
+                  aria-pressed={selectedRepoId === repo.id}
+                  className={cn(
+                    'cursor-pointer rounded-lg transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md w-full',
+                    selectedRepoId === repo.id
+                      ? 'ring-2 ring-gray-500'
+                      : 'hover:ring-1 hover:ring-gray-400',
+                  )}
+                >
+                  <RepoCard {...repo} />
+                </button>
+              ))
+            ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <GitBranch className="mb-2 h-10 w-10 text-gray-600" />
-                <p className="text-gray-600">No repositories loaded.</p>
+                <p className="text-gray-600">No repositories found.</p>
               </div>
             )}
           </div>
