@@ -118,10 +118,10 @@ function GameAchievementSystem({ badges }: GameAchievementSystemProps) {
   );
 
   return (
-    <div className="h-screen flex flex-col sm:px-6 lg:px-0 py-8">
-      <div className="relative w-full max-w-full grow overflow-y-auto overflow-x-visible">
-        <div className="bg-white/20 backdrop-blur-2xl text-gray-900 p-3 rounded-2xl border border-white/30 flex flex-col">
-          <div className="max-w-full mx-auto w-full overflow-y-auto grow rounded-md ">
+    <div className="h-full flex flex-col sm:px-6 lg:px-0 py-8">
+      <div className="relative w-full max-w-full flex-1 overflow-y-auto overflow-x-visible  rounded-2xl">
+        <div className="bg-white/20 backdrop-blur-2xl text-gray-900 p-3  border border-white/30 flex flex-col min-h-full ">
+          <div className="max-w-full mx-auto w-full overflow-y-auto flex-1 rounded-md">
             {loading ? (
               <SkeletonLoader />
             ) : (
