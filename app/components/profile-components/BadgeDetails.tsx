@@ -106,21 +106,6 @@ function BadgeDetails({ badge, onClose }: BadgeDetailsProps) {
             </div>
           )}
 
-          {!isUnlocked && badge.progress !== undefined && (
-            <div className="mb-4">
-              <div className="flex justify-between text-xs text-gray-500 mb-1">
-                <span>Progress</span>
-                <span>{badge.progress}%</span>
-              </div>
-              <div className="w-full bg-gray-200 h-2 rounded-full">
-                <div
-                  className="bg-blue-500 h-2 rounded-full transition-all duration-500"
-                  style={{ width: `${badge.progress}%` }}
-                />
-              </div>
-            </div>
-          )}
-
           <button
             onClick={onClose}
             type="button"
