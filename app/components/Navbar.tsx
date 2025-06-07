@@ -82,7 +82,7 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={() => router.push('/profile')}
-                    className="flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    className="cursor-pointer flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200"
                   >
                     <img
                       src={`https://github.com/${user.github_username}.png`}
@@ -93,11 +93,11 @@ const Navbar = () => {
                       {user.github_username}
                     </span>
                   </button>
-                  <div className="flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out cursor-pointer hover:shadow-md">
+                  <div className="cursor-pointer flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out cursor-pointer hover:shadow-md">
                     <LogOut
                       color="red"
                       onClick={handleLogout}
-                      className="h-4 w-4 cursor-pointer"
+                      className="h-4 w-4"
                     />
                   </div>
                 </>
@@ -139,7 +139,7 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={() => router.push('/profile')}
-                    className="flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200 w-full"
+                    className="cursor-pointer flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200 w-full"
                   >
                     <img
                       src={`https://github.com/${user.github_username}.png`}
@@ -150,11 +150,11 @@ const Navbar = () => {
                       {user.github_username}
                     </span>
                   </button>
-                  <div className="flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out cursor-pointer hover:shadow-md">
+                  <div className="cursor-pointer flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out cursor-pointer hover:shadow-md">
                     <LogOut
                       color="red"
                       onClick={handleLogout}
-                      className="h-4 w-4 cursor-pointer"
+                      className="h-4 w-4"
                     />
                   </div>
                 </>
