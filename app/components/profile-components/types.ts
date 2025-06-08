@@ -16,6 +16,7 @@ export interface Badge {
     | 'mastery';
   position: number;
   requires?: number[];
+  progress?: number;
 }
 
 // Category Interface

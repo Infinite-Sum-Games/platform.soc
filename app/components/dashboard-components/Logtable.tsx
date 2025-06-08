@@ -133,7 +133,9 @@ export default function Logtable() {
     const fetchLogs = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch('http://localhost:9000/api/v1/updates/latest');
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/updates/latest`,
+        );
         const data: ApiResponse = await res.json();
 
         if (res.ok) {
@@ -149,7 +151,7 @@ export default function Logtable() {
           setFilteredLogs(transformed);
           console.log('Initial logs:', transformed);
         } else {
-          setError(data.message || 'Failed to fetch logs');
+          setError('Failed to fetch logs');
         }
       } catch (error) {
         setError('Network error occurred');
@@ -164,7 +166,7 @@ export default function Logtable() {
   // Set up SSE listener only once, but respond to latest activeTab
   useEffect(() => {
     const eventSource = new EventSource(
-      'http://localhost:9000/api/v1/updates/live',
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/updates/live`,
     );
 
     eventSource.onmessage = (event) => {
