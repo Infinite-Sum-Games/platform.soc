@@ -69,6 +69,7 @@ const Navbar = () => {
                 <NavLink href="/repo">Repositories</NavLink>
                 <NavLink href="/bot-commands">Bot Commands</NavLink>
                 {/* <NavLink href="/announcements">Announcements</NavLink> */}
+                <NavLink href="/request-for-code">Request for Code</NavLink>
                 <NavLink href="/resources">Resources</NavLink>
                 <NavLink href="/team">Team</NavLink>
                 <NavLink href="/past-editions">Past Editions</NavLink>
@@ -130,6 +131,9 @@ const Navbar = () => {
             <MobileNavLink href="/repo">Repositories</MobileNavLink>
             <MobileNavLink href="/bot-commands">Bot Commands</MobileNavLink>
             {/* <MobileNavLink href="/announcements">Announcements</MobileNavLink> */}
+            <MobileNavLink href="/request-for-code">
+              Request for Code
+            </MobileNavLink>
             <MobileNavLink href="/resources">Resources</MobileNavLink>
             <MobileNavLink href="/team">Team</MobileNavLink>
             <MobileNavLink href="/past-editions">Past Editions</MobileNavLink>
