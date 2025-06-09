@@ -3,6 +3,7 @@ import { ScrollArea } from '@/app/components/ui/scroll-area';
 import { make_api_call } from '@/app/lib/api';
 import { AuthState, type AuthUser } from '@/app/store/useAuthStore';
 import useLeaderboardStore from '@/app/store/useLeaderboardStore';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa'; // Import sorting icons
 import { MdCode, MdMonetizationOn } from 'react-icons/md';
@@ -17,6 +18,7 @@ export type TUserData = {
 };
 
 const Leaderboard = ({ user }: { user: AuthUser | null }) => {
+  const router = useRouter();
   const { setUser } = useLeaderboardStore();
   const [leaderboardData, setLeaderboardData] = useState<TUserData[]>([]);
   const [sortCriteria, setSortCriteria] = useState<'PRs' | 'Bounty' | null>(
@@ -168,6 +170,10 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
     );
   };
 
+  const handleUserClick = (username: string) => {
+    router.push(`/profile/${username}`);
+  };
+
   return (
     <Card className="z-10 flex w-full max-h-full flex-col rounded-3xl border border-white/20 bg-white/35 p-4 backdrop-blur-md">
       <CardHeader className="pb-1 font-bold text-4xl text-gray-800">
@@ -208,9 +214,12 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
           </div>
         ) : (
           leaderboardData.map((data, index) => (
-            <div
+            <button
               key={data.username}
-              className="my-1 flex items-center rounded-xl bg-white/10 px-3 py-2 text-gray-800 backdrop-blur-md"
+              type="button"
+              onClick={() => handleUserClick(data.username)}
+              aria-label={`View profile of ${data.fullName || data.username}`}
+              className="my-1 flex items-center rounded-xl bg-white/10 px-3 py-2 text-gray-800 backdrop-blur-md cursor-pointer transition-all duration-200 hover:bg-white/20 hover:shadow-md hover:scale-[0.98] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 w-full text-left"
             >
               <div className="flex flex-grow items-center gap-3 md:w-[50%]">
                 <div className="relative">
@@ -234,7 +243,7 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
               <div className="w-auto text-right md:w-[25%] pr-1 font-bold md:text-right">
                 {data.bounty}
               </div>
-            </div>
+            </button>
           ))
         )}
       </ScrollArea>
