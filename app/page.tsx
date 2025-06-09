@@ -46,17 +46,16 @@ const Dashboard = () => {
         <Navbar />
       </div>
 
-      {/* Centered Content Wrapper - Now a two-column layout on medium screens and up */}
-      <div className="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-[40%_minmax(0,1fr)] gap-8 items-start py-12 md:py-0 flex-grow">
+      <div className="w-full px-4 md:px-8 lg:px-12 mx-auto grid grid-cols-1 md:grid-cols-[45%_1fr] gap-4 md:gap-8 items-start py-8 md:py-0 flex-grow">
         {/* Left Column: Hero Content */}
-        <div className="z-10 flex flex-col items-center md:items-start justify-center text-left py-0 md:py-12 md:h-[calc(100vh-80px)]">
-          <h1 className="font-extrabold text-5xl tracking-tight sm:text-6xl md:text-5xl text-white">
+        <div className="z-10 flex flex-col items-center md:items-start justify-center text-left py-4 md:py-12 md:min-h-[calc(100vh-80px)]">
+          <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight text-white">
             Amrita
           </h1>
-          <h1 className="mb-6 font-extrabold text-5xl tracking-tight sm:text-6xl md:text-5xl text-yellow-300">
+          <h1 className="mb-4 md:mb-6 font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight text-yellow-300">
             Summer of Code
           </h1>
-          <p className="mb-6 max-w-2xl text-lg text-gray-200 sm:text-xl md:text-xl text-center md:text-left">
+          <p className="mb-6 max-w-2xl text-base sm:text-lg md:text-xl text-gray-200 text-center md:text-left px-4 md:px-0">
             After a successful Winter of Code, the ACM student chapter is back
             with the <strong>Summer of Code</strong>. Collaborate, learn, build
             innovative projects and showcase your skills!
@@ -67,9 +66,9 @@ const Dashboard = () => {
                 <button
                   type="button"
                   onClick={handleSignIn}
-                  className="flex cursor-pointer transform items-center justify-center gap-2 rounded-lg bg-gray-800 px-6 py-2 text-sm font-medium sm:px-8 sm:py-3 sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
+                  className="flex cursor-pointer transform items-center justify-center gap-2 rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium sm:px-8 sm:py-3 sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
                 >
-                  <Github size={24} />
+                  <Github size={22} />
                   Log in with GitHub
                 </button>
                 <button
