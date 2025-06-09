@@ -15,8 +15,8 @@ export default function Home() {
   useEffect(() => {
     async function fetchReadme() {
       try {
-        const repoOwner = 'Infinite-Sum-Games';
-        const repoName = 'platform.soc';
+        const repoOwner = 'acm-avv';
+        const repoName = 'request-for-code';
 
         console.log('Fetching README...');
 

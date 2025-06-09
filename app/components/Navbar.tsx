@@ -11,6 +11,7 @@ const Navbar = () => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const clearUser = useAuthStore((state) => state.clearUser);
+  const github_username = user?.github_username || '';
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -69,6 +70,7 @@ const Navbar = () => {
                 <NavLink href="/repo">Repositories</NavLink>
                 <NavLink href="/bot-commands">Bot Commands</NavLink>
                 {/* <NavLink href="/announcements">Announcements</NavLink> */}
+                <NavLink href="/request-for-code">Request for Code</NavLink>
                 <NavLink href="/resources">Resources</NavLink>
                 <NavLink href="/team">Team</NavLink>
                 <NavLink href="/past-editions">Past Editions</NavLink>
@@ -81,7 +83,7 @@ const Navbar = () => {
                 <>
                   <button
                     type="button"
-                    onClick={() => router.push('/profile')}
+                    onClick={() => router.push(`/profile/${github_username}`)}
                     className="cursor-pointer flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200"
                   >
                     <img
@@ -93,7 +95,7 @@ const Navbar = () => {
                       {user.github_username}
                     </span>
                   </button>
-                  <div className="cursor-pointer flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out cursor-pointer hover:shadow-md">
+                  <div className="cursor-pointer flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out hover:shadow-md">
                     <LogOut
                       color="red"
                       onClick={handleLogout}
@@ -130,6 +132,9 @@ const Navbar = () => {
             <MobileNavLink href="/repo">Repositories</MobileNavLink>
             <MobileNavLink href="/bot-commands">Bot Commands</MobileNavLink>
             {/* <MobileNavLink href="/announcements">Announcements</MobileNavLink> */}
+            <MobileNavLink href="/request-for-code">
+              Request for Code
+            </MobileNavLink>
             <MobileNavLink href="/resources">Resources</MobileNavLink>
             <MobileNavLink href="/team">Team</MobileNavLink>
             <MobileNavLink href="/past-editions">Past Editions</MobileNavLink>
@@ -138,7 +143,7 @@ const Navbar = () => {
                 <>
                   <button
                     type="button"
-                    onClick={() => router.push('/profile')}
+                    onClick={() => router.push(`/profile/${github_username}`)}
                     className="cursor-pointer flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200 w-full"
                   >
                     <img
@@ -150,7 +155,7 @@ const Navbar = () => {
                       {user.github_username}
                     </span>
                   </button>
-                  <div className="cursor-pointer flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out cursor-pointer hover:shadow-md">
+                  <div className="cursor-pointer flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out hover:shadow-md">
                     <LogOut
                       color="red"
                       onClick={handleLogout}
