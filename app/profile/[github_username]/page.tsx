@@ -31,8 +31,8 @@ const ProfilePage = () => {
 
     // Redirect to login if not authenticated
     if (!user || !user.access_token) {
-      console.log('Redirecting to login due to missing user or access_token');
-      router.push('/login');
+      console.log('Redirecting to home due to missing user or access_token');
+      router.push('/');
       return;
     }
 
