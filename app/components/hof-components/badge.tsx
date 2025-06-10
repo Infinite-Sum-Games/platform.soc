@@ -92,10 +92,8 @@ const Badge: React.FC<BadgeProps> = ({
           </div>
         </div>
         <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-xs font-bold text-gray-900">
-          {tier === 'bronze' && '🥉'}
           {tier === 'silver' && '🥈'}
           {tier === 'gold' && '🥇'}
-          {tier === 'diamond' && '💎'}
         </div>
       </div>
       <p
