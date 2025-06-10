@@ -9,8 +9,31 @@ interface BadgeProps {
   pullRequests: string;
   language: string;
   position: 'first' | 'second';
-  icon: JSX.Element; // 🔥 New: icon element is passed from outside
+  icon: JSX.Element;
 }
+
+const badgeNamesMapping: Record<string, string> = {
+  'rust-first': "2 Pincers n' Maximum Effort",
+  'rust-second': 'Crabby Coder',
+  'zig-first': "Salamander's Spirit",
+  'zig-second': "Salamander's Totem",
+  'python-first': 'Mamba Mentality',
+  'python-second': 'Basilisk Defanged',
+  'go-first': 'Apex Gopher',
+  'go-second': 'Primal Gopher',
+  'javascript-first': 'Forge Smelter',
+  'javascript-second': 'Prop Driller',
+  'cpp-first': 'Bit Brawler',
+  'cpp-second': 'Master Allocator',
+  'java-first': 'Byte Commander',
+  'java-second': 'Garbage Collector',
+  'flutter-first': 'Widget Wizard',
+  'flutter-second': 'Dartling Coder',
+  'kotlin-first': 'Coroutines Crusader',
+  'kotlin-second': 'Android Artisan',
+  'haskell-first': 'Monadic Mage',
+  'haskell-second': 'Lazy Lambda',
+};
 
 const Badge: React.FC<BadgeProps> = ({
   username,
@@ -67,6 +90,9 @@ const Badge: React.FC<BadgeProps> = ({
   const isClaimed = username !== '-';
   const tier = position === 'first' ? 'gold' : 'silver';
 
+  const badgeKey = `${language.toLowerCase()}-${position}`;
+  const badgeName = badgeNamesMapping[badgeKey] || 'Badge of Honor';
+
   const glowEffect: Record<string, string> = {
     bronze: 'shadow-amber-400/30',
     silver: 'shadow-gray-300/30',
@@ -75,7 +101,7 @@ const Badge: React.FC<BadgeProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative text-center flex flex-col items-center justify-center">
       <div
         ref={nodeRef}
         className={`relative w-16 h-16 rounded-full border-2 border-white/30 transition-all duration-300 ${
@@ -86,18 +112,19 @@ const Badge: React.FC<BadgeProps> = ({
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <div className="absolute inset-0 rounded-full overflow-hidden">
-          <div className={'w-full h-full flex items-center justify-center'}>
-            {icon}
-          </div>
+        <div className="absolute inset-0 rounded-full overflow-hidden flex items-center justify-center">
+          {icon}
         </div>
         <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-xs font-bold text-gray-900">
           {tier === 'silver' && '🥈'}
           {tier === 'gold' && '🥇'}
         </div>
       </div>
+      <p className="text-sm text-gray-900 font-bold leading-tight mt-2">
+        {badgeName}
+      </p>
       <p
-        className="text-sm text-gray-900 truncate max-w-[80px]"
+        className="text-sm text-gray-800 truncate max-w-[80px] font-mono"
         title={`@${username}`}
       >
         {isClaimed ? `@${username}` : 'Unclaimed'}
