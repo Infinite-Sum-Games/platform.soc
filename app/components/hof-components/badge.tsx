@@ -152,7 +152,7 @@ const Badge: React.FC<BadgeProps> = ({
               {`${language} ${position === 'first' ? '1st' : '2nd'} Place`}
             </h3>
             <p className="text-[10px] text-gray-700 mt-1">
-              {isClaimed ? `Claimed by @${username}` : 'Not yet claimed'}
+              {isClaimed ? `Held by @${username}` : 'Not yet claimed'}
             </p>
             {isClaimed && (
               <p className="text-[10px] text-blue-400 mt-1">
