@@ -36,6 +36,27 @@
       "designation": "Student Advisor"
     },
     {
+      "name": "Ritesh Koushik",
+      "username": "IAmRiteshKoushik",
+      "avatar": "https://avatars.githubusercontent.com/u/72215925?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Tharun Kumarr A",
+      "username": "TharunKumarrA",
+      "avatar": "https://avatars.githubusercontent.com/u/111127663?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Thanus Kumaar",
+      "username": "Thanus-Kumaar",
+      "avatar": "https://avatars.githubusercontent.com/u/111196217?v=4",
+      "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
       "name": "Vijay SB",
       "username": "vijay-sb",
       "avatar": "https://avatars.githubusercontent.com/u/153985965?v=4",
@@ -57,9 +78,9 @@
       "designation": "ACM Member"
     },
     {
-      "name": "Midhunann",
-      "username": "midhunann",
-      "avatar": "https://avatars.githubusercontent.com/u/147637610?v=4",
+      "name": "Adhikkesh SK",
+      "username": "Adhikkesh",
+      "avatar": "https://avatars.githubusercontent.com/u/144268393?v=4",
       "tags": ["Organizer"],
       "designation": "ACM Member"
     },
@@ -67,6 +88,13 @@
       "name": "Jayadev D",
       "username": "FLASH2332",
       "avatar": "https://avatars.githubusercontent.com/u/148314235?v=4",
+      "tags": ["Organizer"],
+      "designation": "ACM Member"
+    },
+    {
+      "name": "Midhunann",
+      "username": "midhunann",
+      "avatar": "https://avatars.githubusercontent.com/u/147637610?v=4",
       "tags": ["Organizer"],
       "designation": "ACM Member"
     },
@@ -111,34 +139,6 @@
       "avatar": "https://avatars.githubusercontent.com/u/143313500?v=4",
       "tags": ["Organizer"],
       "designation": "ACM Member"
-    },
-    {
-      "name": "Adhikkesh SK",
-      "username": "Adhikkesh",
-      "avatar": "https://avatars.githubusercontent.com/u/144268393?v=4",
-      "tags": ["Organizer"],
-      "designation": "ACM Member"
-    },
-    {
-      "name": "Tharun Kumarr A",
-      "username": "TharunKumarrA",
-      "avatar": "https://avatars.githubusercontent.com/u/111127663?v=4",
-      "tags": ["Organizer"],
-      "designation": "Volunteer"
-    },
-    {
-      "name": "Thanus Kumaar",
-      "username": "Thanus-Kumaar",
-      "avatar": "https://avatars.githubusercontent.com/u/111196217?v=4",
-      "tags": ["Organizer"],
-      "designation": "Volunteer"
-    },
-    {
-      "name": "Ritesh Koushik",
-      "username": "IAmRiteshKoushik",
-      "avatar": "https://avatars.githubusercontent.com/u/72215925?v=4",
-      "tags": ["Organizer"],
-      "designation": "Volunteer"
     }
   ]
 }

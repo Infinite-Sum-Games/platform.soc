@@ -11,32 +11,35 @@ interface LanguagePillProps {
 }
 
 const badgeIconsMapping: Record<string, string> = {
-  'cpp-first': '/badges/hof-default.png',
-  'cpp-second': '/badges/hof-default.png',
-  'python-first': '/badges/hof-default.png',
-  'python-second': '/badges/hof-default.png',
-  'javascript-first': '/badges/hof-default.png',
-  'javascript-second': '/badges/hof-default.png',
-  'rust-first': '/badges/hof-default.png',
-  'rust-second': '/badges/hof-default.png',
-  'java-first': '/badges/hof-default.png',
-  'java-second': '/badges/hof-default.png',
-  'go-first': '/badges/hof-default.png',
-  'go-second': '/badges/hof-default.png',
-  'zig-first': '/badges/hof-default.png',
-  'zig-second': '/badges/hof-default.png',
-  'haskell-first': '/badges/hof-default.png',
-  'haskell-second': '/badges/hof-default.png',
-  'flutter-first': '/badges/hof-default.png',
-  'flutter-second': '/badges/hof-default.png',
-  'kotlin-first': '/badges/hof-default.png',
-  'kotlin-second': '/badges/hof-default.png',
-};
+  'cpp-first': '',
+  'cpp-second': '',
+  'python-first': '',
+  'python-second': '',
+  'javascript-first': '',
+  'javascript-second': '',
+  'rust-first': '',
+  'rust-second': '',
+  'java-first': '',
+  'java-second': '',
+  'go-first': '',
+  'go-second': '',
+  'zig-first': '',
+  'zig-second': '',
+  'haskell-first': '',
+  'haskell-second': '',
+  'flutter-first': '',
+  'flutter-second': '',
+  'kotlin-first': '',
+  'kotlin-second': '',
+}; // need to fill these with actual paths
 
 const getBadgeIcon = (language: string, position: 'first' | 'second') => {
+  const key = `${language}-${position}`;
+  const src = badgeIconsMapping[key] || '/Badges/hof-default.png'; // fallback
+
   return (
     <Image
-      src={'/badges/hof-default.png'}
+      src={src}
       alt={`${language} ${position} icon`}
       width={64}
       height={64}
