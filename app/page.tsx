@@ -83,7 +83,7 @@ const Dashboard = () => {
             ) : (
               <button
                 type="button"
-                onClick={() => router.push('/profile')}
+                onClick={() => router.push(`/profile/${user.github_username}`)}
                 className="flex cursor-pointer transform items-center justify-between gap-2 rounded-3xl bg-gray-800 px-2 py-2 text-sm font-medium w-fit sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
               >
                 <img
