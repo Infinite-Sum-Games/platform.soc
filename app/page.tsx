@@ -1,6 +1,7 @@
+// src/app/page.tsx
 'use client';
+import HallOfFame from './components/dashboard-components/hallOfFame';
 import Leaderboard from './components/dashboard-components/leaderboard';
-
 import './globals.css';
 import {
   Tabs,
@@ -28,7 +29,6 @@ const Dashboard = () => {
         event.origin === window.location.origin &&
         event.data.type === 'AUTH_SUCCESS'
       ) {
-        // Refresh the page to update the UI
         window.location.reload();
       }
     };
@@ -41,15 +41,12 @@ const Dashboard = () => {
     <div className="relative flex min-h-screen w-full flex-col text-white">
       <SunGlareEffect />
       <Cloud />
-
       <div className="z-20 h-[80px] shrink-0">
         <Navbar />
       </div>
-
-      <div className="w-full px-4 md:px-8 lg:px-12 mx-auto grid grid-cols-1 md:grid-cols-[45%_1fr] gap-4 md:gap-8 items-start py-8 md:py-0 flex-grow">
-        {/* Left Column: Hero Content */}
-        <div className="z-10 flex flex-col items-center md:items-start justify-center text-left py-4 md:py-12 md:min-h-[calc(100vh-80px)]">
-          <h1 className="font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight text-white">
+      <div className="w-11/12 mx-auto grid grid-cols-1 md:grid-cols-[40%_minmax(0,1fr)] gap-8 items-start py-12 md:py-0 flex-grow">
+        <div className="z-10 flex flex-col items-center md:items-start justify-center text-left py-0 md:py-12 md:h-[calc(100vh-80px)]">
+          <h1 className="font-extrabold text-5xl tracking-tight sm:text-6xl md:text-5xl text-white">
             Amrita
           </h1>
           <h1 className="mb-4 md:mb-6 font-extrabold text-4xl sm:text-5xl md:text-6xl tracking-tight text-yellow-300">
@@ -82,7 +79,7 @@ const Dashboard = () => {
             ) : (
               <button
                 type="button"
-                onClick={() => router.push('/profile')}
+                onClick={() => router.push(`/profile/${user.github_username}`)}
                 className="flex cursor-pointer transform items-center justify-between gap-2 rounded-3xl bg-gray-800 px-2 py-2 text-sm font-medium w-fit sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
               >
                 <img
@@ -98,14 +95,12 @@ const Dashboard = () => {
             )}
           </div>
         </div>
-
-        {/* Right Column: Tabs Section */}
         <div className="relative z-10 flex w-full flex-1 flex-col items-center py-8 md:py-4 md:h-[calc(100vh-80px)]">
           <Tabs
             defaultValue="leaderboard"
             className="w-full flex flex-col h-full"
           >
-            <TabsList className="grid w-full grid-cols-2 bg-white/20 p-1 rounded-3xl backdrop-blur-sm mb-2 shrink-0">
+            <TabsList className="grid w-full grid-cols-3 bg-white/20 p-1 rounded-3xl backdrop-blur-sm mb-2 shrink-0">
               <TabsTrigger
                 value="live-activity"
                 className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-800 data-[state=active]:bg-white data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
@@ -117,6 +112,12 @@ const Dashboard = () => {
                 className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-800 data-[state=active]:bg-white data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
               >
                 Leaderboard
+              </TabsTrigger>
+              <TabsTrigger
+                value="hall-of-fame"
+                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-800 data-[state=active]:bg-white data-[state=active]:shadow-md rounded-3xl transition-all cursor-pointer"
+              >
+                Hall of Fame
               </TabsTrigger>
             </TabsList>
             <TabsContent
@@ -130,6 +131,12 @@ const Dashboard = () => {
               className="flex-grow overflow-y-auto"
             >
               <Leaderboard user={user ? user : null} />
+            </TabsContent>
+            <TabsContent
+              value="hall-of-fame"
+              className="flex-grow overflow-y-auto"
+            >
+              <HallOfFame />
             </TabsContent>
           </Tabs>
         </div>

@@ -436,11 +436,15 @@ export default function RegisterPage() {
                 className="space-y-6 sm:space-y-8 md:space-y-6"
               >
                 <div className="space-y-2 sm:space-y-3 md:space-y-3">
-                  <p className="text-xs text-blue-700 font-bold italic mb-1">
+                  <p className="text-sm sm:text-base md:text-sm font-semibold text-gray-800 italic mb-2">
                     OTP sent to{' '}
-                    <span className="font-mono text-blue-900">
+                    <span className="font-mono text-gray-700 bg-blue-100/50 px-1.5 py-0.5 rounded-md">
                       {formData.email}
                     </span>
+                  </p>
+                  <p className="text-xs sm:text-sm md:text-xs font-medium text-red-500">
+                    Please check your junk or spam folder if you don't see the
+                    OTP in your inbox.
                   </p>
                   <Label
                     htmlFor="otp"
