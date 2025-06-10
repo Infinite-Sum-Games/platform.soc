@@ -11,7 +11,7 @@ interface BadgeProps {
   progress?: number;
 }
 
-const tierStyles = {
+export const tierStyles = {
   bronze: {
     gradient: 'from-amber-600 via-amber-700 to-orange-800 border-amber-400',
     glow: 'shadow-amber-500/40',

@@ -65,7 +65,6 @@ const Navbar = () => {
             {/* Desktop Navigation */}
             <div className="hidden flex-1 items-center justify-center md:flex">
               <div className="flex space-x-4">
-                <NavLink href="/">Home</NavLink>
                 <NavLink href="/rules">Rules</NavLink>
                 <NavLink href="/repo">Repositories</NavLink>
                 <NavLink href="/bot-commands">Bot Commands</NavLink>
