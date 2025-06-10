@@ -41,17 +41,35 @@ const RequestForCodePage = () => {
     }
   };
 
+  const discussionsButton = (
+    <Button
+      asChild
+      className="flex cursor-pointer transform items-center justify-between rounded-3xl bg-gray-800 px-4 py-2 text-sm font-medium w-fit sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+    >
+      <a
+        href="https://github.com/orgs/your-org-name/discussions"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Join Discussions
+      </a>
+    </Button>
+  );
+
   const desktopView = (
     <div className="flex flex-col gap-6 md:flex-row h-[calc(100vh-105px)]">
       <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
-        <h2 className="mb-3 flex items-center border-b border-white/50 pb-2 font-semibold text-2xl text-gray-800 shrink-0">
-          <GitBranch
-            className="mr-2 h-6 w-6"
-            color="#4B5563"
-          />
-          Projects{' '}
-          <span className="ml-2 text-gray-700">({projects.length})</span>
-        </h2>
+        <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2 shrink-0">
+          <h2 className="flex items-center font-semibold text-2xl text-gray-800">
+            <GitBranch
+              className="mr-2 h-6 w-6"
+              color="#4B5563"
+            />
+            Projects{' '}
+            <span className="ml-2 text-gray-700">({projects.length})</span>
+          </h2>
+          {discussionsButton}
+        </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-1">
           <div className="space-y-3">
             {projects.length > 0 ? (
@@ -118,7 +136,7 @@ const RequestForCodePage = () => {
           {selectedProject ? (
             <ReadmeViewer
               owner={selectedProject.owner}
-              repoName={selectedProject.name}
+              repoName={selectedProject.repo_name}
               pdfLink={selectedProject.pdfLink}
             />
           ) : (
@@ -165,11 +183,14 @@ const RequestForCodePage = () => {
         value="projects"
         className="mt-4 rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
       >
-        <h2 className="mb-3 flex items-center border-b border-white/50 pb-2 font-semibold text-xl sm:text-2xl text-gray-800">
-          <GitBranch className="mr-2 h-6 w-6 text-gray-600" />
-          Projects{' '}
-          <span className="ml-2 text-gray-700">({projects.length})</span>
-        </h2>
+        <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2">
+          <h2 className="flex items-center font-semibold text-xl sm:text-2xl text-gray-800">
+            <GitBranch className="mr-2 h-6 w-6 text-gray-600" />
+            Projects{' '}
+            <span className="ml-2 text-gray-700">({projects.length})</span>
+          </h2>
+          {discussionsButton}
+        </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-lg p-2">
           <div className="space-y-3">
             {projects.length > 0 ? (
