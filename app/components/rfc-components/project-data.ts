@@ -12,18 +12,6 @@ export interface ProjectData {
 
 export const projects: ProjectData[] = [
   {
-    id: 'ASOC1',
-    name: 'Project Proposals',
-    description:
-      'Multiple projects, see PDF for details (To-Do List, Chair Booking, Raw Material Management, Recipe Management, Employee Management)',
-    tech: [],
-    maintainerUsernames: ['acm-avv'],
-    owner: 'acm-avv',
-    pdfLink:
-      'https://drive.google.com/file/d/1xBzS92xe4Jtr61vBODo_MtxauMrtHHDb/view?usp=sharing',
-    repo_name: '',
-  },
-  {
     id: 'ASOC1A',
     name: 'To-Do List and Employee Collaboration Application',
     description: 'Details in the Project Proposals PDF.',
