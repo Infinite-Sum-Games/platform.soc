@@ -47,7 +47,7 @@ const RequestForCodePage = () => {
       className="flex cursor-pointer transform items-center justify-between rounded-3xl bg-gray-800 px-4 py-2 text-sm font-medium w-fit sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900"
     >
       <a
-        href="https://github.com/orgs/your-org-name/discussions"
+        href="https://github.com/orgs/acm-avv/discussions"
         target="_blank"
         rel="noopener noreferrer"
       >
