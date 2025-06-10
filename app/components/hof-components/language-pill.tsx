@@ -11,32 +11,32 @@ interface LanguagePillProps {
 }
 
 const badgeIconsMapping: Record<string, string> = {
-  'cpp-first': '/badges/hof-default.png',
-  'cpp-second': '/badges/hof-default.png',
-  'python-first': '/badges/hof-default.png',
-  'python-second': '/badges/hof-default.png',
-  'javascript-first': '/badges/hof-default.png',
-  'javascript-second': '/badges/hof-default.png',
-  'rust-first': '/badges/hof-default.png',
-  'rust-second': '/badges/hof-default.png',
-  'java-first': '/badges/hof-default.png',
-  'java-second': '/badges/hof-default.png',
-  'go-first': '/badges/hof-default.png',
-  'go-second': '/badges/hof-default.png',
-  'zig-first': '/badges/hof-default.png',
-  'zig-second': '/badges/hof-default.png',
-  'haskell-first': '/badges/hof-default.png',
-  'haskell-second': '/badges/hof-default.png',
-  'flutter-first': '/badges/hof-default.png',
-  'flutter-second': '/badges/hof-default.png',
-  'kotlin-first': '/badges/hof-default.png',
-  'kotlin-second': '/badges/hof-default.png',
+  'cpp-first': '/Badges/hof-default.png',
+  'cpp-second': '/Badges/hof-default.png',
+  'python-first': '/Badges/hof-default.png',
+  'python-second': '/Badges/hof-default.png',
+  'javascript-first': '/Badges/hof-default.png',
+  'javascript-second': '/Badges/hof-default.png',
+  'rust-first': '/Badges/hof-default.png',
+  'rust-second': '/Badges/hof-default.png',
+  'java-first': '/Badges/hof-default.png',
+  'java-second': '/Badges/hof-default.png',
+  'go-first': '/Badges/hof-default.png',
+  'go-second': '/Badges/hof-default.png',
+  'zig-first': '/Badges/hof-default.png',
+  'zig-second': '/Badges/hof-default.png',
+  'haskell-first': '/Badges/hof-default.png',
+  'haskell-second': '/Badges/hof-default.png',
+  'flutter-first': '/Badges/hof-default.png',
+  'flutter-second': '/Badges/hof-default.png',
+  'kotlin-first': '/Badges/hof-default.png',
+  'kotlin-second': '/Badges/hof-default.png',
 };
 
 const getBadgeIcon = (language: string, position: 'first' | 'second') => {
   return (
     <Image
-      src={'/badges/hof-default.png'}
+      src={'/Badges/hof-default.png'}
       alt={`${language} ${position} icon`}
       width={64}
       height={64}
