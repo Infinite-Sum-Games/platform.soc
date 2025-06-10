@@ -102,7 +102,7 @@ const ReadmeViewer = ({ owner, repoName, pdfLink }: ReadmeViewerProps) => {
 
   return (
     <Card className="bg-white/20 backdrop-blur-md border border-white/30 shadow-sm h-full flex flex-col">
-      <CardContent className="flex-1 flex flex-col">
+      <CardContent className="flex-1 flex flex-col mt-8">
         <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-p:text-gray-800 prose-p:font-medium prose-strong:text-gray-900 prose-strong:font-bold prose-code:text-gray-700 prose-code:bg-gray-100/50 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:font-semibold prose-pre:bg-gray-100/50 prose-pre:border prose-pre:border-gray-200/50 prose-pre:text-gray-700 prose-a:text-blue-600 prose-a:hover:text-blue-500 prose-a:font-semibold prose-li:text-gray-800 prose-li:font-medium prose-blockquote:text-gray-600 prose-blockquote:border-l-gray-400 flex-1 overflow-y-auto">
           {readmeContent ? (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
