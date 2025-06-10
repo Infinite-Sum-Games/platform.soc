@@ -7,11 +7,11 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Cloud from '../components/dashboard-components/Cloud';
 import SunGlareEffect from '../components/dashboard-components/SunGlareEffect';
-import RepoCard from '../components/repo-components/RepoCard';
 import {
   type ProjectData,
   projects,
 } from '../components/rfc-components/project-data';
+import ProjectCard from '../components/rfc-components/projectCard';
 import ReadmeViewer from '../components/rfc-components/readmeviewer';
 import { Button } from '../components/ui/button';
 import {
@@ -86,13 +86,13 @@ const RequestForCodePage = () => {
                   aria-pressed={selectedProject?.id === project.id}
                   className="cursor-pointer rounded-lg w-full"
                 >
-                  <RepoCard
+                  <ProjectCard
                     id={project.id}
                     name={project.name}
                     description={project.description}
                     tech={project.tech}
                     maintainerUsernames={project.maintainerUsernames}
-                    url={project.url}
+                    url={project.url ?? ''}
                   />
                 </button>
               ))
@@ -212,13 +212,13 @@ const RequestForCodePage = () => {
                       : 'hover:ring-1 hover:ring-gray-400',
                   )}
                 >
-                  <RepoCard
+                  <ProjectCard
                     id={project.id}
                     name={project.name}
                     description={project.description}
                     tech={project.tech}
                     maintainerUsernames={project.maintainerUsernames}
-                    url={project.url}
+                    url={project.url ?? ''}
                   />
                 </button>
               ))
