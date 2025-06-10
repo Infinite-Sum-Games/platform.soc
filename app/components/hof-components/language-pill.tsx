@@ -31,7 +31,20 @@ const badgeIconsMapping: Record<string, string> = {
   'flutter-second': '',
   'kotlin-first': '',
   'kotlin-second': '',
-}; // need to fill these with actual paths
+};
+
+const badgeDescriptionsMapping: Record<string, string> = {
+  rust: 'Most Rust Pull Requests',
+  zig: 'Most Zig Pull Requests',
+  python: 'Most Python Pull Requests',
+  go: 'Most Go Pull Requests',
+  javascript: 'Most JS/TS Pull Requests',
+  cpp: 'Most C/C++ Pull Requests',
+  java: 'Most Java Pull Requests',
+  flutter: 'Most Flutter Pull Requests',
+  kotlin: 'Most Kotlin Pull Requests',
+  haskell: 'Most Haskell Pull Requests',
+};
 
 const getBadgeIcon = (language: string, position: 'first' | 'second') => {
   const key = `${language}-${position}`;
@@ -60,57 +73,6 @@ const LanguagePill: React.FC<LanguagePillProps> = ({
 }) => {
   const { first_place, second_place } = leaderboard;
 
-  const renderLanguageIcon = () => {
-    if (language === 'javascript') {
-      return (
-        <div className="flex gap-1">
-          <Image
-            src="/icons/javascript.svg"
-            alt="JS"
-            width={24}
-            height={24}
-          />
-          <Image
-            src="/icons/typescript.svg"
-            alt="TS"
-            width={24}
-            height={24}
-          />
-        </div>
-      );
-    }
-    if (language === 'cpp') {
-      return (
-        <div className="flex gap-1">
-          <Image
-            src="/icons/c.svg"
-            alt="C"
-            width={24}
-            height={24}
-          />
-          <Image
-            src="/icons/c++.svg"
-            alt="C++"
-            width={24}
-            height={24}
-          />
-        </div>
-      );
-    }
-    return (
-      <Image
-        src={`/icons/${language.toLowerCase()}.svg`}
-        alt={`${language} icon`}
-        width={24}
-        height={24}
-        className="object-contain"
-        onError={(e) => {
-          e.currentTarget.src = '/icons/placeholder.svg';
-        }}
-      />
-    );
-  };
-
   return (
     <div className="relative w-full max-w-md mx-auto bg-white/25 backdrop-blur-2xl rounded-2xl p-3 border border-white/30 shadow hover:shadow-md transition-all duration-300">
       <div className="absolute inset-0 bg-white/10 rounded-2xl opacity-20" />
@@ -119,24 +81,71 @@ const LanguagePill: React.FC<LanguagePillProps> = ({
         height={200}
         id={language}
       />
-      <div className="flex items-center justify-center gap-2 mb-4">
-        {renderLanguageIcon()}
-        <h3 className="text-lg font-semibold text-gray-900 capitalize">
-          {getDisplayLang(language)}
-        </h3>
+      <div className="flex flex-col items-center justify-center text-center">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          {language === 'javascript' ? (
+            <div className="flex gap-1">
+              <Image
+                src="/icons/javascript.svg"
+                alt="JS"
+                width={24}
+                height={24}
+              />
+              <Image
+                src="/icons/typescript.svg"
+                alt="TS"
+                width={24}
+                height={24}
+              />
+            </div>
+          ) : language === 'cpp' ? (
+            <div className="flex gap-1">
+              <Image
+                src="/icons/c.svg"
+                alt="C"
+                width={24}
+                height={24}
+              />
+              <Image
+                src="/icons/c++.svg"
+                alt="C++"
+                width={24}
+                height={24}
+              />
+            </div>
+          ) : (
+            <Image
+              src={`/icons/${language.toLowerCase()}.svg`}
+              alt={`${language} icon`}
+              width={24}
+              height={24}
+              className="object-contain"
+              onError={(e) => {
+                e.currentTarget.src = '/icons/placeholder.svg';
+              }}
+            />
+          )}
+          <h3 className="text-lg font-semibold text-gray-900 capitalize">
+            {getDisplayLang(language)}
+          </h3>
+        </div>
+        <p className="text-xs text-gray-700 -mt-2 mb-3 text-center">
+          {badgeDescriptionsMapping[language.toLowerCase()] ||
+            'Outstanding Contribution'}
+        </p>
       </div>
       <div className="flex justify-center items-center gap-4">
         <Badge
           username={first_place.github_username}
           pullRequests={first_place.pull_request_merged}
-          language={getDisplayLang(language)}
+          language={language}
           position="first"
           icon={getBadgeIcon(language, 'first')}
         />
         <Badge
           username={second_place.github_username}
           pullRequests={second_place.pull_request_merged}
-          language={getDisplayLang(language)}
+          language={language}
           position="second"
           icon={getBadgeIcon(language, 'second')}
         />
