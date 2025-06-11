@@ -40,7 +40,22 @@ const HallOfFame = () => {
     fetchData();
   }, []);
 
-  const languages = Object.keys(leaderboards);
+  const languagePopularityOrder = [
+    'python',
+    'javascript',
+    'cpp',
+    'java',
+    'flutter',
+    'go',
+    'rust',
+    'kotlin',
+    'zig',
+    'haskell',
+  ];
+
+  const languages = languagePopularityOrder.filter(
+    (lang) => lang in leaderboards,
+  );
 
   return (
     <Card className="z-10 w-full max-h-full flex flex-col rounded-3xl border border-white/20 bg-white/35 p-4 backdrop-blur-md">
@@ -57,7 +72,7 @@ const HallOfFame = () => {
         <div className="text-center text-red-500">{error}</div>
       ) : (
         <div className="flex-1 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-4">
             {languages.map((lang) => (
               <LanguagePill
                 key={lang}
