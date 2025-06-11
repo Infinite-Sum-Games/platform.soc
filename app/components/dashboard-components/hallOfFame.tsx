@@ -40,7 +40,22 @@ const HallOfFame = () => {
     fetchData();
   }, []);
 
-  const languages = Object.keys(leaderboards);
+  const languagePopularityOrder = [
+    'python',
+    'javascript',
+    'cpp',
+    'java',
+    'flutter',
+    'go',
+    'rust',
+    'kotlin',
+    'zig',
+    'haskell',
+  ];
+
+  const languages = languagePopularityOrder.filter(
+    (lang) => lang in leaderboards,
+  );
 
   return (
     <Card className="z-10 w-full max-h-full flex flex-col rounded-3xl border border-white/20 bg-white/35 p-4 backdrop-blur-md">
