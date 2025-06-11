@@ -17,7 +17,7 @@ const badgeNamesMapping: Record<string, string> = {
   'rust-second': 'Crabby Coder',
   'zig-first': "Salamander's spirit",
   'zig-second': "Salamander's Totem",
-  'python-first': "Mamba's Mentality",
+  'python-first': 'Mamba Mentality',
   'python-second': 'Basilisk Defanged',
   'go-first': 'Apex Gopher',
   'go-second': "Gopher's Apprentice",
