@@ -57,6 +57,9 @@ const ReposPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [issueSort, setIssueSort] = useState<IssueSortType>('newest');
 
+  const [repoSearchTerm, setRepoSearchTerm] = useState('');
+  const [repoTechFilter, setRepoTechFilter] = useState<string | null>(null);
+
   useEffect(() => {
     fetchAllReposAndIssues();
   }, [fetchAllReposAndIssues]);
@@ -76,6 +79,36 @@ const ReposPage = () => {
       setActiveTab('repositories');
     }
   };
+
+  const filteredRepositories = useMemo(() => {
+    let filtered = [...repositories];
+    if (repoSearchTerm.trim()) {
+      const lower = repoSearchTerm.toLowerCase();
+      filtered = filtered.filter((repo) =>
+        repo.name.toLowerCase().includes(lower),
+      );
+    }
+    if (repoTechFilter) {
+      filtered = filtered.filter((repo) =>
+        repo.tech?.some(
+          (tech: string) => tech.toLowerCase() === repoTechFilter.toLowerCase(),
+        ),
+      );
+    }
+    return filtered;
+  }, [repositories, repoSearchTerm, repoTechFilter]);
+
+  const allRepoTechs = useMemo(() => {
+    const techSet = new Set<string>();
+    for (const repo of repositories) {
+      if (Array.isArray(repo.tech)) {
+        for (const tech of repo.tech) {
+          techSet.add(tech);
+        }
+      }
+    }
+    return Array.from(techSet).sort();
+  }, [repositories]);
 
   const filteredIssues = useMemo(() => {
     if (!selectedRepo?.Issues) return [];
@@ -356,21 +389,97 @@ const ReposPage = () => {
 
   const desktopView = (
     <div className="flex flex-col gap-6 md:flex-row h-[calc(100vh-105px)]">
-      <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
-        <h2 className="mb-3 flex items-center border-b border-white/50 pb-2 font-semibold text-2xl text-gray-800 shrink-0">
-          <GitBranch
-            className="mr-2 h-6 w-6"
-            color="#4B5563"
-          />
-          Repositories{' '}
-          <span className="ml-2 text-gray-700">({repositories.length})</span>
-        </h2>
+      <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-3 sm:p-4 md:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
+        <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-white/50 pb-2 shrink-0">
+          <div className="flex items-center font-semibold text-2xl text-gray-800">
+            <GitBranch
+              className="mr-2 h-6 w-6"
+              color="#4B5563"
+            />
+            Repositories
+            <span className="ml-2 text-gray-700">
+              ({filteredRepositories.length})
+            </span>
+          </div>
+          <div className="flex gap-2 mt-2 sm:mt-0 w-full sm:w-auto">
+            <div className="relative w-full max-w-xs">
+              <Search className="absolute top-2.5 left-2 h-4 w-4 text-gray-600" />
+              <Input
+                placeholder="Search repositories..."
+                value={repoSearchTerm}
+                onChange={(e) => setRepoSearchTerm(e.target.value)}
+                className="bg-white/40 border-white/40 backdrop-blur-sm pl-8 text-gray-800 focus:border-gray-500 focus:ring-1 focus:ring-gray-500 w-full"
+              />
+              {repoSearchTerm && (
+                <button
+                  type="button"
+                  className="absolute top-2.5 right-2"
+                  onClick={() => setRepoSearchTerm('')}
+                  aria-label="Clear search"
+                >
+                  <X className="h-4 w-4 text-gray-600 hover:text-gray-500" />
+                </button>
+              )}
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  className="bg-white/40 cursor-pointer border-white/40 backdrop-blur-sm text-gray-800 hover:bg-white/50 hover:border-white/50 hover:text-gray-700"
+                >
+                  <Filter className="mr-1 h-4 w-4 text-gray-600" />
+                  <span>Tech</span>
+                  {repoTechFilter && (
+                    <Badge className="ml-2 bg-gray-200 text-gray-800 border-white/30">
+                      1
+                    </Badge>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-white/20 border-white/30 backdrop-blur-md text-gray-800 max-h-60 overflow-y-auto">
+                <DropdownMenuLabel className="text-gray-700">
+                  Filter by Tech
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-white/30" />
+                <DropdownMenuItem
+                  onClick={() => setRepoTechFilter(null)}
+                  className={cn(
+                    'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
+                    !repoTechFilter && 'bg-white/50 font-medium',
+                  )}
+                >
+                  <span className="text-gray-800">All</span>
+                  {!repoTechFilter && (
+                    <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
+                  )}
+                </DropdownMenuItem>
+                {allRepoTechs.map((tech) => (
+                  <DropdownMenuItem
+                    key={tech}
+                    onClick={() => setRepoTechFilter(tech)}
+                    className={cn(
+                      'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
+                      repoTechFilter === tech && 'bg-white/50 font-medium',
+                    )}
+                  >
+                    <span className="text-gray-800">{tech}</span>
+                    {repoTechFilter === tech && (
+                      <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-1">
           <div className="space-y-3">
             {isLoading ? (
               <Loading />
-            ) : repositories.length > 0 ? (
-              repositories.map((repo) => (
+            ) : filteredRepositories.length > 0 ? (
+              filteredRepositories.map((repo) => (
                 <button
                   type="button"
                   key={repo.id}
@@ -568,17 +677,94 @@ const ReposPage = () => {
         value="repositories"
         className="mt-4 rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
       >
-        <h2 className="mb-3 flex items-center border-b border-white/50 pb-2 font-semibold text-xl sm:text-2xl text-gray-800">
-          <GitBranch className="mr-2 h-6 w-6 text-gray-600" />
-          Repositories{' '}
-          <span className="ml-2 text-gray-700">({repositories.length})</span>
-        </h2>
+        <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-white/50 pb-2 shrink-0">
+          <div className="flex items-center font-semibold text-xl sm:text-2xl text-gray-800">
+            <GitBranch className="mr-2 h-6 w-6 text-gray-600" />
+            Repositories
+            <span className="ml-2 text-gray-700">
+              ({filteredRepositories.length})
+            </span>
+          </div>
+          <div className="flex gap-2 mt-2 sm:mt-0">
+            <div className="relative">
+              <Search className="absolute top-2.5 left-2 h-4 w-4 text-gray-600" />
+              <Input
+                placeholder="Search repositories..."
+                value={repoSearchTerm}
+                onChange={(e) => setRepoSearchTerm(e.target.value)}
+                className="bg-white/40 border-white/40 backdrop-blur-sm pl-8 text-gray-800 focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                style={{ minWidth: 140 }}
+              />
+              {repoSearchTerm && (
+                <button
+                  type="button"
+                  className="absolute top-2.5 right-2"
+                  onClick={() => setRepoSearchTerm('')}
+                  aria-label="Clear search"
+                >
+                  <X className="h-4 w-4 text-gray-600 hover:text-gray-500" />
+                </button>
+              )}
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  className="bg-white/40 cursor-pointer border-white/40 backdrop-blur-sm text-gray-800 hover:bg-white/50 hover:border-white/50 hover:text-gray-700"
+                >
+                  <Filter className="mr-1 h-4 w-4 text-gray-600" />
+                  <span>Tech</span>
+                  {repoTechFilter && (
+                    <Badge className="ml-2 bg-gray-200 text-gray-800 border-white/30">
+                      1
+                    </Badge>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-white/20 border-white/30 backdrop-blur-md text-gray-800 max-h-60 overflow-y-auto">
+                <DropdownMenuLabel className="text-gray-700">
+                  Filter by Tech
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator className="bg-white/30" />
+                <DropdownMenuItem
+                  onClick={() => setRepoTechFilter(null)}
+                  className={cn(
+                    'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
+                    !repoTechFilter && 'bg-white/50 font-medium',
+                  )}
+                >
+                  <span className="text-gray-800">All</span>
+                  {!repoTechFilter && (
+                    <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
+                  )}
+                </DropdownMenuItem>
+                {allRepoTechs.map((tech) => (
+                  <DropdownMenuItem
+                    key={tech}
+                    onClick={() => setRepoTechFilter(tech)}
+                    className={cn(
+                      'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
+                      repoTechFilter === tech && 'bg-white/50 font-medium',
+                    )}
+                  >
+                    <span className="text-gray-800">{tech}</span>
+                    {repoTechFilter === tech && (
+                      <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-lg p-2">
           <div className="space-y-3">
             {isLoading ? (
               <Loading />
-            ) : repositories.length > 0 ? (
-              repositories.map((repo) => (
+            ) : filteredRepositories.length > 0 ? (
+              filteredRepositories.map((repo) => (
                 <button
                   type="button"
                   key={repo.id}
