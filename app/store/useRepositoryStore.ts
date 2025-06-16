@@ -16,11 +16,6 @@ export interface IssuesData {
   PRsActive: number;
 }
 
-export interface TimeSeriesDataPoint {
-  value: number;
-  timestamp: string;
-}
-
 export interface ReposData {
   id: string;
   name: string;
@@ -28,14 +23,7 @@ export interface ReposData {
   maintainerUsernames: string[];
   description: string;
   tech: string[];
-  openIssues: number;
-  completedIssues: number;
-  // openCount: number;
-  // completedCount: number;
   multiplierActive: boolean;
-  PROpenTimeSeriesData: TimeSeriesDataPoint[];
-  IssueCompletionTimeSeriesData: TimeSeriesDataPoint[];
-  Issues: IssuesData[];
 }
 
 export interface ReposDataAPI {
@@ -56,73 +44,71 @@ export interface IssueDataAPI {
 
 interface RepositoryState {
   repos: ReposData[];
-  isLoading: boolean;
-  setRepos: (repos: ReposData[]) => void;
-  setIsLoading: (loading: boolean) => void;
-  fetchAllReposAndIssues: () => Promise<void>;
+  issuesMap: Record<string, IssuesData[]>;
+  isFetchingRepos: boolean;
+  isFetchingIssues: boolean;
+  fetchRepos: () => Promise<void>;
+  fetchIssues: (repoId: string) => Promise<void>;
+  getAllRepos: () => Promise<ReposData[]>;
+  getIssuesForRepo: (repoId: string) => Promise<IssuesData[]>;
 }
 
-export const useRepositoryStore = create<RepositoryState>((set) => ({
+export const useRepositoryStore = create<RepositoryState>((set, get) => ({
   repos: [],
-  isLoading: true,
+  issuesMap: {},
+  isFetchingRepos: false,
+  isFetchingIssues: false,
 
-  setRepos: (newRepos: ReposData[]) => set({ repos: newRepos }),
-  setIsLoading: (loading: boolean) => set({ isLoading: loading }),
+  fetchRepos: async () => {
+    try {
+      set({ isFetchingRepos: true });
 
-  fetchAllReposAndIssues: async () => {
-    set({ isLoading: true });
+      const { success, data, error } = await make_api_call<{
+        message: string;
+        projects: ReposDataAPI[];
+      }>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/projects`,
+      });
 
-    const {
-      success: reposSuccess,
-      data: reposData,
-      error: reposError,
-    } = await make_api_call<{
-      message: string;
-      projects: ReposDataAPI[];
-    }>({
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/projects`,
-    });
+      if (!success || !data) {
+        throw new Error(`Failed to fetch repos: ${error || 'Unknown error'}`);
+      }
 
-    if (!reposSuccess || !reposData) {
-      console.error('Failed to fetch repos:', reposError);
-      set({ isLoading: false });
-      return;
+      const fetchedRepos: ReposData[] = data.projects.map(
+        (project: ReposDataAPI) => ({
+          ...project,
+          maintainerUsernames: project.maintainers,
+          tech: project.tags,
+          multiplierActive: false,
+        }),
+      );
+
+      set({ repos: fetchedRepos, issuesMap: {} });
+    } catch (error) {
+      throw new Error(`Failed to fetch repos: ${error || 'Unknown error'}`);
+    } finally {
+      set({ isFetchingRepos: false });
     }
+  },
 
-    const fetchedRepos: ReposData[] = reposData.projects.map(
-      (project: ReposDataAPI) => ({
-        ...project,
-        maintainerUsernames: project.maintainers,
-        tech: project.tags,
-        openIssues: 0,
-        completedIssues: 0,
-        // openCount: 0,
-        // completedCount: 0,
-        multiplierActive: false,
-        PROpenTimeSeriesData: [],
-        IssueCompletionTimeSeriesData: [],
-        Issues: [],
-      }),
-    );
+  fetchIssues: async (repoId: string) => {
+    try {
+      set({ isFetchingIssues: true });
 
-    const issueFetchPromises = fetchedRepos.map(async (repo) => {
-      const {
-        success: issuesSuccess,
-        data: issuesData,
-        error: issuesError,
-      } = await make_api_call<{
+      const { success, data, error } = await make_api_call<{
         message: string;
         issues: IssueDataAPI[];
       }>({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/issues/${repo.id}`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/issues/${repoId}`,
       });
 
-      if (!issuesSuccess || !issuesData) {
-        console.error(`Failed to fetch issues for ${repo.id}:`, issuesError);
-        return { repoId: repo.id, issues: [], openCount: 0, completedCount: 0 };
+      if (!success || !data) {
+        throw new Error(
+          `Failed to fetch issues for repo ${repoId}: ${error || 'Unknown error'}`,
+        );
       }
 
-      const issues: IssuesData[] = (issuesData.issues || []).map(
+      const fetchedIssues: IssuesData[] = (data.issues || []).map(
         (issue: IssueDataAPI) => ({
           id: issue.issue_id,
           title: issue.title,
@@ -140,23 +126,48 @@ export const useRepositoryStore = create<RepositoryState>((set) => ({
         }),
       );
 
-      return { repoId: repo.id, issues };
-    });
+      set((state) => ({
+        issuesMap: {
+          ...state.issuesMap,
+          [repoId]: fetchedIssues,
+        },
+      }));
+    } catch (error) {
+      throw new Error(
+        `Failed to fetch issues for repo ${repoId}: ${error || 'Unknown error'}`,
+      );
+    } finally {
+      set({ isFetchingIssues: false });
+    }
+  },
 
-    const results = await Promise.all(issueFetchPromises);
+  getAllRepos: async () => {
+    const { repos, fetchRepos } = get();
 
-    const finalRepos = fetchedRepos.map((repo) => {
-      const result = results.find((r) => r.repoId === repo.id);
-      if (result) {
-        return {
-          ...repo,
-          Issues: result.issues,
-        };
+    if (repos.length === 0) {
+      try {
+        await fetchRepos();
+      } catch (error) {
+        console.error(error);
       }
-      return repo;
-    });
+    }
 
-    set({ repos: finalRepos, isLoading: false });
+    return get().repos;
+  },
+
+  getIssuesForRepo: async (repoId: string): Promise<IssuesData[]> => {
+    const { issuesMap, fetchIssues } = get();
+    const existing = issuesMap[repoId];
+
+    if (existing) return existing;
+
+    try {
+      await fetchIssues(repoId);
+    } catch (error) {
+      console.error(error);
+    }
+
+    return get().issuesMap[repoId] || [];
   },
 }));
 

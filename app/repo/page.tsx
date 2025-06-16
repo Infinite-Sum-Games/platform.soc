@@ -15,7 +15,7 @@ import {
   X,
   XCircle,
 } from 'lucide-react';
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Cloud from '../components/dashboard-components/Cloud';
 import SunGlareEffect from '../components/dashboard-components/SunGlareEffect';
@@ -46,9 +46,14 @@ type IssueSortType = 'newest' | 'oldest';
 const ReposPage = () => {
   const {
     repos: repositories,
-    isLoading,
-    fetchAllReposAndIssues,
+    isFetchingRepos,
+    isFetchingIssues,
+    getAllRepos,
+    getIssuesForRepo,
   } = useRepositoryStore();
+
+  const [issues, setIssues] = useState<IssuesData[]>([]);
+
   const [selectedRepoId, setSelectedRepoId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'repositories' | 'issues'>(
     'repositories',
@@ -61,12 +66,13 @@ const ReposPage = () => {
   const [repoTechFilter, setRepoTechFilter] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchAllReposAndIssues();
-  }, [fetchAllReposAndIssues]);
+    getAllRepos();
+  }, [getAllRepos]);
 
   const selectedRepo = repositories.find((repo) => repo.id === selectedRepoId);
 
   const handleRepoSelect = (repoId: string) => {
+    setIssues([]);
     setSelectedRepoId(repoId);
     if (window.innerWidth < 768) {
       setActiveTab('issues');
@@ -79,6 +85,18 @@ const ReposPage = () => {
       setActiveTab('repositories');
     }
   };
+
+  useEffect(() => {
+    const fetchIssues = async () => {
+      if (selectedRepoId) {
+        const data = await getIssuesForRepo(selectedRepoId);
+        setIssues(data);
+      } else {
+        setIssues([]);
+      }
+    };
+    fetchIssues();
+  }, [selectedRepoId, getIssuesForRepo]);
 
   const filteredRepositories = useMemo(() => {
     let filtered = [...repositories];
@@ -111,9 +129,9 @@ const ReposPage = () => {
   }, [repositories]);
 
   const filteredIssues = useMemo(() => {
-    if (!selectedRepo?.Issues) return [];
+    if (!issues) return [];
 
-    let filtered = [...selectedRepo.Issues];
+    let filtered = [...issues];
 
     switch (issueFilter) {
       case 'claimed':
@@ -177,7 +195,7 @@ const ReposPage = () => {
     }
 
     return filtered;
-  }, [selectedRepo, issueFilter, searchTerm, issueSort]);
+  }, [issues, issueFilter, searchTerm, issueSort]);
 
   const filterBadgeText = useMemo(() => {
     switch (issueFilter) {
@@ -218,10 +236,17 @@ const ReposPage = () => {
     setIssueSort('newest');
   };
 
-  const Loading = () => (
+  const LoadingRepos = () => (
     <div className="flex flex-col items-center justify-center py-10 text-center">
       <Loader2 className="mb-2 h-8 w-8 text-gray-600 animate-spin" />
       <p className="text-gray-600">Loading repositories...</p>
+    </div>
+  );
+
+  const LoadingIssues = () => (
+    <div className="flex flex-col items-center justify-center py-10 text-center">
+      <Loader2 className="mb-2 h-8 w-8 text-gray-600 animate-spin" />
+      <p className="text-gray-600">Loading issues...</p>
     </div>
   );
 
@@ -476,8 +501,8 @@ const ReposPage = () => {
         </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-1">
           <div className="space-y-3">
-            {isLoading ? (
-              <Loading />
+            {isFetchingRepos ? (
+              <LoadingRepos />
             ) : filteredRepositories.length > 0 ? (
               filteredRepositories.map((repo) => (
                 <button
@@ -602,7 +627,9 @@ const ReposPage = () => {
 
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-2">
           {selectedRepo ? (
-            filteredIssues.length > 0 ? (
+            isFetchingIssues ? (
+              <LoadingIssues />
+            ) : filteredIssues.length > 0 ? (
               <div className="space-y-4">
                 {filteredIssues.map((issue: IssuesData) => (
                   <div
@@ -761,8 +788,8 @@ const ReposPage = () => {
         </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-lg p-2">
           <div className="space-y-3">
-            {isLoading ? (
-              <Loading />
+            {isFetchingRepos ? (
+              <LoadingRepos />
             ) : filteredRepositories.length > 0 ? (
               filteredRepositories.map((repo) => (
                 <button
@@ -892,7 +919,9 @@ const ReposPage = () => {
 
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[calc(70vh-150px)] overflow-y-auto rounded-lg p-2">
           {selectedRepo ? (
-            filteredIssues.length > 0 ? (
+            isFetchingIssues ? (
+              <LoadingIssues />
+            ) : filteredIssues.length > 0 ? (
               <div className="space-y-4">
                 {filteredIssues.map((issue: IssuesData) => (
                   <div
