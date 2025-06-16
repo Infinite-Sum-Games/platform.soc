@@ -53,6 +53,8 @@ const ReposPage = () => {
   } = useRepositoryStore();
 
   const [issues, setIssues] = useState<IssuesData[]>([]);
+  const [isLoadingRepos, setIsLoadingRepos] = useState(false);
+  const [isLoadingIssues, setIsLoadingIssues] = useState(false);
 
   const [selectedRepoId, setSelectedRepoId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'repositories' | 'issues'>(
@@ -66,13 +68,17 @@ const ReposPage = () => {
   const [repoTechFilter, setRepoTechFilter] = useState<string | null>(null);
 
   useEffect(() => {
-    getAllRepos();
+    const fetchRepos = async () => {
+      setIsLoadingRepos(true);
+      await getAllRepos();
+      setIsLoadingRepos(false);
+    };
+    fetchRepos();
   }, [getAllRepos]);
 
   const selectedRepo = repositories.find((repo) => repo.id === selectedRepoId);
 
   const handleRepoSelect = (repoId: string) => {
-    setIssues([]);
     setSelectedRepoId(repoId);
     if (window.innerWidth < 768) {
       setActiveTab('issues');
@@ -88,12 +94,14 @@ const ReposPage = () => {
 
   useEffect(() => {
     const fetchIssues = async () => {
+      setIsLoadingIssues(true);
       if (selectedRepoId) {
         const data = await getIssuesForRepo(selectedRepoId);
         setIssues(data);
       } else {
         setIssues([]);
       }
+      setIsLoadingIssues(false);
     };
     fetchIssues();
   }, [selectedRepoId, getIssuesForRepo]);
@@ -501,7 +509,7 @@ const ReposPage = () => {
         </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-1">
           <div className="space-y-3">
-            {isFetchingRepos ? (
+            {isLoadingRepos || isFetchingRepos ? (
               <LoadingRepos />
             ) : filteredRepositories.length > 0 ? (
               filteredRepositories.map((repo) => (
@@ -627,7 +635,7 @@ const ReposPage = () => {
 
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-2">
           {selectedRepo ? (
-            isFetchingIssues ? (
+            isLoadingIssues || isFetchingIssues ? (
               <LoadingIssues />
             ) : filteredIssues.length > 0 ? (
               <div className="space-y-4">
@@ -643,9 +651,7 @@ const ReposPage = () => {
             ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <Search className="mb-2 h-10 w-10 text-gray-600" />
-                <p className="text-gray-600">
-                  No issues found matching your criteria.
-                </p>
+                <p className="text-gray-600">No issues found</p>
                 {hasActiveFilters && (
                   <Button
                     variant="link"
@@ -788,7 +794,7 @@ const ReposPage = () => {
         </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-lg p-2">
           <div className="space-y-3">
-            {isFetchingRepos ? (
+            {isLoadingRepos || isFetchingRepos ? (
               <LoadingRepos />
             ) : filteredRepositories.length > 0 ? (
               filteredRepositories.map((repo) => (
@@ -919,7 +925,7 @@ const ReposPage = () => {
 
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[calc(70vh-150px)] overflow-y-auto rounded-lg p-2">
           {selectedRepo ? (
-            isFetchingIssues ? (
+            isLoadingIssues || isFetchingIssues ? (
               <LoadingIssues />
             ) : filteredIssues.length > 0 ? (
               <div className="space-y-4">
@@ -935,9 +941,7 @@ const ReposPage = () => {
             ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <Search className="mb-2 h-10 w-10 text-gray-600" />
-                <p className="text-gray-600">
-                  No issues found matching your criteria.
-                </p>
+                <p className="text-gray-600">No issues found</p>
                 {hasActiveFilters && (
                   <Button
                     variant="link"
