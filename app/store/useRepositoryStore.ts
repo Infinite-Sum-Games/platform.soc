@@ -47,17 +47,23 @@ interface RepositoryState {
   issuesMap: Record<string, IssuesData[]>;
   isFetchingRepos: boolean;
   isFetchingIssues: boolean;
+  lastRepoFetchTime: number | null;
+  issuesFetchTimes: Record<string, number>;
   fetchRepos: () => Promise<void>;
   fetchIssues: (repoId: string) => Promise<void>;
   getAllRepos: () => Promise<ReposData[]>;
   getIssuesForRepo: (repoId: string) => Promise<IssuesData[]>;
 }
 
+const TTL = 15 * 60 * 1000;
+
 export const useRepositoryStore = create<RepositoryState>((set, get) => ({
   repos: [],
   issuesMap: {},
   isFetchingRepos: false,
   isFetchingIssues: false,
+  lastRepoFetchTime: null,
+  issuesFetchTimes: {},
 
   fetchRepos: async () => {
     try {
@@ -83,7 +89,11 @@ export const useRepositoryStore = create<RepositoryState>((set, get) => ({
         }),
       );
 
-      set({ repos: fetchedRepos, issuesMap: {} });
+      set({
+        repos: fetchedRepos,
+        issuesMap: {},
+        lastRepoFetchTime: Date.now(),
+      });
     } catch (error) {
       throw new Error(`Failed to fetch repos: ${error || 'Unknown error'}`);
     } finally {
@@ -131,6 +141,10 @@ export const useRepositoryStore = create<RepositoryState>((set, get) => ({
           ...state.issuesMap,
           [repoId]: fetchedIssues,
         },
+        issuesFetchTimes: {
+          ...state.issuesFetchTimes,
+          [repoId]: Date.now(),
+        },
       }));
     } catch (error) {
       throw new Error(
@@ -142,9 +156,14 @@ export const useRepositoryStore = create<RepositoryState>((set, get) => ({
   },
 
   getAllRepos: async () => {
-    const { repos, fetchRepos } = get();
+    const { repos, fetchRepos, lastRepoFetchTime } = get();
 
-    if (repos.length === 0) {
+    const now = Date.now();
+    if (
+      repos.length === 0 ||
+      !lastRepoFetchTime ||
+      now - lastRepoFetchTime > TTL
+    ) {
       try {
         await fetchRepos();
       } catch (error) {
@@ -156,15 +175,17 @@ export const useRepositoryStore = create<RepositoryState>((set, get) => ({
   },
 
   getIssuesForRepo: async (repoId: string): Promise<IssuesData[]> => {
-    const { issuesMap, fetchIssues } = get();
-    const existing = issuesMap[repoId];
+    const { issuesMap, issuesFetchTimes, fetchIssues } = get();
+    const cached = issuesMap[repoId];
+    const lastFetchTime = issuesFetchTimes[repoId];
+    const now = Date.now();
 
-    if (existing) return existing;
-
-    try {
-      await fetchIssues(repoId);
-    } catch (error) {
-      console.error(error);
+    if (!cached || !lastFetchTime || now - lastFetchTime > TTL) {
+      try {
+        await fetchIssues(repoId);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     return get().issuesMap[repoId] || [];
