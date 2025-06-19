@@ -15,7 +15,7 @@ import {
   X,
   XCircle,
 } from 'lucide-react';
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Navbar from '../components/Navbar';
 import Cloud from '../components/dashboard-components/Cloud';
 import SunGlareEffect from '../components/dashboard-components/SunGlareEffect';
@@ -46,9 +46,16 @@ type IssueSortType = 'newest' | 'oldest';
 const ReposPage = () => {
   const {
     repos: repositories,
-    isLoading,
-    fetchAllReposAndIssues,
+    isFetchingRepos,
+    isFetchingIssues,
+    getAllRepos,
+    getIssuesForRepo,
   } = useRepositoryStore();
+
+  const [issues, setIssues] = useState<IssuesData[]>([]);
+  const [isLoadingRepos, setIsLoadingRepos] = useState(false);
+  const [isLoadingIssues, setIsLoadingIssues] = useState(false);
+
   const [selectedRepoId, setSelectedRepoId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'repositories' | 'issues'>(
     'repositories',
@@ -61,8 +68,13 @@ const ReposPage = () => {
   const [repoTechFilter, setRepoTechFilter] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchAllReposAndIssues();
-  }, [fetchAllReposAndIssues]);
+    const fetchRepos = async () => {
+      setIsLoadingRepos(true);
+      await getAllRepos();
+      setIsLoadingRepos(false);
+    };
+    fetchRepos();
+  }, [getAllRepos]);
 
   const selectedRepo = repositories.find((repo) => repo.id === selectedRepoId);
 
@@ -79,6 +91,20 @@ const ReposPage = () => {
       setActiveTab('repositories');
     }
   };
+
+  useEffect(() => {
+    const fetchIssues = async () => {
+      setIsLoadingIssues(true);
+      if (selectedRepoId) {
+        const data = await getIssuesForRepo(selectedRepoId);
+        setIssues(data);
+      } else {
+        setIssues([]);
+      }
+      setIsLoadingIssues(false);
+    };
+    fetchIssues();
+  }, [selectedRepoId, getIssuesForRepo]);
 
   const filteredRepositories = useMemo(() => {
     let filtered = [...repositories];
@@ -111,9 +137,9 @@ const ReposPage = () => {
   }, [repositories]);
 
   const filteredIssues = useMemo(() => {
-    if (!selectedRepo?.Issues) return [];
+    if (!issues) return [];
 
-    let filtered = [...selectedRepo.Issues];
+    let filtered = [...issues];
 
     switch (issueFilter) {
       case 'claimed':
@@ -177,7 +203,7 @@ const ReposPage = () => {
     }
 
     return filtered;
-  }, [selectedRepo, issueFilter, searchTerm, issueSort]);
+  }, [issues, issueFilter, searchTerm, issueSort]);
 
   const filterBadgeText = useMemo(() => {
     switch (issueFilter) {
@@ -218,10 +244,17 @@ const ReposPage = () => {
     setIssueSort('newest');
   };
 
-  const Loading = () => (
+  const LoadingRepos = () => (
     <div className="flex flex-col items-center justify-center py-10 text-center">
       <Loader2 className="mb-2 h-8 w-8 text-gray-600 animate-spin" />
       <p className="text-gray-600">Loading repositories...</p>
+    </div>
+  );
+
+  const LoadingIssues = () => (
+    <div className="flex flex-col items-center justify-center py-10 text-center">
+      <Loader2 className="mb-2 h-8 w-8 text-gray-600 animate-spin" />
+      <p className="text-gray-600">Loading issues...</p>
     </div>
   );
 
@@ -389,7 +422,7 @@ const ReposPage = () => {
 
   const desktopView = (
     <div className="flex flex-col gap-6 md:flex-row h-[calc(100vh-105px)]">
-      <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-3 sm:p-4 md:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
+      <div className="w-full shrink-0 rounded-3xl bg-white/30 backdrop-blur-md border border-white/30 p-3 sm:p-4 md:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
         <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-white/50 pb-2 shrink-0">
           <div className="flex items-center font-semibold text-2xl text-gray-800">
             <GitBranch
@@ -476,8 +509,8 @@ const ReposPage = () => {
         </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-1">
           <div className="space-y-3">
-            {isLoading ? (
-              <Loading />
+            {isLoadingRepos || isFetchingRepos ? (
+              <LoadingRepos />
             ) : filteredRepositories.length > 0 ? (
               filteredRepositories.map((repo) => (
                 <button
@@ -505,7 +538,7 @@ const ReposPage = () => {
         </div>
       </div>
 
-      <div className="w-full rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-7/12 flex flex-col">
+      <div className="w-full rounded-3xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-7/12 flex flex-col">
         <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2 shrink-0">
           <h2 className="flex items-center font-semibold text-2xl text-gray-800">
             <Code
@@ -602,7 +635,9 @@ const ReposPage = () => {
 
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent flex-1 min-h-0 overflow-y-auto rounded-lg p-2">
           {selectedRepo ? (
-            filteredIssues.length > 0 ? (
+            isLoadingIssues || isFetchingIssues ? (
+              <LoadingIssues />
+            ) : filteredIssues.length > 0 ? (
               <div className="space-y-4">
                 {filteredIssues.map((issue: IssuesData) => (
                   <div
@@ -616,9 +651,7 @@ const ReposPage = () => {
             ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <Search className="mb-2 h-10 w-10 text-gray-600" />
-                <p className="text-gray-600">
-                  No issues found matching your criteria.
-                </p>
+                <p className="text-gray-600">No issues found</p>
                 {hasActiveFilters && (
                   <Button
                     variant="link"
@@ -652,11 +685,11 @@ const ReposPage = () => {
       }
       className="md:hidden"
     >
-      <TabsList className="grid w-full grid-cols-2 bg-white/40 backdrop-blur-md p-1 border border-white/30">
+      <TabsList className="grid w-full grid-cols-2 bg-white/40 backdrop-blur-md p-1 border border-white/30 rounded-2xl">
         <TabsTrigger
           value="repositories"
           className={cn(
-            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800',
+            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800 rounded-2xl',
             'data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:text-gray-500',
           )}
         >
@@ -665,7 +698,7 @@ const ReposPage = () => {
         <TabsTrigger
           value="issues"
           className={cn(
-            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800',
+            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800 rounded-2xl',
             'data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:text-gray-500',
           )}
         >
@@ -675,7 +708,7 @@ const ReposPage = () => {
 
       <TabsContent
         value="repositories"
-        className="mt-4 rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
+        className="mt-4 rounded-2xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
       >
         <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-white/50 pb-2 shrink-0">
           <div className="flex items-center font-semibold text-xl sm:text-2xl text-gray-800">
@@ -761,8 +794,8 @@ const ReposPage = () => {
         </div>
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-lg p-2">
           <div className="space-y-3">
-            {isLoading ? (
-              <Loading />
+            {isLoadingRepos || isFetchingRepos ? (
+              <LoadingRepos />
             ) : filteredRepositories.length > 0 ? (
               filteredRepositories.map((repo) => (
                 <button
@@ -797,7 +830,7 @@ const ReposPage = () => {
 
       <TabsContent
         value="issues"
-        className="mt-4 rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
+        className="mt-4 rounded-2xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
       >
         <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2">
           <h2 className="flex items-center font-semibold text-xl sm:text-2xl text-gray-800">
@@ -892,7 +925,9 @@ const ReposPage = () => {
 
         <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[calc(70vh-150px)] overflow-y-auto rounded-lg p-2">
           {selectedRepo ? (
-            filteredIssues.length > 0 ? (
+            isLoadingIssues || isFetchingIssues ? (
+              <LoadingIssues />
+            ) : filteredIssues.length > 0 ? (
               <div className="space-y-4">
                 {filteredIssues.map((issue: IssuesData) => (
                   <div
@@ -906,9 +941,7 @@ const ReposPage = () => {
             ) : (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <Search className="mb-2 h-10 w-10 text-gray-600" />
-                <p className="text-gray-600">
-                  No issues found matching your criteria.
-                </p>
+                <p className="text-gray-600">No issues found</p>
                 {hasActiveFilters && (
                   <Button
                     variant="link"

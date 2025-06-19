@@ -58,7 +58,7 @@ const RequestForCodePage = () => {
 
   const desktopView = (
     <div className="flex flex-col gap-6 md:flex-row h-[calc(100vh-105px)]">
-      <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
+      <div className="w-full shrink-0 rounded-2xl bg-white/30 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
         <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2 shrink-0">
           <h2 className="flex items-center font-semibold text-2xl text-gray-800">
             <GitBranch
@@ -106,7 +106,7 @@ const RequestForCodePage = () => {
         </div>
       </div>
 
-      <div className="w-full rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-7/12 flex flex-col">
+      <div className="w-full rounded-2xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-7/12 flex flex-col">
         <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2 shrink-0">
           <h2 className="flex items-center font-semibold text-2xl text-gray-800">
             <FileText
@@ -158,11 +158,11 @@ const RequestForCodePage = () => {
       onValueChange={(value) => setActiveTab(value as 'projects' | 'readme')}
       className="md:hidden"
     >
-      <TabsList className="grid w-full grid-cols-2 bg-white/40 backdrop-blur-md p-1 border border-white/30">
+      <TabsList className="grid w-full grid-cols-2 bg-white/40 backdrop-blur-md p-1 border border-white/30 rounded-2xl">
         <TabsTrigger
           value="projects"
           className={cn(
-            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800',
+            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800 rounded-2xl',
             'data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:text-gray-500',
           )}
         >
@@ -171,7 +171,7 @@ const RequestForCodePage = () => {
         <TabsTrigger
           value="readme"
           className={cn(
-            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800',
+            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800 rounded-2xl',
             'data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:text-gray-500',
           )}
         >
@@ -181,7 +181,7 @@ const RequestForCodePage = () => {
 
       <TabsContent
         value="projects"
-        className="mt-4 rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
+        className="mt-4 rounded-2xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
       >
         <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2">
           <h2 className="flex items-center font-semibold text-xl sm:text-2xl text-gray-800">
@@ -191,7 +191,7 @@ const RequestForCodePage = () => {
           </h2>
           {discussionsButton}
         </div>
-        <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-lg p-2">
+        <div className="scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent h-[70vh] overflow-y-auto rounded-2xl p-2">
           <div className="space-y-3">
             {projects.length > 0 ? (
               projects.map((project) => (
@@ -206,7 +206,7 @@ const RequestForCodePage = () => {
                   }}
                   aria-pressed={selectedProject?.id === project.id}
                   className={cn(
-                    'cursor-pointer rounded-lg transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md w-full',
+                    'cursor-pointer rounded-2xl transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md w-full',
                     selectedProject?.id === project.id
                       ? 'ring-2 ring-gray-500'
                       : 'hover:ring-1 hover:ring-gray-400',
@@ -234,7 +234,7 @@ const RequestForCodePage = () => {
 
       <TabsContent
         value="readme"
-        className="mt-4 rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
+        className="mt-4 rounded-2xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
       >
         <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2">
           <h2 className="flex items-center font-semibold text-xl sm:text-2xl text-gray-800">
