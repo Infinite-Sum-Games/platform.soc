@@ -422,7 +422,7 @@ const ReposPage = () => {
 
   const desktopView = (
     <div className="flex flex-col gap-6 md:flex-row h-[calc(100vh-105px)]">
-      <div className="w-full shrink-0 rounded-lg bg-white/30 backdrop-blur-md border border-white/30 p-3 sm:p-4 md:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
+      <div className="w-full shrink-0 rounded-3xl bg-white/30 backdrop-blur-md border border-white/30 p-3 sm:p-4 md:p-5 shadow-lg md:w-1/2 lg:w-5/12 flex flex-col">
         <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-white/50 pb-2 shrink-0">
           <div className="flex items-center font-semibold text-2xl text-gray-800">
             <GitBranch
@@ -538,7 +538,7 @@ const ReposPage = () => {
         </div>
       </div>
 
-      <div className="w-full rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-7/12 flex flex-col">
+      <div className="w-full rounded-3xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg md:w-1/2 lg:w-7/12 flex flex-col">
         <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2 shrink-0">
           <h2 className="flex items-center font-semibold text-2xl text-gray-800">
             <Code
@@ -685,11 +685,11 @@ const ReposPage = () => {
       }
       className="md:hidden"
     >
-      <TabsList className="grid w-full grid-cols-2 bg-white/40 backdrop-blur-md p-1 border border-white/30">
+      <TabsList className="grid w-full grid-cols-2 bg-white/40 backdrop-blur-md p-1 border border-white/30 rounded-2xl">
         <TabsTrigger
           value="repositories"
           className={cn(
-            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800',
+            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800 rounded-2xl',
             'data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:text-gray-500',
           )}
         >
@@ -698,7 +698,7 @@ const ReposPage = () => {
         <TabsTrigger
           value="issues"
           className={cn(
-            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800',
+            'data-[state=active]:bg-white/40 data-[state=active]:text-gray-800 rounded-2xl',
             'data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:text-gray-500',
           )}
         >
@@ -708,7 +708,7 @@ const ReposPage = () => {
 
       <TabsContent
         value="repositories"
-        className="mt-4 rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
+        className="mt-4 rounded-2xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
       >
         <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-white/50 pb-2 shrink-0">
           <div className="flex items-center font-semibold text-xl sm:text-2xl text-gray-800">
@@ -830,7 +830,7 @@ const ReposPage = () => {
 
       <TabsContent
         value="issues"
-        className="mt-4 rounded-lg bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
+        className="mt-4 rounded-2xl bg-white/40 backdrop-blur-md border border-white/30 p-4 sm:p-5 shadow-lg"
       >
         <div className="mb-3 flex items-center justify-between border-b border-white/50 pb-2">
           <h2 className="flex items-center font-semibold text-xl sm:text-2xl text-gray-800">
