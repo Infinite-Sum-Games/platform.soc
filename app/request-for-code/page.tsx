@@ -261,7 +261,7 @@ const RequestForCodePage = () => {
           {selectedProject ? (
             <ReadmeViewer
               owner={selectedProject.owner}
-              repoName={selectedProject.name}
+              repoName={selectedProject.repo_name}
               pdfLink={selectedProject.pdfLink}
             />
           ) : (
