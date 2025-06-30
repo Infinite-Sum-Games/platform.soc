@@ -219,7 +219,13 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
               type="button"
               onClick={() => handleUserClick(data.username)}
               aria-label={`View profile of ${data.fullName || data.username}`}
-              className="my-1 flex items-center rounded-xl bg-white/10 px-3 py-2 text-gray-800 backdrop-blur-md cursor-pointer transition-all duration-200 hover:bg-white/20 hover:shadow-md hover:scale-[0.98] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 w-full text-left"
+              className={ user?.email ? `my-1 flex items-center rounded-xl bg-white/10 px-3 py-2 
+                text-gray-800 backdrop-blur-md cursor-pointer transition-all duration-200 
+                hover:bg-white/20 hover:shadow-md hover:scale-[0.98] active:scale-[0.98] 
+                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 
+                w-full text-left` : 
+                `my-1 flex items-center rounded-xl bg-white/10 px-3 py-2 text-gray-800 
+                backdrop-blur-md w-full text-left pointer-events-none`}
             >
               <div className="flex flex-grow items-center gap-3 md:w-[50%]">
                 <div className="relative">
