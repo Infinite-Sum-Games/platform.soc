@@ -51,7 +51,7 @@ const Navbar = () => {
               >
                 <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white shadow-md transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg sm:h-12 sm:w-12">
                   <Image
-                    src="/acmi.png"
+                    src="/acmilogo.png"
                     alt="ACM Logo"
                     width={48}
                     height={48}
