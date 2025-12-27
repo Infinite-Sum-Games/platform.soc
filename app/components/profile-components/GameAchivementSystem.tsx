@@ -20,7 +20,7 @@ function GameAchievementSystem({ badges }: GameAchievementSystemProps) {
   const [achievements, setAchievements] = useState<Badge[]>([]);
 
   // Check if viewing own profile
-  const isOwnProfile = user?.github_username === github_username;
+  const isOwnProfile = user?.githubUsername === github_username;
 
   useEffect(() => {
     const loadData = async () => {

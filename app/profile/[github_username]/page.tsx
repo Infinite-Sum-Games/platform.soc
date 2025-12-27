@@ -27,8 +27,8 @@ const ProfilePage = () => {
     if (!hydrated) return;
 
     // Redirect to login if not authenticated
-    if (!user || !user.access_token) {
-      console.log('Redirecting to home due to missing user or access_token');
+    if (!user || !user.accessToken) {
+      console.log('Redirecting to home due to missing user or accessToken');
       router.push('/');
       return;
     }
@@ -39,7 +39,7 @@ const ProfilePage = () => {
         const result = await make_api_call<ProfileResponse>({
           url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/profile?user=${github_username}`,
           method: 'GET',
-          headers: { Authorization: `Bearer ${user.access_token}` },
+          headers: { Authorization: `Bearer ${user.accessToken}` },
         });
 
         if (result.success && result.data) {

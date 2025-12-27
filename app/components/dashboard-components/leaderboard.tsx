@@ -50,7 +50,7 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
           url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`,
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${user?.access_token}`,
+            Authorization: `Bearer ${user?.accessToken}`,
           },
         });
 
@@ -85,7 +85,7 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
     };
 
     fetchLeaderboard();
-  }, [setUser, user?.access_token]);
+  }, [setUser, user?.accessToken]);
 
   const fetchRegistrations = async () => {
     if (participantsData.length > 0) return;
@@ -103,7 +103,7 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/registrations`,
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${user?.access_token}`,
+          Authorization: `Bearer ${user?.accessToken}`,
         },
       });
 

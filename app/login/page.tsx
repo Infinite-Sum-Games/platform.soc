@@ -32,7 +32,7 @@ type FormData = z.infer<typeof formSchema>;
 export default function LoginPage() {
   const router = useRouter();
   const { classes, theme } = useTheme();
-  const { setUser } = useAuthStore();
+  const { setTokens } = useAuthStore();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -96,6 +96,7 @@ export default function LoginPage() {
       const result = await make_api_call<{
         accessToken: string;
         refreshToken: string;
+        ghUsername: string;
         message: string;
       }>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
@@ -109,10 +110,10 @@ export default function LoginPage() {
 
       console.log('Login successful:', result.data);
 
-      setUser({
-        access_token: result.data.accessToken,
-        refresh_token: result.data.refreshToken,
-        github_username: '',
+      setTokens({
+        accessToken: result.data.accessToken,
+        refreshToken: result.data.refreshToken,
+        githubUsername: result.data.ghUsername,
         email: validatedData.email,
         bounty: 0,
       });
