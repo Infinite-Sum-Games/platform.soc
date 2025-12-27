@@ -2,16 +2,22 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface AuthUser {
-  access_token: string;
-  refresh_token: string;
-  github_username: string;
+  accessToken: string;
+  refreshToken: string;
+  githubUsername: string;
   email: string;
   bounty: number;
 }
 
 export interface AuthState {
   user: AuthUser | null;
-  setUser: (user: AuthUser) => void;
+  setTokens: (tokens: {
+    accessToken: string;
+    refreshToken: string;
+    githubUsername: string;
+    email: string;
+    bounty: number;
+  }) => void;
   clearUser: () => void;
 }
 
@@ -19,7 +25,22 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      setUser: (user) => set({ user }),
+      setTokens: ({
+        accessToken,
+        refreshToken,
+        githubUsername,
+        email,
+        bounty,
+      }) =>
+        set(() => ({
+          user: {
+            accessToken,
+            refreshToken,
+            githubUsername,
+            email,
+            bounty,
+          },
+        })),
       clearUser: () => set({ user: null }),
     }),
     {
