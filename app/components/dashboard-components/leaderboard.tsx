@@ -41,28 +41,31 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
         setLeaderboardLoading(true);
         const result = await make_api_call<{
           message: string;
-          leaderboard: {
+          profiles: {
+            full_name: string | null;
             github_username: string;
-            bounty: string;
-            pull_requests_merged: string;
+            bounty: number;
+            solutions: number;
           }[];
         }>({
-          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`,
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/registrations`,
           method: 'GET',
           headers: {
             Authorization: `Bearer ${user?.access_token}`,
           },
         });
 
-        const formattedData: TUserData[] = (result.data?.leaderboard ?? []).map(
-          (item) => ({
-            fullName: '',
-            username: item.github_username,
-            bounty: Number.parseInt(item.bounty),
+        const formattedData: TUserData[] = (result.data?.profiles ?? []).map(
+          (profile) => ({
+            fullName: profile.full_name || '',
+            username: profile.github_username,
+            bounty: profile.bounty,
             accountActive: true,
-            _count: { Solution: item.pull_requests_merged },
+            _count: { Solution: profile.solutions.toString() },
           }),
         );
+
+        formattedData.sort((a, b) => b.bounty - a.bounty);
 
         setLeaderboardData(formattedData);
 
@@ -212,7 +215,7 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
               : 'List of all registered participants.'}
           </CardDescription>
         </div>
-        {currentView === 'leaderboard' ? (
+        {/* {currentView === 'leaderboard' ? (
           <button
             type="button"
             onClick={handleShowParticipants}
@@ -232,7 +235,7 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
             <ArrowLeftCircle className="h-4 w-4" />
             Back
           </button>
-        )}
+        )} */}
       </div>
 
       <div
@@ -338,10 +341,14 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
               </div>
               {currentView === 'leaderboard' && (
                 <>
-                  <div className="w-[25%] text-center hidden md:block">
+                  <div
+                    className={`w-[25%] text-center hidden md:block ${classes.cardText}`}
+                  >
                     {+data._count.Solution}
                   </div>
-                  <div className="w-auto text-right md:w-[25%] pr-1 font-bold md:text-right">
+                  <div
+                    className={`w-auto text-right md:w-[25%] pr-1 font-bold md:text-right ${classes.cardText}`}
+                  >
                     {data.bounty}
                   </div>
                 </>
