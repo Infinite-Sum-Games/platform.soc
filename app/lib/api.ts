@@ -20,7 +20,7 @@ export async function make_api_call<T = unknown>({
   data: T | null;
   error: string | null;
 }> {
-  const { user, setUser, clearUser } = useAuthStore.getState();
+  const { user, setTokens, clearUser } = useAuthStore.getState();
 
   try {
     let finalUrl = url;
@@ -54,13 +54,13 @@ export async function make_api_call<T = unknown>({
     }
 
     // TOKEN EXPIRED 401
-    if (response.status === 401 && retry && user?.refresh_token) {
+    if (response.status === 401 && retry && user?.refreshToken) {
       const refreshRes = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`,
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${user.refresh_token}`,
+            Authorization: `Bearer ${user.refreshToken}`,
           },
         },
       );
@@ -69,9 +69,9 @@ export async function make_api_call<T = unknown>({
         const refreshData = await refreshRes.json();
         const newAccessToken = refreshData.accessKey;
 
-        setUser({
+        setTokens({
           ...user,
-          access_token: newAccessToken,
+          accessToken: newAccessToken,
         });
 
         const newHeaders = {

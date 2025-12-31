@@ -25,13 +25,12 @@ const Dashboard = () => {
   const { classes } = useTheme();
 
   const user = useAuthStore((state) => state.user);
-
   const handleOAuth = async () => {
     // Get the latest state directly
     const currentUser = useAuthStore.getState().user;
 
     // If no user or no token, redirect to login
-    if (!currentUser || !currentUser.access_token) {
+    if (!currentUser || !currentUser.accessToken) {
       console.error('No access token found. User might not be logged in.');
       toast.error('You must be logged in first.');
       router.push('/login');
@@ -43,7 +42,8 @@ const Dashboard = () => {
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/github`,
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${currentUser.access_token}`,
+          Authorization: `Bearer ${currentUser.accessToken}`,
+          'Content-Type': 'application/json',
         },
       });
 
@@ -121,8 +121,8 @@ const Dashboard = () => {
               </>
             ) : (
               <>
-                {/* show only if github_username is empty */}
-                {!user.github_username ? (
+                {/* show only if githubUsername is empty */}
+                {!user.githubUsername ? (
                   <button
                     type="button"
                     onClick={handleOAuth}
@@ -145,13 +145,13 @@ const Dashboard = () => {
                   <button
                     type="button"
                     onClick={() =>
-                      router.push(`/profile/${user.github_username}`)
+                      router.push(`/profile/${user.githubUsername}`)
                     }
                     className="w-fit flex cursor-pointer transform items-center justify-start gap-3 rounded-3xl bg-gray-800 px-3 py-2 text-sm font-medium sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-102 hover:bg-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:ring-offset-1 focus:ring-offset-slate-900 sm:gap-3"
                   >
                     <img
-                      src={`https://github.com/${user.github_username}.png`}
-                      alt={user.github_username}
+                      src={`https://github.com/${user.githubUsername}.png`}
+                      alt={user.githubUsername}
                       className="h-8 w-8 rounded-full border border-gray-300 shadow-sm"
                     />
                     <span className="font-semibold text-lg lg:text-base whitespace-nowrap">

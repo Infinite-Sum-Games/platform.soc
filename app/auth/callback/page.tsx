@@ -2,45 +2,33 @@
 
 import { useAuthStore } from '@/app/store/useAuthStore';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
-function AuthCallbackContent() {
-  const router = useRouter();
+const CallbackContent = () => {
   const searchParams = useSearchParams();
-  const { setUser } = useAuthStore();
+  const router = useRouter();
+  const { setTokens } = useAuthStore();
 
   useEffect(() => {
     const accessToken = searchParams.get('access_token');
     const refreshToken = searchParams.get('refresh_token');
     const githubUsername = searchParams.get('github_username');
     const email = searchParams.get('email');
-    const bountyStr = searchParams.get('bounty');
-    const error = searchParams.get('error');
-
-    if (error) {
-      toast.error('Authentication Error');
-      router.push('/');
-      return;
-    }
 
     if (accessToken && refreshToken && githubUsername && email) {
-      // update the auth store with the new data
-      setUser({
-        access_token: accessToken,
-        refresh_token: refreshToken,
-        github_username: githubUsername,
-        email: email,
-        bounty: bountyStr ? Number.parseInt(bountyStr) : 0,
+      setTokens({
+        accessToken,
+        refreshToken,
+        githubUsername,
+        email,
+        bounty: 0,
       });
-
-      toast.success('GitHub account linked successfully!');
       router.push('/');
     } else {
-      router.push('/');
+      router.push('/login');
     }
-  }, [searchParams, setUser, router]);
+  }, [searchParams, router, setTokens]);
   return (
     <div className="flex min-h-[calc(100vh-5rem)] w-full items-center justify-center bg-transparent text-white">
       <div className="flex flex-col items-center gap-4">
@@ -49,9 +37,9 @@ function AuthCallbackContent() {
       </div>
     </div>
   );
-}
+};
 
-export default function AuthCallback() {
+const AuthCallbackPage = () => {
   return (
     <Suspense
       fallback={
@@ -63,7 +51,9 @@ export default function AuthCallback() {
         </div>
       }
     >
-      <AuthCallbackContent />
+      <CallbackContent />
     </Suspense>
   );
-}
+};
+
+export default AuthCallbackPage;
