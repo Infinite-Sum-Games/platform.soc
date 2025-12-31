@@ -37,9 +37,6 @@ const CallbackContent = () => {
       </div>
     </div>
   );
-}
-
-  return <div>Loading...</div>;
 };
 
 const AuthCallbackPage = () => {
