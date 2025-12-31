@@ -50,7 +50,7 @@ const HallOfFame = () => {
     'go',
     'rust',
     'kotlin',
-    'zig',
+    // 'zig',
     'haskell',
   ];
 

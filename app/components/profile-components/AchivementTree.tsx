@@ -72,12 +72,12 @@ export default function AchievementTree({
         language: 'Rust',
         badges: categoryBadges.filter((b) => b.position <= 2),
       },
-      {
-        language: 'Zig',
-        badges: categoryBadges.filter(
-          (b) => b.position >= 3 && b.position <= 4,
-        ),
-      },
+      // {
+      //   language: 'Zig',
+      //   badges: categoryBadges.filter(
+      //     (b) => b.position >= 3 && b.position <= 4,
+      //   ),
+      // },
       {
         language: 'Python',
         badges: categoryBadges.filter(
