@@ -20,7 +20,7 @@ const Navbar = () => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const clearUser = useAuthStore((state) => state.clearUser);
-  const github_username = user?.githubUsername || '';
+  const githubUsername = user?.githubUsername || '';
   const { classes } = useTheme();
 
   useEffect(() => {
@@ -162,8 +162,8 @@ const Navbar = () => {
                     <button
                       type="button"
                       onClick={() => {
-                        if (user.github_username) {
-                          router.push(`/profile/${github_username}`);
+                        if (user.githubUsername) {
+                          router.push(`/profile/${githubUsername}`);
                         } else {
                           toast.error('Please link your GitHub account.');
                         }
@@ -172,16 +172,16 @@ const Navbar = () => {
                     >
                       <img
                         src={
-                          user.github_username
-                            ? `https://github.com/${user.github_username}.png`
+                          user.githubUsername
+                            ? `https://github.com/${user.githubUsername}.png`
                             : '/default-avatar.png'
                         }
-                        alt={user.github_username || 'default avatar'}
+                        alt={user.githubUsername || 'default avatar'}
                         className="h-8 w-8 rounded-full border border-gray-200"
                       />
-                      {user.github_username && (
+                      {user.githubUsername && (
                         <span className="font-semibold lg:block hidden">
-                          {user.github_username}
+                          {user.githubUsername}
                         </span>
                       )}
                     </button>
@@ -235,8 +235,8 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      if (user.github_username) {
-                        router.push(`/profile/${github_username}`);
+                      if (user.githubUsername) {
+                        router.push(`/profile/${githubUsername}`);
                       } else {
                         toast.error('Please link your GitHub account.');
                       }
@@ -245,16 +245,14 @@ const Navbar = () => {
                   >
                     <img
                       src={
-                        user.github_username
-                          ? `https://github.com/${user.github_username}.png`
+                        user.githubUsername
+                          ? `https://github.com/${user.githubUsername}.png`
                           : '/default-avatar.png'
                       }
-                      alt={user.github_username || 'default avatar'}
+                      alt={user.githubUsername || 'default avatar'}
                       className="h-7 w-7 rounded-full border"
                     />
-                    {user.github_username && (
-                      <span>{user.github_username}</span>
-                    )}
+                    {user.githubUsername && <span>{user.githubUsername}</span>}
                   </button>
 
                   <button
