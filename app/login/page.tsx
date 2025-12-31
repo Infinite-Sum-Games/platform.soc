@@ -4,13 +4,13 @@ import { useTheme } from '@/app/components/theme-context'; // Ensure path is cor
 import { Button } from '@/app/components/ui/button';
 import { Input } from '@/app/components/ui/input';
 import { Label } from '@/app/components/ui/label';
-import { toast } from '@/app/components/ui/use-toast';
 import { make_api_call } from '@/app/lib/api';
 import { useAuthStore } from '@/app/store/useAuthStore';
 import { ArrowRight, Loader2, Lock, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 import * as z from 'zod';
 
 // Password hashing utility
@@ -48,8 +48,8 @@ export default function LoginPage() {
 
   const inputStyles =
     theme === 'SUMMER'
-      ? 'bg-white/50 border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-blue-600/50 focus:ring-blue-600/20'
-      : 'bg-black/20 border-white/10 text-white placeholder:text-slate-500 focus:border-blue-500/50 focus:ring-blue-500/20';
+      ? `bg-white/50 border-gray-300 text-gray-900 placeholder:${classes.cardText} focus:border-blue-600/50 focus:ring-blue-600/20`
+      : `bg-black/20 border-white/10 text-white placeholder:${classes.cardText}  focus:border-blue-500/50 focus:ring-blue-500/20`;
 
   const iconColor = theme === 'SUMMER' ? 'text-gray-500' : 'text-slate-400';
 
@@ -108,7 +108,7 @@ export default function LoginPage() {
         throw new Error(result.error || 'Login failed');
       }
 
-      console.log('Login successful:', result.data);
+      // console.log('Login successful:', result.data);
 
       setTokens({
         accessToken: result.data.accessToken,
@@ -118,27 +118,21 @@ export default function LoginPage() {
         bounty: 0,
       });
 
-      toast({ title: 'Success', description: 'Logged in successfully!' });
+      toast.success('Logged in successfully!');
       router.push('/');
       router.refresh();
     } catch (error) {
-      toast({
-        title: 'Error',
-        description:
-          error instanceof Error ? error.message : 'Something went wrong',
-        variant: 'destructive',
-      });
+      console.error('Something went wrong');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    // Main Container
-    <div className="relative h-[90vh] flex items-center justify-center p-4 overflow-hidden">
+    <div className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center p-4 overflow-hidden">
       <div className="relative w-full max-w-md">
         <div
-          className={`backdrop-blur-xl ${classes.cardBg} ${classes.cardBorder} border rounded-2xl shadow-2xl p-8 overflow-hidden transition-colors duration-300`}
+          className={`backdrop-blur-3xl ${classes.cardBg} ${classes.cardBorder} border rounded-2xl shadow-2xl p-8 overflow-hidden transition-colors duration-300`}
         >
           {/* Header */}
           <div className="mb-8 text-center">
@@ -147,8 +141,8 @@ export default function LoginPage() {
             >
               Welcome Back
             </h1>
-            <p className={`text-sm ${classes.cardText}`}>
-              Enter your credentials to access your account
+            <p className={`text-sm  ${classes.cardText}`}>
+              Use your Anokha '26 credentials to Login
             </p>
           </div>
 
@@ -168,12 +162,16 @@ export default function LoginPage() {
                 <div
                   className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${iconColor} group-focus-within:text-blue-500`}
                 >
-                  <Mail size={18} />
+                  <Mail
+                    className={`${classes.cardText}`}
+                    size={18}
+                  />
                 </div>
                 <Input
                   id="email"
                   name="email"
                   type="email"
+                  placeholder="you@example.com"
                   value={formData.email}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
@@ -205,12 +203,16 @@ export default function LoginPage() {
                 <div
                   className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${iconColor} group-focus-within:text-blue-500`}
                 >
-                  <Lock size={18} />
+                  <Lock
+                    className={`${classes.cardText}`}
+                    size={18}
+                  />
                 </div>
                 <Input
                   id="password"
                   name="password"
                   type="password"
+                  placeholder="*****"
                   value={formData.password}
                   onChange={handleInputChange}
                   onBlur={handleBlur}
@@ -231,7 +233,7 @@ export default function LoginPage() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className={`w-full h-11 font-semibold rounded-xl shadow-lg transition-all duration-300 hover:scale-[1.02] ${buttonStyles}`}
+              className={`w-full h-11 font-semibold rounded-xl shadow-lg transition-all cursor-pointer duration-300 hover:scale-102 ${buttonStyles}`}
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -252,13 +254,15 @@ export default function LoginPage() {
 
             {/* Footer */}
             <div className="text-center pt-2">
-              <p className={`text-sm ${classes.cardText} opacity-80`}>
+              <p className={`text-sm ${classes.cardText}`}>
                 Don't have an account?{' '}
                 <Link
-                  href="https://anokha.amrita.edu/events"
+                  href="https://anokha.amrita.edu/events/8ebc7d47-c0a3-4226-851a-001a02ec2d5a"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`font-medium transition-colors hover:underline underline-offset-4 ${linkStyles}`}
                 >
-                  Register here
+                  Register Here
                 </Link>
               </p>
             </div>

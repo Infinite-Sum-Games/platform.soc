@@ -1,6 +1,6 @@
 'use client';
-import { CardDescription, CardHeader } from '../ui/card';
-import { ScrollArea } from '../ui/scroll-area';
+import { CardDescription, CardHeader } from '@/app/components/ui/card';
+import { ScrollArea } from '@/app/components/ui/scroll-area';
 import ProjectCard from './projectcard';
 
 const ProjectData = [

@@ -1,7 +1,7 @@
 'use client';
+import { useTheme } from '@/app/components/theme-context';
 import React from 'react';
 import { MdArrowForward } from 'react-icons/md';
-import { useTheme } from '../theme-context';
 
 interface CardProps {
   title: string;

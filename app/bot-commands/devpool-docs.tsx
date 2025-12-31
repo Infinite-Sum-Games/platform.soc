@@ -1,5 +1,5 @@
 'use client';
-import { useTheme } from '../components/theme-context'; // adjust path if needed
+import { useTheme } from '@/app/components/theme-context'; // adjust path if needed
 
 const DevPoolDocs = () => {
   const { theme, classes } = useTheme();

@@ -1,22 +1,22 @@
 'use client';
 
-import { cn } from '@/lib/utils';
-import { FileText, GitBranch } from 'lucide-react';
-import { XCircle } from 'lucide-react';
-import { useState } from 'react';
 import {
   type ProjectData,
   projects,
-} from '../components/rfc-components/project-data';
-import ProjectCard from '../components/rfc-components/projectCard';
-import ReadmeViewer from '../components/rfc-components/readmeviewer';
-import { Button } from '../components/ui/button';
+} from '@/app/components/rfc-components/project-data';
+import ProjectCard from '@/app/components/rfc-components/projectCard';
+import ReadmeViewer from '@/app/components/rfc-components/readmeviewer';
+import { Button } from '@/app/components/ui/button';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '../components/ui/tabs';
+} from '@/app/components/ui/tabs';
+import { cn } from '@/app/lib/utils';
+import { FileText, GitBranch } from 'lucide-react';
+import { XCircle } from 'lucide-react';
+import { useState } from 'react';
 
 const RequestForCodePage = () => {
   const [selectedProject, setSelectedProject] = useState<ProjectData | null>(

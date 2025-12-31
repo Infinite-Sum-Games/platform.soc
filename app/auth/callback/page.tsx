@@ -3,6 +3,7 @@
 import { useAuthStore } from '@/app/store/useAuthStore';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const CallbackContent = () => {
   const searchParams = useSearchParams();
@@ -28,13 +29,31 @@ const CallbackContent = () => {
       router.push('/login');
     }
   }, [searchParams, router, setTokens]);
+  return (
+    <div className="flex min-h-[calc(100vh-5rem)] w-full items-center justify-center bg-transparent text-white">
+      <div className="flex flex-col items-center gap-4">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+        <p>Establishing connection with GitHub...</p>
+      </div>
+    </div>
+  );
+}
 
   return <div>Loading...</div>;
 };
 
 const AuthCallbackPage = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex min-h-[calc(100vh-5rem)] w-full items-center justify-center bg-transparent text-white">
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+            <p>Establishing connection with GitHub...</p>
+          </div>
+        </div>
+      }
+    >
       <CallbackContent />
     </Suspense>
   );

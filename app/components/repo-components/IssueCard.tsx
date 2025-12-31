@@ -1,3 +1,4 @@
+import { useTheme } from '@/app/components/theme-context';
 import { Badge } from '@/app/components/ui/badge';
 import {
   Card,
@@ -5,13 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/app/components/ui/card';
+import { cn } from '@/app/lib/utils';
 import type { IssuesData } from '@/app/store/useRepositoryStore';
-import { cn } from '@/lib/utils';
 import { color } from 'framer-motion';
 import { Code, Coins, ExternalLink, GitPullRequest } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import { useTheme } from '../theme-context';
 
 const difficultyColorMap: Record<string, string> = {
   Easy: 'bg-emerald-100/50 text-emerald-900 border-emerald-300/50 backdrop-blur-sm',

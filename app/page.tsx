@@ -9,7 +9,8 @@ import {
   TabsList,
   TabsTrigger,
 } from '@/app/components/ui/tabs';
-import { ArrowRight, Github } from 'lucide-react';
+import { make_api_call } from '@/app/lib/api';
+import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -37,7 +38,8 @@ const Dashboard = () => {
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/github`, {
+      const { success, data, error } = await make_api_call<{ url?: string }>({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/github`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${currentUser.accessToken}`,
@@ -45,20 +47,14 @@ const Dashboard = () => {
         },
       });
 
-      if (res.status === 401) {
-        throw new Error('Session expired. Please login again.');
+      if (!success) {
+        throw new Error(error || 'Failed to initiate GitHub login');
       }
 
-      if (!res.ok) {
-        throw new Error('Failed to initiate GitHub login');
-      }
-
-      const data = await res.json();
-
-      if (data.url) {
+      if (data?.url) {
         window.location.href = data.url;
       } else {
-        console.error('No URL returned from backend');
+        throw new Error('No URL returned from backend');
       }
     } catch (error) {
       console.error('OAuth Error:', error);
@@ -112,13 +108,13 @@ const Dashboard = () => {
             Collaborate, learn, build innovative projects and showcase your
             skills!
           </p>
-          <div className="flex flex-col gap-4 w-1/2">
+          <div className="flex flex-col gap-4 w-full sm:w-auto md:w-1/2 items-center md:items-start">
             {!user ? (
               <>
                 <button
                   type="button"
                   onClick={() => router.push('/login')}
-                  className="w-full transform cursor-pointer rounded-lg bg-blue-400 py-2 text-sm font-medium sm:py-3 sm:font-semibold text-gray-900 shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-amber-700"
+                  className="w-full transform cursor-pointer rounded-lg bg-blue-400 py-2 text-md font-medium sm:py-3 sm:font-semibold text-gray-900 shadow-lg transition duration-300 ease-in-out hover:scale-102 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:ring-offset-blue-800"
                 >
                   Login Now
                 </button>
@@ -130,9 +126,19 @@ const Dashboard = () => {
                   <button
                     type="button"
                     onClick={handleOAuth}
-                    className="w-full flex cursor-pointer transform items-center justify-center gap-2 rounded-lg bg-gray-800 py-2 text-sm font-medium sm:py-3 sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
+                    className="w-full flex cursor-pointer transform items-center justify-center gap-2 rounded-lg bg-gray-800 py-2 text-md font-medium sm:py-3 sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-102 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
                   >
-                    <Github size={22} />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      className="mr-2 h-6 w-6"
+                      viewBox="0 0 16 16"
+                      aria-hidden="true"
+                    >
+                      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
+                    </svg>
                     Link with GitHub
                   </button>
                 ) : (
@@ -141,20 +147,17 @@ const Dashboard = () => {
                     onClick={() =>
                       router.push(`/profile/${user.githubUsername}`)
                     }
-                    className="w-full flex cursor-pointer transform items-center justify-between gap-2 rounded-3xl bg-gray-800 px-1 py-2 text-sm font-medium sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-slate-900 sm:gap-3"
+                    className="w-fit flex cursor-pointer transform items-center justify-start gap-3 rounded-3xl bg-gray-800 px-3 py-2 text-sm font-medium sm:font-semibold text-white shadow-lg transition duration-300 ease-in-out hover:scale-102 hover:bg-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:ring-offset-1 focus:ring-offset-slate-900 sm:gap-3"
                   >
                     <img
                       src={`https://github.com/${user.githubUsername}.png`}
                       alt={user.githubUsername}
                       className="h-8 w-8 rounded-full border border-gray-300 shadow-sm"
                     />
-                    <span className="font-semibold text-lg lg:text-base">
+                    <span className="font-semibold text-lg lg:text-base whitespace-nowrap">
                       Track My Progress
                     </span>
-                    <ArrowRight
-                      size={24}
-                      className="pr-1"
-                    />
+                    <ArrowRight size={24} />
                   </button>
                 )}
               </>
@@ -188,19 +191,19 @@ const Dashboard = () => {
             >
               <TabsTrigger
                 value="live-activity"
-                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-300 data-[state=active]:bg-white  rounded-3xl transition-all cursor-pointer"
+                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-300 data-[state=active]:bg-white rounded-3xl transition-all cursor-pointer"
               >
                 Live Activity
               </TabsTrigger>
               <TabsTrigger
                 value="leaderboard"
-                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-300 data-[state=active]:bg-white  rounded-3xl transition-all cursor-pointer"
+                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-300 data-[state=active]:bg-white rounded-3xl transition-all cursor-pointer"
               >
                 Leaderboard
               </TabsTrigger>
               <TabsTrigger
                 value="hall-of-fame"
-                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-300 data-[state=active]:bg-white  rounded-3xl transition-all cursor-pointer"
+                className="py-2.5 text-sm font-bold data-[state=inactive]:text-gray-300 data-[state=active]:bg-white rounded-3xl transition-all cursor-pointer"
               >
                 Hall of Fame
               </TabsTrigger>

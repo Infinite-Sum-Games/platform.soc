@@ -1,9 +1,29 @@
 'use client';
+import IssueCard from '@/app/components/repo-components/IssueCard';
+import RepoCard from '@/app/components/repo-components/RepoCard';
+import { useTheme } from '@/app/components/theme-context';
+import { Badge } from '@/app/components/ui/badge';
+import { Button } from '@/app/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/app/components/ui/dropdown-menu';
+import { Input } from '@/app/components/ui/input';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/app/components/ui/tabs';
+import { cn } from '@/app/lib/utils';
 import {
   type IssuesData,
   useRepositoryStore,
 } from '@/app/store/useRepositoryStore';
-import { cn } from '@/lib/utils';
 import {
   CheckSquare,
   Code,
@@ -16,27 +36,6 @@ import {
   XCircle,
 } from 'lucide-react';
 import React, { useEffect, useState, useMemo } from 'react';
-import Navbar from '../components/Navbar';
-import IssueCard from '../components/repo-components/IssueCard';
-import RepoCard from '../components/repo-components/RepoCard';
-import { useTheme } from '../components/theme-context';
-import { Badge } from '../components/ui/badge';
-import { Button } from '../components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '../components/ui/dropdown-menu';
-import { Input } from '../components/ui/input';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '../components/ui/tabs';
 /**
  * Randomize array in-place using Durstenfeld shuffle algorithm: Complexity 0(n)
  */

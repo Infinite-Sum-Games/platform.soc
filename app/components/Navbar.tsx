@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import { useTheme } from './theme-context';
 
 const Navbar = () => {
@@ -160,17 +161,29 @@ const Navbar = () => {
                   <>
                     <button
                       type="button"
-                      onClick={() => router.push(`/profile/${github_username}`)}
-                      className="cursor-pointer flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+                      onClick={() => {
+                        if (user.github_username) {
+                          router.push(`/profile/${github_username}`);
+                        } else {
+                          toast.error('Please link your GitHub account.');
+                        }
+                      }}
+                      className="cursor-pointer flex items-center gap-2 rounded-l-full bg-white px-2 py-1 text-base font-semibold text-gray-800 shadow transition hover:shadow-md"
                     >
                       <img
-                        src={`https://github.com/${user.githubUsername}.png`}
-                        alt={user.githubUsername}
+                        src={
+                          user.github_username
+                            ? `https://github.com/${user.github_username}.png`
+                            : '/default-avatar.png'
+                        }
+                        alt={user.github_username || 'default avatar'}
                         className="h-8 w-8 rounded-full border border-gray-200"
                       />
-                      <span className="font-semibold lg:block hidden">
-                        {user.githubUsername}
-                      </span>
+                      {user.github_username && (
+                        <span className="font-semibold lg:block hidden">
+                          {user.github_username}
+                        </span>
+                      )}
                     </button>
                     <div className="cursor-pointer flex items-center justify-center bg-red-200 rounded-r-full px-2 py-3 transition-all duration-200 ease-in-out hover:shadow-md">
                       <LogOut
@@ -222,16 +235,26 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      router.push(`/profile/${github_username}`);
+                      if (user.github_username) {
+                        router.push(`/profile/${github_username}`);
+                      } else {
+                        toast.error('Please link your GitHub account.');
+                      }
                     }}
                     className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-gray-200 shadow"
                   >
                     <img
-                      src={`https://github.com/${user.githubUsername}.png`}
-                      alt={user.githubUsername}
+                      src={
+                        user.github_username
+                          ? `https://github.com/${user.github_username}.png`
+                          : '/default-avatar.png'
+                      }
+                      alt={user.github_username || 'default avatar'}
                       className="h-7 w-7 rounded-full border"
                     />
-                    <span>{user.githubUsername}</span>
+                    {user.github_username && (
+                      <span>{user.github_username}</span>
+                    )}
                   </button>
 
                   <button
@@ -267,14 +290,14 @@ const Navbar = () => {
             <div className="mt-6 flex justify-end gap-3">
               <button
                 type="button"
-                className="rounded-lg px-4 py-2 text-sm font-medium text-gray-300 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
+                className="rounded-lg px-4 py-2 text-sm font-medium text-gray-300 hover:bg-white/10 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
                 onClick={() => setShowLogoutDialog(false)}
               >
                 Cancel
               </button>
               <button
                 type="button"
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                 onClick={confirmLogout}
               >
                 Log Out

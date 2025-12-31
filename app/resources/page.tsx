@@ -1,10 +1,10 @@
 'use client';
 import Navbar from '@/app/components/Navbar';
 import Card from '@/app/components/resources-components/resourceCard';
+import { useTheme } from '@/app/components/theme-context';
 import { useEffect, useState } from 'react';
 import { BsCheckLg } from 'react-icons/bs';
 import { FaTimes } from 'react-icons/fa';
-import { useTheme } from '../components/theme-context';
 
 type Resource = {
   title: string;

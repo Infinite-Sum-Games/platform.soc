@@ -1,5 +1,10 @@
 'use client';
 import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/app/components/ui/chart';
+import {
   AlertCircle,
   Clock,
   GitPullRequest,
@@ -17,7 +22,6 @@ import {
   RadarChart,
   ResponsiveContainer,
 } from 'recharts';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../ui/chart';
 
 export interface ProfileResponse {
   message: string;
@@ -50,7 +54,7 @@ const LoadingCard = () => (
           Searching for your profile...
         </h2>
         <p className="text-base text-gray-600 text-center">
-          Please wait for a while <span className="animate-pulse">😊</span>
+          Please wait for a while!
         </p>
       </div>
     </div>
@@ -60,13 +64,13 @@ const LoadingCard = () => (
 const ErrorCard = () => (
   <div className="w-full flex items-center justify-center min-h-[320px] py-12">
     <div className="w-full max-w-md mx-auto">
-      <div className="rounded-2xl bg-white/25 shadow-2xl px-8 py-10 flex flex-col items-center border-2 border-red-900/30">
+      <div className="rounded-2xl bg-white/20 shadow-2xl px-8 py-10 flex flex-col items-center border-2 border-red-900/30">
         <AlertCircle className="w-12 h-12 text-red-500 mb-4" />
         <h2 className="text-2xl font-semibold mb-2 text-center text-white/80">
           Oops! Something went wrong.
         </h2>
         <p className="text-base text-white/80 text-center">
-          Please try again later <span className="animate-pulse">😊</span>
+          Please try again later!
         </p>
       </div>
     </div>

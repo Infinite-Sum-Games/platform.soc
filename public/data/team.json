@@ -8,6 +8,13 @@
       "designation": "ACM Amrita Chair"
     },
     {
+      "name": "Sarath Chandra",
+      "username": "sharathcx",
+      "avatar": "https://avatars.githubusercontent.com/u/56444323?v=4",
+      "tags": ["Organizer"],
+      "designation": "ACM Amrita Secretary"
+    },
+    {
       "name": "Sanyam Bharadwaj",
       "username": "SanyamB0912",
       "avatar": "https://avatars.githubusercontent.com/u/115093596?v=4",
@@ -18,126 +25,133 @@
       "name": "Leela M",
       "username": "Leela0o5",
       "avatar": "https://avatars.githubusercontent.com/u/156287943?v=4",
-      "tags": ["Maintainer", "Organizer"],
+      "tags": ["Maintainer", "Organizer", "Developer"],
       "designation": "ACM Amrita Vice-Chair"
-    },
-    {
-      "name": "Sarath Chandra",
-      "username": "sharathcx",
-      "avatar": "https://avatars.githubusercontent.com/u/56444323?v=4",
-      "tags": ["Organizer"],
-      "designation": "ACM Amrita Secretary"
     },
     {
       "name": "Adithya Menon R",
       "username": "adithya-menon-r",
       "avatar": "https://avatars.githubusercontent.com/u/115925529?v=4",
-      "tags": ["Maintainer", "Organizer"],
+      "tags": ["Maintainer", "Developer", "Organizer"],
       "designation": "ACM Amrita Webmaster"
     },
     {
       "name": "Ashwin Narayanan S",
       "avatar": "https://avatars.githubusercontent.com/u/90165751?v=4",
       "username": "Ashrockzzz2003",
-      "tags": ["Maintainer", "Organizer"],
+      "tags": ["Maintainer", "Organizer", "Developer"],
       "designation": "Student Advisor"
     },
     {
       "name": "Ritesh Koushik",
       "username": "IAmRiteshKoushik",
       "avatar": "https://avatars.githubusercontent.com/u/72215925?v=4",
-      "tags": ["Organizer"],
-      "designation": "Volunteer"
-    },
-    {
-      "name": "Tharun Kumarr A",
-      "username": "TharunKumarrA",
-      "avatar": "https://avatars.githubusercontent.com/u/111127663?v=4",
-      "tags": ["Organizer"],
-      "designation": "Volunteer"
-    },
-    {
-      "name": "Thanus Kumaar",
-      "username": "Thanus-Kumaar",
-      "avatar": "https://avatars.githubusercontent.com/u/111196217?v=4",
-      "tags": ["Organizer"],
-      "designation": "Volunteer"
-    },
-    {
-      "name": "Vijay SB",
-      "username": "vijay-sb",
-      "avatar": "https://avatars.githubusercontent.com/u/153985965?v=4",
-      "tags": ["Organizer"],
+      "tags": ["Developer"],
       "designation": "Volunteer"
     },
     {
       "name": "Kiran Rajeev",
       "username": "KiranRajeev-KV",
       "avatar": "https://avatars.githubusercontent.com/u/145009677?v=4",
-      "tags": ["Organizer"],
+      "tags": ["Developer", "Organizer"],
       "designation": "Volunteer"
+    },
+    {
+      "name": "Tharun Kumarr A",
+      "username": "TharunKumarrA",
+      "avatar": "https://avatars.githubusercontent.com/u/111127663?v=4",
+      "tags": ["Developer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Thanus Kumaar",
+      "username": "Thanus-Kumaar",
+      "avatar": "https://avatars.githubusercontent.com/u/111196217?v=4",
+      "tags": ["Developer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Vijay SB",
+      "username": "vijay-sb",
+      "avatar": "https://avatars.githubusercontent.com/u/153985965?v=4",
+      "tags": ["Developer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Midhunan V Prabhaharan",
+      "username": "midhunann",
+      "avatar": "https://avatars.githubusercontent.com/u/147637610?v=4",
+      "tags": ["Maintainer", "Organizer", "Developer"],
+      "designation": "ACM Event Management Head"
+    },
+    {
+      "name": "Karthik Saiharsh",
+      "username": "karthik-saiharsh",
+      "avatar": "https://avatars.githubusercontent.com/u/137990475?v=4",
+      "tags": ["Maintainer", "Organizer", "Developer"],
+      "designation": "ACM Design & PR Head"
+    },
+    {
+      "name": "Pranav Kishan T Y",
+      "username": "Destroyer795",
+      "avatar": "https://avatars.githubusercontent.com/u/149817232?v=4",
+      "tags": ["Developer"],
+      "designation": "ACM Member"
     },
     {
       "name": "Adhikkesh SK",
       "username": "Adhikkesh",
       "avatar": "https://avatars.githubusercontent.com/u/144268393?v=4",
-      "tags": ["Organizer"],
+      "tags": ["Developer"],
       "designation": "ACM Member"
     },
     {
       "name": "Jayadev D",
       "username": "FLASH2332",
       "avatar": "https://avatars.githubusercontent.com/u/148314235?v=4",
-      "tags": ["Organizer"],
-      "designation": "ACM Member"
+      "tags": ["Developer"],
+      "designation": "ACM Assistant Webmaster"
     },
     {
-      "name": "Midhunann",
-      "username": "midhunann",
-      "avatar": "https://avatars.githubusercontent.com/u/147637610?v=4",
+      "name": "Revanth Singothu",
+      "username": "rev-sin",
+      "avatar": "https://avatars.githubusercontent.com/u/143745956?v=4",
       "tags": ["Organizer"],
+      "designation": "Volunteer"
+    },
+    {
+      "name": "Akshay KS",
+      "username": "akshayks13",
+      "avatar": "https://avatars.githubusercontent.com/u/143313500?v=4",
+      "tags": ["Developer"],
       "designation": "ACM Member"
     },
     {
       "name": "Harish GM",
       "username": "GMHarish285",
       "avatar": "https://avatars.githubusercontent.com/u/89217499?v=4",
-      "tags": ["Organizer"],
+      "tags": ["Developer"],
       "designation": "ACM Member"
     },
     {
-      "name": "Karthik Saiharsh",
-      "username": "karthik-saiharsh",
-      "avatar": "https://avatars.githubusercontent.com/u/137990475?v=4",
-      "tags": ["Maintainer", "Organizer"],
-      "designation": "ACM Member"
+      "name": "Nithish Ariyha",
+      "username": "ariyha",
+      "avatar": "https://avatars.githubusercontent.com/u/96973647?v=4",
+      "tags": ["Maintainer"],
+      "designation": "Volunteer"
     },
     {
-      "name": "Dharshini",
-      "username": "Dharsh045",
-      "avatar": "https://avatars.githubusercontent.com/u/185026729?v=4",
-      "tags": ["Organizer"],
-      "designation": "ACM Member"
+      "name": "Nithin Venkat Sharma P M",
+      "username": "Nithin0306",
+      "avatar": "https://avatars.githubusercontent.com/u/176410600?v=4",
+      "tags": ["Maintainer"],
+      "designation": "Volunteer"
     },
     {
-      "name": "Preethi Kannan",
-      "username": "PreethiKannan38",
-      "avatar": "https://avatars.githubusercontent.com/u/192256864?v=4",
-      "tags": ["Organizer"],
-      "designation": "ACM Member"
-    },
-    {
-      "name": "Narain BK",
-      "username": "NarainBK",
-      "avatar": "https://avatars.githubusercontent.com/u/138306449?v=4",
-      "tags": ["Organizer"],
-      "designation": "ACM Member"
-    },
-    {
-      "name": "Akshay KS",
-      "username": "akshayks13",
-      "avatar": "https://avatars.githubusercontent.com/u/143313500?v=4",
-      "tags": ["Organizer"],
+      "name": "Nitansh Shankar",
+      "username": "BIJJUDAMA",
+      "avatar": "https://avatars.githubusercontent.com/u/167768158?v=4",
+      "tags": ["Maintainer"],
       "designation": "ACM Member"
     }
   ]

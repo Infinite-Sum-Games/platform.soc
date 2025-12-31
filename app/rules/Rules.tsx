@@ -1,6 +1,6 @@
 'use client';
+import { useTheme } from '@/app/components/theme-context';
 import React from 'react';
-import { useTheme } from '../components/theme-context';
 
 interface Rule {
   label: string;

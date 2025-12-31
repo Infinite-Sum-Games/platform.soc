@@ -1,10 +1,9 @@
 'use client';
+import LanguagePill from '@/app/components/hof-components/language-pill';
+import { useTheme } from '@/app/components/theme-context';
 import { Card, CardDescription, CardHeader } from '@/app/components/ui/card';
 import { make_api_call } from '@/app/lib/api';
-import { use, useEffect, useState } from 'react';
-import { set } from 'zod';
-import LanguagePill from '../hof-components/language-pill';
-import { useTheme } from '../theme-context';
+import { useEffect, useState } from 'react';
 
 type LeaderboardEntry = {
   github_username: string;

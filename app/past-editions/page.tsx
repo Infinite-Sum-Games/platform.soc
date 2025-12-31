@@ -1,8 +1,8 @@
 'use client';
+import EditionCard from '@/app/components/EditionCard';
 import Navbar from '@/app/components/Navbar';
+import { useTheme } from '@/app/components/theme-context';
 import { useState } from 'react';
-import EditionCard from '../components/EditionCard';
-import { useTheme } from '../components/theme-context';
 
 const editions = [
   {

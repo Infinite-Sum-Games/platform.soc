@@ -1,9 +1,9 @@
 'use client';
+import { tierStyles } from '@/app/components/profile-components/BadgeVariants';
+import { useTheme } from '@/app/components/theme-context';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { tierStyles } from '../../components/profile-components/BadgeVariants';
-import { useTheme } from '../theme-context';
 interface BadgeProps {
   username: string;
   pullRequests: string;

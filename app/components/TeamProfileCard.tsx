@@ -33,7 +33,7 @@ export default function TeamProfileCard({
             src={avatar}
             alt="github-avatar"
           />
-          <div className={`ml-1 ${classes.cardText}`}>
+          <div className={`ml-1 text-left ${classes.cardText}`}>
             <div className="font-bold">{name}</div>
             <div className="font-semibold">{tags.join(', ')}</div>
             <div>{designation}</div>

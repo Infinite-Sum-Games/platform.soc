@@ -1,7 +1,7 @@
+import BackgroundWaves from '@/app/components/hof-components/background-waves';
+import Badge from '@/app/components/hof-components/badge';
+import { useTheme } from '@/app/components/theme-context';
 import Image from 'next/image';
-import BackgroundWaves from '../hof-components/background-waves';
-import Badge from '../hof-components/badge';
-import { useTheme } from '../theme-context';
 
 interface LanguagePillProps {
   language: string;

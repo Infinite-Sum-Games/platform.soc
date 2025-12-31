@@ -1,13 +1,13 @@
 'use client';
+import GameAchievementSystem from '@/app/components/profile-components/GameAchivementSystem';
+import Profile, {
+  type ProfileResponse,
+} from '@/app/components/profile-components/profileCard';
+import { make_api_call } from '@/app/lib/api';
+import { useAuthStore } from '@/app/store/useAuthStore';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import GameAchievementSystem from '../../components/profile-components/GameAchivementSystem';
-import Profile, {
-  type ProfileResponse,
-} from '../../components/profile-components/profileCard';
-import { make_api_call } from '../../lib/api';
-import { useAuthStore } from '../../store/useAuthStore';
 
 const ProfilePage = () => {
   const router = useRouter();

@@ -1,5 +1,5 @@
+import { make_api_call } from '@/app/lib/api';
 import { create } from 'zustand';
-import { make_api_call } from '../lib/api';
 
 export interface IssuesData {
   id: string;

@@ -2,27 +2,31 @@
 
 import type React from 'react';
 
-import { make_api_call } from '@/app/lib/api';
-import { Activity, Bug, Clock, Sparkles, Trophy } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useTheme } from '../theme-context';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Badge } from '../ui/badge';
+import { useTheme } from '@/app/components/theme-context';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/app/components/ui/avatar';
+import { Badge } from '@/app/components/ui/badge';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card';
-import { ScrollArea } from '../ui/scroll-area';
-import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
+} from '@/app/components/ui/card';
+import { ScrollArea } from '@/app/components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip';
+} from '@/app/components/ui/tooltip';
+import { make_api_call } from '@/app/lib/api';
+import { Activity, Bug, Clock, Sparkles, Trophy } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 type LogType = 'top3' | 'bounty' | 'issue';
 
@@ -154,7 +158,7 @@ export default function Logtable() {
 
           setFetchedLogs(transformed);
           setFilteredLogs(transformed);
-          console.log('Initial logs:', transformed);
+          // console.log('Initial logs:', transformed);
         } else {
           setError(result.error || 'Failed to fetch logs');
         }

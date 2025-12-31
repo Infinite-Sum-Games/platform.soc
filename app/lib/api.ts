@@ -1,5 +1,5 @@
+import { useAuthStore } from '@/app/store/useAuthStore';
 import { toast } from 'react-hot-toast';
-import { useAuthStore } from '../store/useAuthStore';
 
 export async function make_api_call<T = unknown>({
   url,
@@ -30,7 +30,8 @@ export async function make_api_call<T = unknown>({
       ).toString();
       finalUrl = `${url}?${queryString}`;
     }
-    const defaultHeaders = {
+
+    const defaultHeaders: Record<string, string> = {
       'Content-Type': 'application/json',
       ...headers,
     };
@@ -46,6 +47,13 @@ export async function make_api_call<T = unknown>({
 
     const response = await fetch(finalUrl, options);
 
+    // INVALID CREDENTIALS 401
+    if (response.status === 401 && url.includes('/auth/login')) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData?.message || 'Invalid email or password');
+    }
+
+    // TOKEN EXPIRED 401
     if (response.status === 401 && retry && user?.refreshToken) {
       const refreshRes = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`,
@@ -66,10 +74,15 @@ export async function make_api_call<T = unknown>({
           accessToken: newAccessToken,
         });
 
+        const newHeaders = {
+          ...headers,
+          Authorization: `Bearer ${newAccessToken}`,
+        };
+
         return make_api_call<T>({
           url,
           method,
-          headers,
+          headers: newHeaders,
           params,
           body,
           retry: false,
@@ -79,20 +92,21 @@ export async function make_api_call<T = unknown>({
       throw new Error('Session expired. Please login again.');
     }
 
+    // GITHUB ACCOUNT NOT LINKED 422
     if (response.status === 422) {
-      const errorData = await response.json().catch(() => ({}));
-      const message = 'Please link your GitHub account to continue.';
+      throw new Error('Please link your GitHub account to continue.');
+    }
 
-      toast.error(message);
-
-      throw new Error(message);
+    // INTERNAL SERVER ERROR 500
+    if (response.status === 500) {
+      throw new Error('Server error. Please try again later.');
     }
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      const errorMessage =
-        errorData.message || `HTTP error! Status: ${response.status}`;
-      throw new Error(errorMessage);
+      throw new Error(
+        errorData.message || `HTTP error! Status: ${response.status}`,
+      );
     }
 
     const data = await response.json().catch(() => ({}));
@@ -103,11 +117,15 @@ export async function make_api_call<T = unknown>({
       error: null,
     };
   } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'An unexpected error occurred';
+
+    toast.error(message);
+
     return {
       success: false,
       data: null,
-      error:
-        error instanceof Error ? error.message : 'An unexpected error occurred',
+      error: message,
     };
   }
 }
