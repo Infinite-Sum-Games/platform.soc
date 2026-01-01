@@ -334,9 +334,11 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
                   <div className={`${classes.cardText} font-semibold`}>
                     {data.fullName || data.username}
                   </div>
-                  <div className={`${classes.cardText} text-sm`}>
-                    @{data.username}
-                  </div>
+                  {data.username && (
+                    <div className={`${classes.cardText} text-sm`}>
+                      @{data.username}
+                    </div>
+                  )}
                 </div>
               </div>
               {currentView === 'leaderboard' && (
