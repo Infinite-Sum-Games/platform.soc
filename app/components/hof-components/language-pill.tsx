@@ -14,7 +14,7 @@ interface LanguagePillProps {
 const badgeIconsMapping: Record<string, string> = {
   'cpp-first': '/Badges/The Iron Sentinel.jpeg',
   'cpp-second': '/Badges/Pointer Warden.jpeg',
-  'python-first': "/Badges/Mamba's Mentality.jpg",
+  'python-first': '/Badges/Mamba-Mentality.jpg',
   'python-second': '/Badges/Basilisk Defanged.jpg',
   'javascript-first': '/Badges/Forge Smelter.jpg',
   'javascript-second': '/Badges/Prop Driller.jpg',
