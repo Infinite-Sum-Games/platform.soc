@@ -227,16 +227,16 @@ export const allBadges: Badge[] = [
     category: 'mastery',
     position: 2,
   },
-  {
-    id: 20,
-    title: 'Enamoured',
-    description: 'Got a PR accepted every week for a month.',
-    icon: '/Badges/image4.png',
-    unlocked: false,
-    tier: 'bronze',
-    category: 'mastery',
-    position: 3,
-  },
+  // {
+  //   id: 20,
+  //   title: 'Enamoured',
+  //   description: 'Got a PR accepted every week for a month.',
+  //   icon: '/Badges/image4.png',
+  //   unlocked: false,
+  //   tier: 'bronze',
+  //   category: 'mastery',
+  //   position: 3,
+  // },
 ];
 
 export const badgeMap: Record<string, Badge> = allBadges.reduce(
