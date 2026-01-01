@@ -14,6 +14,7 @@ interface ParticipantAvatarProps {
 
 const ParticipantAvatar = ({ username, className }: ParticipantAvatarProps) => {
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,18 +37,22 @@ const ParticipantAvatar = ({ username, className }: ParticipantAvatarProps) => {
     };
   }, []);
 
+  const showAvatarImage = Boolean(username?.trim() && !imageError);
+
   return (
     <Avatar
       ref={ref}
       className={className}
     >
-      {isIntersecting ? (
+      {isIntersecting && showAvatarImage ? (
         <AvatarImage
           src={`https://github.com/${username}.png`}
           alt={`${username}'s avatar`}
           loading="lazy"
+          onError={() => setImageError(true)}
         />
       ) : null}
+
       <AvatarFallback>
         <img
           src="/icon-badge.png"

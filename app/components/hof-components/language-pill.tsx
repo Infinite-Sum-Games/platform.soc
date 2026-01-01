@@ -14,7 +14,7 @@ interface LanguagePillProps {
 const badgeIconsMapping: Record<string, string> = {
   'cpp-first': '/Badges/The Iron Sentinel.jpeg',
   'cpp-second': '/Badges/Pointer Warden.jpeg',
-  'python-first': "/Badges/Mamba's Mentality.jpg",
+  'python-first': '/Badges/Mamba-Mentality.jpg',
   'python-second': '/Badges/Basilisk Defanged.jpg',
   'javascript-first': '/Badges/Forge Smelter.jpg',
   'javascript-second': '/Badges/Prop Driller.jpg',
@@ -24,8 +24,8 @@ const badgeIconsMapping: Record<string, string> = {
   'java-second': '/Badges/Bytecode Bender.jpeg',
   'go-first': '/Badges/Apex Gopher.jpg',
   'go-second': '',
-  'zig-first': "/Badges/Salamander's Spirit.jpg",
-  'zig-second': "/Badges/Salamander's Totem.jpg",
+  // 'zig-first': "/Badges/Salamander's Spirit.jpg",
+  // 'zig-second': "/Badges/Salamander's Totem.jpg",
   'haskell-first': '/Badges/Monad Sage.jpg',
   'haskell-second': '/Badges/Lazy Architect.jpg',
   'flutter-first': '/Badges/Winged Architect.jpeg',
@@ -36,7 +36,7 @@ const badgeIconsMapping: Record<string, string> = {
 
 const badgeDescriptionsMapping: Record<string, string> = {
   rust: 'Most Rust Pull Requests Merged',
-  zig: 'Most Zig Pull Requests Merged',
+  // zig: 'Most Zig Pull Requests Merged',
   python: 'Most Python Pull Requests Merged',
   go: 'Most Go Pull Requests Merged',
   javascript: 'Most JS/TS Pull Requests Merged',

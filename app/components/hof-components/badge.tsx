@@ -1,7 +1,6 @@
 'use client';
 import { tierStyles } from '@/app/components/profile-components/BadgeVariants';
 import { useTheme } from '@/app/components/theme-context';
-import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 interface BadgeProps {
@@ -15,8 +14,8 @@ interface BadgeProps {
 const badgeNamesMapping: Record<string, string> = {
   'rust-first': '2 Piners and maximum effort',
   'rust-second': 'Crabby Coder',
-  'zig-first': "Salamander's spirit",
-  'zig-second': "Salamander's Totem",
+  // 'zig-first': "Salamander's spirit",
+  // 'zig-second': "Salamander's Totem",
   'python-first': 'Mamba Mentality',
   'python-second': 'Basilisk Defanged',
   'go-first': 'Apex Gopher',

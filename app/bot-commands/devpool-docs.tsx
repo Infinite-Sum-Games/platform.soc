@@ -157,7 +157,7 @@ const DevPoolDocs = () => {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
               {/* Achievements */}
               <div
-                className={`col-span-1 lg:col-span-3 ${classes.cardBg} backdrop-blur-xl rounded-3xl p-4 md:p-6 ${classes.cardBorder} shadow-xl`}
+                className={`col-span-1 lg:col-span-5 ${classes.cardBg} backdrop-blur-xl rounded-3xl p-4 md:p-6 ${classes.cardBorder} shadow-xl`}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="flex-shrink-0 aspect-square w-12 bg-slate-500/20 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30">
@@ -199,7 +199,7 @@ const DevPoolDocs = () => {
               </div>
 
               {/* Extensions */}
-              <div
+              {/* <div
                 className={`col-span-1 lg:col-span-2 ${classes.cardBg} backdrop-blur-xl rounded-3xl p-4 ${classes.cardBorder} shadow-xl`}
               >
                 <div className="flex items-center gap-2 mb-3">
@@ -223,7 +223,7 @@ const DevPoolDocs = () => {
                 <p className={`${classes.cardText} text-xs`}>
                   Grant additional time through discussion channels.
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
