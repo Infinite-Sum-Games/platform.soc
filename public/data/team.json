@@ -32,7 +32,7 @@
       "name": "Adithya Menon R",
       "username": "adithya-menon-r",
       "avatar": "https://avatars.githubusercontent.com/u/115925529?v=4",
-      "tags": ["Maintainer", "Developer", "Organizer"],
+      "tags": ["Developer", "Organizer"],
       "designation": "ACM Amrita Webmaster"
     },
     {
@@ -116,7 +116,7 @@
       "name": "Revanth Singothu",
       "username": "rev-sin",
       "avatar": "https://avatars.githubusercontent.com/u/143745956?v=4",
-      "tags": ["Organizer"],
+      "tags": ["Maintainer"],
       "designation": "Volunteer"
     },
     {
@@ -153,6 +153,13 @@
       "avatar": "https://avatars.githubusercontent.com/u/167768158?v=4",
       "tags": ["Maintainer"],
       "designation": "ACM Member"
+    },
+    {
+      "name": "Naganathan M",
+      "username": "Naganathan05",
+      "avatar": "https://avatars.githubusercontent.com/u/116747452?v=4",
+      "tags": ["Maintainer"],
+      "designation": "Volunteer"
     }
   ]
 }
