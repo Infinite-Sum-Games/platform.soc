@@ -212,7 +212,14 @@ const Dashboard = () => {
               value="live-activity"
               className="flex-grow overflow-y-auto"
             >
-              <Logtable />
+              {/* <Logtable /> */}
+              <div
+                className={`flex h-full w-full items-center justify-center rounded-3xl ${classes.cardBg} ${classes.cardBorder} p-8 text-center backdrop-blur-md`}
+              >
+                <p className={`text-2xl font-bold ${classes.cardText}`}>
+                  Coming Soon
+                </p>
+              </div>
             </TabsContent>
             <TabsContent
               value="leaderboard"
