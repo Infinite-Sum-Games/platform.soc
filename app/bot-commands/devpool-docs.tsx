@@ -177,10 +177,10 @@ const DevPoolDocs = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
-                    { cmd: '/bug', desc: 'Mark bug-report issues' },
-                    { cmd: '/impact', desc: 'Flag high-impact PRs' },
-                    { cmd: '/doc', desc: 'Mark documentation PRs' },
-                    { cmd: '/test', desc: 'Mark testing PRs' },
+                    { cmd: '/bug @username', desc: 'Mark bug-report issues' },
+                    { cmd: '/impact @username', desc: 'Flag high-impact PRs' },
+                    { cmd: '/doc @username', desc: 'Mark documentation PRs' },
+                    { cmd: '/test @username', desc: 'Mark testing PRs' },
                   ].map((b, i) => (
                     <div
                       // biome-ignore lint: lint/suspicious/noArrayIndexKey

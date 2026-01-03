@@ -13,6 +13,19 @@ import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa'; // Import sorting
 import { MdCode, MdMonetizationOn } from 'react-icons/md';
 import ParticipantAvatar from './ParticipantAvatar';
 
+type LeaderboardProfile = {
+  full_name?: string | null;
+  github_username: string;
+  bounty: number | string;
+  solutions?: number | string;
+  pull_requests_merged?: number | string;
+};
+
+type LeaderboardApiResponse = {
+  leaderboard: LeaderboardProfile[];
+  message: string;
+};
+
 export type TUserData = {
   fullName: string;
   username: string;
@@ -39,31 +52,34 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
     const fetchLeaderboard = async () => {
       try {
         setLeaderboardLoading(true);
-        const result = await make_api_call<{
-          message: string;
-          profiles: {
-            full_name: string | null;
-            github_username: string;
-            bounty: number;
-            solutions: number;
-          }[];
-        }>({
-          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/registrations`,
+        const result = await make_api_call<LeaderboardApiResponse>({
+          url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/leaderboard`,
           method: 'GET',
           headers: {
             Authorization: `Bearer ${user?.accessToken}`,
           },
         });
 
-        const formattedData: TUserData[] = (result.data?.profiles ?? []).map(
-          (profile) => ({
+        const profiles = result.data?.leaderboard || [];
+
+        const formattedData: TUserData[] = profiles
+          .filter(
+            (profile) =>
+              profile.github_username && profile.github_username !== '',
+          )
+          .map((profile) => ({
             fullName: profile.full_name || '',
             username: profile.github_username,
-            bounty: profile.bounty,
+            bounty: Number(profile.bounty || 0),
             accountActive: true,
-            _count: { Solution: profile.solutions.toString() },
-          }),
-        );
+            _count: {
+              Solution: (
+                profile.pull_requests_merged ||
+                profile.solutions ||
+                0
+              ).toString(),
+            },
+          }));
 
         formattedData.sort((a, b) => b.bounty - a.bounty);
 
@@ -332,13 +348,8 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
                 </div>
                 <div>
                   <div className={`${classes.cardText} font-semibold`}>
-                    {data.fullName || data.username}
+                    @{data.username}
                   </div>
-                  {data.username && (
-                    <div className={`${classes.cardText} text-sm`}>
-                      @{data.username}
-                    </div>
-                  )}
                 </div>
               </div>
               {currentView === 'leaderboard' && (
