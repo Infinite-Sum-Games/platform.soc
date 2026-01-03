@@ -325,7 +325,7 @@ const Leaderboard = ({ user }: { user: AuthUser | null }) => {
               onClick={() => handleUserClick(data.username)}
               aria-label={`View profile of ${data.fullName || data.username}`}
               className={
-                user?.email
+                user?.email && user?.githubUsername
                   ? `my-1 flex items-center rounded-xl bg-white/10 px-3 py-2 
                 text-gray-800 backdrop-blur-md cursor-pointer transition-all duration-200 
                 hover:bg-white/20 hover:shadow-md hover:scale-[0.98] active:scale-[0.98] 
