@@ -40,6 +40,8 @@ export interface IssueDataAPI {
   title: string;
   issue_url: string;
   claimants?: Array<{ username: string }>;
+  bounty: number;
+  difficulty: string;
 }
 
 interface RepositoryState {
@@ -124,8 +126,8 @@ export const useRepositoryStore = create<RepositoryState>((set, get) => ({
           title: issue.title,
           url: issue.issue_url,
           language: [],
-          bounty: 0,
-          difficulty: '',
+          bounty: issue.bounty || 0,
+          difficulty: issue.difficulty || 'Easy',
           isClaimed: (issue.claimants && issue.claimants.length > 0) || false,
           claimedByList:
             issue.claimants?.map((c: { username: string }) => c.username) || [],

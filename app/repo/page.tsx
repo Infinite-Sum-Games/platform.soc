@@ -48,8 +48,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 }
 
 type IssueFilterType = 'all' | 'claimed' | 'unclaimed' | 'completed' | 'active';
-// type IssueSortType = 'newest' | 'oldest' | 'bounty-high' | 'bounty-low';
-type IssueSortType = 'newest' | 'oldest';
+type IssueSortType = 'newest' | 'oldest' | 'bounty-high' | 'bounty-low';
 
 const ReposPage = () => {
   const { classes } = useTheme();
@@ -185,32 +184,32 @@ const ReposPage = () => {
     }
 
     switch (issueSort) {
-      // case 'bounty-high':
-      //   filtered.sort((a, b) => {
-      //     const bountyA =
-      //       a.multiplierActive && a.multiplierValue
-      //         ? a.bounty * a.multiplierValue
-      //         : a.bounty;
-      //     const bountyB =
-      //       b.multiplierActive && b.multiplierValue
-      //         ? b.bounty * b.multiplierValue
-      //         : b.bounty;
-      //     return bountyB - bountyA;
-      //   });
-      //   break;
-      // case 'bounty-low':
-      //   filtered.sort((a, b) => {
-      //     const bountyA =
-      //       a.multiplierActive && a.multiplierValue
-      //         ? a.bounty * a.multiplierValue
-      //         : a.bounty;
-      //     const bountyB =
-      //       b.multiplierActive && b.multiplierValue
-      //         ? b.bounty * b.multiplierValue
-      //         : b.bounty;
-      //     return bountyA - bountyB;
-      //   });
-      //   break;
+      case 'bounty-high':
+        filtered.sort((a, b) => {
+          const bountyA =
+            a.multiplierActive && a.multiplierValue
+              ? a.bounty * a.multiplierValue
+              : a.bounty;
+          const bountyB =
+            b.multiplierActive && b.multiplierValue
+              ? b.bounty * b.multiplierValue
+              : b.bounty;
+          return bountyB - bountyA;
+        });
+        break;
+      case 'bounty-low':
+        filtered.sort((a, b) => {
+          const bountyA =
+            a.multiplierActive && a.multiplierValue
+              ? a.bounty * a.multiplierValue
+              : a.bounty;
+          const bountyB =
+            b.multiplierActive && b.multiplierValue
+              ? b.bounty * b.multiplierValue
+              : b.bounty;
+          return bountyA - bountyB;
+        });
+        break;
       case 'oldest':
         filtered.sort((a, b) => a.id.localeCompare(b.id));
         break;
@@ -239,10 +238,10 @@ const ReposPage = () => {
 
   const sortBadgeText = useMemo(() => {
     switch (issueSort) {
-      // case 'bounty-high':
-      //   return 'Bounty: High to Low';
-      // case 'bounty-low':
-      //   return 'Bounty: Low to High';
+      case 'bounty-high':
+        return 'Bounty: High to Low';
+      case 'bounty-low':
+        return 'Bounty: Low to High';
       case 'oldest':
         return 'Oldest First';
       case 'newest':
@@ -409,7 +408,7 @@ const ReposPage = () => {
             <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
           )}
         </DropdownMenuItem>
-        {/* <DropdownMenuItem
+        <DropdownMenuItem
           onClick={() => setIssueSort('bounty-high')}
           className={cn(
             'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
@@ -420,8 +419,8 @@ const ReposPage = () => {
           {issueSort === 'bounty-high' && (
             <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
           )}
-        </DropdownMenuItem> */}
-        {/* <DropdownMenuItem
+        </DropdownMenuItem>
+        <DropdownMenuItem
           onClick={() => setIssueSort('bounty-low')}
           className={cn(
             'cursor-pointer hover:bg-white/40 data-highlighted:bg-white/40',
@@ -432,7 +431,7 @@ const ReposPage = () => {
           {issueSort === 'bounty-low' && (
             <CheckSquare className="ml-2 h-4 w-4 text-gray-600" />
           )}
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

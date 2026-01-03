@@ -24,8 +24,8 @@ const IssueCard = (props: IssuesData) => {
     title,
     url,
     language,
-    // bounty,
-    // difficulty,
+    bounty,
+    difficulty,
     isClaimed,
     claimedByList,
     // multiplierActive,
@@ -74,7 +74,7 @@ const IssueCard = (props: IssuesData) => {
               </Link>
             </CardTitle>
             <div className="flex flex-shrink-0 gap-2 sm:ml-4">
-              {/* <Badge
+              <Badge
                 className={`${
                   difficultyColorMap[difficulty] ||
                   'border-gray-400/50 bg-gray-200/50 text-gray-900 backdrop-blur-sm'
@@ -82,7 +82,14 @@ const IssueCard = (props: IssuesData) => {
                 aria-label={`Difficulty: ${difficulty}`}
               >
                 {difficulty}
-              </Badge> */}
+              </Badge>
+              <Badge
+                className="bg-yellow-100/50 border-yellow-300/50 text-yellow-900 backdrop-blur-sm font-medium text-md sm:text-base transition-all duration-200 hover:scale-105 focus:scale-105 px-3.5 py-1.5 flex items-center gap-1.5"
+                aria-label={`Bounty: ${bounty} points`}
+              >
+                <Coins className="h-5 w-5" />
+                {bounty}
+              </Badge>
               {/* {multiplierActive && multiplierValue && (
                 <Badge
                   className="transition-all scale-[1.05] bg-yellow-100 border-yellow-300 text-yellow-800 text-xs sm:text-sm font-medium px-2 py-1.5 backdrop-blur-sm"
@@ -141,22 +148,8 @@ const IssueCard = (props: IssuesData) => {
             <div className="sm:ml-4 flex flex-wrap items-center gap-3">
               {/* <div
                 className="flex items-center group"
-                aria-label={`Bounty: ${effectiveBounty} points`}
+                aria-label={`Bounty: ${bounty} points`}
               >
-                <Coins
-                  className={cn(
-                    'mr-1.5 h-5 w-5 text-gray-600 transition-colors duration-200',
-                  )}
-                  color="var(--color-orange-400)"
-                  aria-hidden="true"
-                />
-                <span
-                  className={cn(
-                    'font-extrabold text-base sm:text-lg text-orange-400 transition-all duration-200',
-                  )}
-                >
-                  {effectiveBounty}
-                </span>
                 {multiplierActive &&
                   multiplierValue &&
                   bounty !== effectiveBounty && (
