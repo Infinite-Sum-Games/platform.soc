@@ -446,7 +446,7 @@ const ProfileCard = ({ profile, loading }: ProfileProps) => {
                         </span>
                       </span>
                       <span className="text-xs sm:text-sm text-gray-700 font-medium mt-0.5 sm:mt-1 text-center leading-tight">
-                        Pending Issues
+                        Claimed Issues
                       </span>
                     </div>
                   </div>
